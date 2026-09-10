@@ -1,9 +1,21 @@
-function Home() {
+import CardItem from "../../components/CardItem/CardItem"
+import TotalItens from "../../components/InfoItens/TotalItens"
+import LowItens from "../../components/InfoItens/LowItens"
+import ValueStock from "../../components/InfoItens/ValueStock"
+import './HomeModule.css'
+
+export default function Home() {
     return (
-        <div>
-            <h1>Página Inicial</h1>
-        </div>
+        <main>
+            <div className="detail-itens">
+                <TotalItens />
+                <LowItens />
+                <ValueStock />
+            </div>
+            <div className="cards-itens">
+                <CardItem />
+                <CardItem />
+            </div>
+        </main>
     )
 }
-
-export default Home

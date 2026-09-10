@@ -1,0 +1,9 @@
+.detail-itens{
+    display: grid;
+    grid-template-columns: 2fr 3fr 2fr;
+}
+
+.cards-itens{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

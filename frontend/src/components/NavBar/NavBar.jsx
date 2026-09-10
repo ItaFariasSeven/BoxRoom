@@ -12,6 +12,9 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import imagemLogo from '../../assets/Nav/Logo.png'
+import './NavBarModule.css'
+import BasicModal from '../ModalAdd/ModalAddAside';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -63,15 +66,11 @@ export default function NavBar() {
         <AppBar position="static">
           <Toolbar>
 
-            {/* Título */}
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            >
-              MUI
-            </Typography>
+            {/* Logo */}
+            <img className='logo'
+              src={imagemLogo}
+              alt="Imagem da logo"
+            />
 
             {/* Lupa de Pesquisa e ícone de pesquisa */}
             <Search>
@@ -106,6 +105,11 @@ export default function NavBar() {
                     <AddIcon />
                 </Fab>
               </Box>
+
+              <BasicModal 
+                open={open}
+                handleClose={handleClose}
+              />
               
           </Toolbar>
         </AppBar>

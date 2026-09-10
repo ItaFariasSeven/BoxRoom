@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from "react-router-dom";
 import App from './App.jsx';
+import NavBar from './components/NavBar/NavBar.jsx';
 
 // Importações da Fonte Roboto
 import '@fontsource/roboto/300.css';
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
     <ThemeProvider theme={theme}>
+      <NavBar />
       <CssBaseline />
       <App />
     </ThemeProvider>

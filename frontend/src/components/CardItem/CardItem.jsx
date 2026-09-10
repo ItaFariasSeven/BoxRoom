@@ -13,12 +13,12 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 
-import './CardItem.css';
+import './CardItemModule.css';
 
 import * as React from 'react'
 import Modal from '@mui/material/Modal'
 
-import BasicModal from '../ModalEdit/ModalEdit';
+import BasicModal from '../ModalAdd/ModalAddAside';
 
 const style = {
   position: 'absolute',
@@ -32,7 +32,7 @@ const style = {
   p: 4,
 };
 
-export default function MediaControlCard() {
+export default function CardItem() {
   const theme = useTheme();
 
 const [open, setOpen] = React.useState(false);
@@ -41,7 +41,12 @@ const handleClose = () => setOpen(false);
 
   return (
     <>
-      <Card sx={{ display: 'flex' }}>
+      <Card className='container-card'
+        sx={{ 
+          display: 'flex',
+          backgroundColor: '#B5B5B5'
+         }}
+      >
 
         {/* Imagem do Card */}
             <CardMedia
@@ -66,23 +71,20 @@ const handleClose = () => setOpen(false);
             </Typography>
           </CardContent>
 
-          {/* Ícones de Editar Informações */}
-          <Box sx={{ '& > :not(style)': { m: 1 } }}>
-              <Fab color="primary" aria-label="edit" onClick={handleOpen}>
-                  <EditIcon />
-              </Fab>
+          <Box className='add-edit'>
+            {/* Ícones de Editar Informações */}
+            <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                <Fab color="primary" aria-label="edit" onClick={handleOpen}>
+                    <EditIcon />
+                </Fab>
+            </Box>
+            {/* Ícone de adicionar */}
+            <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
+                <Fab color="error" aria-label="add" onClick={handleOpen}>
+                    <AddIcon />
+                </Fab>
+            </Box>
           </Box>
-          {/* <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-            <IconButton aria-label="previous">
-              {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-            </IconButton>
-            <IconButton aria-label="play/pause">
-              <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-            </IconButton>
-            <IconButton aria-label="next">
-              {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-            </IconButton>
-          </Box> */}
         </Box>
       </Card>
 

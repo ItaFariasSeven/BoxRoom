@@ -1,6 +1,6 @@
-import { NavBar } from "../../components/NavBar/NavBar";
+import  NavBar  from "../../components/NavBar/NavBar";
 
-function Login() {
+export default function Login() {
     return(
         <>
         <h1>Teste de Login</h1>
@@ -8,5 +8,3 @@ function Login() {
         </>
     )
 }
-
-export default Login;
