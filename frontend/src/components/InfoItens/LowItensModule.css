@@ -1,7 +1,7 @@
 .container-low-itens{
     background-color: #D3D3D3;
     width: 98%;
-    height: 98%;
+    /* height: 98%; */
     margin: 5px;
     border-radius: 10px;
 }
@@ -39,4 +39,11 @@
 
 .grafic-category{
     max-width: 200px;
+}
+
+.container-list-low-itens{
+    display: flex;
+    flex-direction: row;
+    gap: 155px;
+    
 }
