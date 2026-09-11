@@ -9,7 +9,10 @@
     margin: 7px;
 }
 
-.add-edit{
+.container-card-int{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 6fr 1fr;
+}
+
+.buttom-edit{
 }

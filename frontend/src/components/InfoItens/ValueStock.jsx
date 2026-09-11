@@ -6,7 +6,7 @@ export default function ValueStock() {
 
 
   return (
-    <div className='container-low-itens'>
+    <div className='container-value-itens'>
         <div>Valor do estoque</div>
         <div>Valor para repor</div>
         <div>R$</div>

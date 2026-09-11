@@ -12,6 +12,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import './CardItemModule.css';
 
@@ -48,44 +49,58 @@ const handleClose = () => setOpen(false);
          }}
       >
 
-        {/* Imagem do Card */}
-            <CardMedia
-              component="img"
-              sx={{ width: 151 }}
-              image="https://www.drogaraia.com.br/_next/image?url=https%3A%2F%2Fproduct-data.raiadrogasil.io%2Fimages%2F9777082.webp&w=1080&q=75"
-              alt="Imagem do seu produto em estoque"
-            />
+        <div className='container-card-int'>
+          {/* Imagem do Card */}
+              <div>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 151 }}
+                  image="https://www.drogaraia.com.br/_next/image?url=https%3A%2F%2Fproduct-data.raiadrogasil.io%2Fimages%2F9777082.webp&w=1080&q=75"
+                  alt="Imagem do seu produto em estoque"
+                />
+              </div>
 
-            {/* Textos de título e descrição */}
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <CardContent className='container-texto' sx={{ flex: '1 0 auto' }}>
-            <Typography component="div" variant="h5">
-              Pasta de Dente
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              component="div"
-              sx={{ color: 'text.secondary' }}
-            >
-              Breve Descrição
-            </Typography>
-          </CardContent>
-
-          <Box className='add-edit'>
-            {/* Ícones de Editar Informações */}
-            <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                <Fab color="primary" aria-label="edit" onClick={handleOpen}>
-                    <EditIcon />
-                </Fab>
-            </Box>
-            {/* Ícone de adicionar */}
-            <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                <Fab color="error" aria-label="add" onClick={handleOpen}>
-                    <AddIcon />
-                </Fab>
-            </Box>
-          </Box>
-        </Box>
+              {/* Textos de título e descrição */}
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <div>
+                      <CardContent className='container-texto' sx={{ flex: '1 0 auto' }}>
+                        <Typography component="div" variant="h5">
+                          Pasta de Dente
+                        </Typography>
+                        <Typography
+                          variant="subtitle1"
+                          component="div"
+                          sx={{ color: 'text.secondary' }}
+                        >
+                          Breve Descrição
+                        </Typography>
+                      </CardContent>
+                    </div>
+                </Box>
+          
+              <div>
+                <Box className='buttom-edit'>
+                  {/* Ícones de Editar Informações */}
+                  <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                      <Fab color="primary" aria-label="edit" >
+                          <EditIcon />
+                      </Fab>
+                  </Box>
+                {/* Ícone de adicionar */}
+                <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
+                    <Fab color="secondary" aria-label="add" >
+                        <AddIcon />
+                    </Fab>
+                </Box>
+                {/* Ícone de Subtrair */}
+                <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
+                    <Fab color="error" aria-label="subtract" >
+                        <RemoveIcon />
+                    </Fab>
+                </Box>
+              </Box>
+            </div>
+        </div>
       </Card>
 
       <BasicModal open={open} handleClose={handleClose} />

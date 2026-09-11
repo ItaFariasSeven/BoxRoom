@@ -13,8 +13,12 @@ export default function Home() {
                 <ValueStock />
             </div>
             <div className="cards-itens">
-                <CardItem />
-                <CardItem />
+                <div>
+                    <CardItem />
+                </div>
+                <div>
+                    <CardItem />
+                </div>
             </div>
         </main>
     )

@@ -12,8 +12,9 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import imagemLogo from '../../assets/Nav/Logo.png'
-import './NavBarModule.css'
+import imagemLogo from '../../assets/Nav/Logo.png';
+import ImagemUser from '../../assets/Nav/user.png';
+import './NavBarModule.css';
 import BasicModal from '../ModalAdd/ModalAddAside';
 
 const Search = styled('div')(({ theme }) => ({
@@ -105,6 +106,11 @@ export default function NavBar() {
                     <AddIcon />
                 </Fab>
               </Box>
+
+              <img className='user'
+                src={ImagemUser}
+                alt="Imagem de usuário"
+              />
 
               <BasicModal 
                 open={open}

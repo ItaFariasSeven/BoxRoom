@@ -1,12 +1,35 @@
 .container-low-itens{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     background-color: #D3D3D3;
-    width: 100%;
+    width: 98%;
     height: 98%;
-    padding: 5px;
     margin: 5px;
     border-radius: 10px;
+}
+
+.cabecalho{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    background-color: #FFBFBF;
+    width: 100%;
+    border-start-end-radius: 10px;
+    border-start-start-radius: 10px;
+    height: 20%;
+}
+
+.number-low{
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: #FF2C2C;
+    transform: scale(0.7, 0.7) translate(20%, 0%);
+    border-radius: 10px;
+
+}
+
+.title-low{
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
 }
 
 .text-total-itens{
