@@ -46,3 +46,19 @@
     padding-left: 10%;
     gap: 5px;
 }
+
+.container-button-edit-produto{
+    display: flex;
+    margin: 0;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.button-salve-edit-produto{
+    width: 40%;
+}
+
+.button-delete-edit-produto{
+    width: 40%;
+
+}

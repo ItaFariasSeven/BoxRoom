@@ -113,13 +113,26 @@ export default function ModalEdit({ open, handleClose }) {
                   value={tempoDuracaoEmDias}
                   onChange={(event) => setTempoDuracaoEmDias(event.target.value)}
                 />
-
-              <Button
-                type='submit'
-                variant='contained'
-              >
-                Salvar
-              </Button>
+                
+                <>
+                 <div className='container-button-edit-produto'>
+                     <Button
+                        className='button-delete-edit-produto'
+                        type='submit'
+                        variant='contained'
+                        color='secondary'
+                    >
+                      Excluir Categoria
+                    </Button>
+                    <Button
+                        className='button-salve-edit-produto'
+                        type='submit'
+                        variant='contained'
+                    >
+                      Salvar
+                    </Button>
+                 </div>
+                </>
             </Box>
           </div>
 

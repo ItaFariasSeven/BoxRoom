@@ -14,11 +14,7 @@ export default function ModalEditarCategoria({ open, handleClose }) {
 
   const [nome, setNome] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [valorUnitario, setValorUnitario] = useState("");
-  const [linkCompra, setLinkCompra] = useState("");
-  const [quantidadeTotal, setQuantidadeTotal] = useState("");
-  const [quantidadeMinima, setQuantidadeMinima] = useState("");
-  const [tempoDuracaoEmDias, setTempoDuracaoEmDias] = useState("");
+  const [descricao, setDescricao] = useState("");
 
   function handleSubmit(event) {
         event.preventDefault();
@@ -26,11 +22,7 @@ export default function ModalEditarCategoria({ open, handleClose }) {
         const produto = {
             nome: nome,
             categoria: categoria,
-            valorUnitario: valorUnitario,
-            linkCompra: linkCompra,
-            quantidadeTotal: quantidadeTotal,
-            quantidadeMinima: quantidadeMinima,
-            tempoDuracaoEmDias: tempoDuracaoEmDias
+            descricao: descricao,
         };
 
         console.log(produto);
@@ -43,27 +35,14 @@ export default function ModalEditarCategoria({ open, handleClose }) {
     >
         <Box className='container-modal-edit-categoria'>
            <div className='container-title'>
-             <h1 className='title-modal'>Cadastrar produto</h1>
+             <h1 className='title-modal'>Editar Categoria</h1>
            </div>
-
-          <div className="container-info-product">
-            <div>
-              <img className='photo'
-                src={ImagemProduct}
-                alt="Imagem do Produto"
-                />
-            </div>
 
             <Box
               className='form-add'
               component='form'
               onSubmit={handleSubmit}
             >
-                <TextField
-                  label='Nome do Produto'
-                  value={nome}
-                  onChange={(event) => setNome(event.target.value)}
-                  />
 
                 <FormControl fullWidth>
                     <InputLabel id='categoria-label'>
@@ -75,53 +54,53 @@ export default function ModalEditarCategoria({ open, handleClose }) {
                       value={categoria}
                       onChange={(event) => setCategoria(event.target.value)}
                     >
-                      <MenuItem value="limpeza">
+                      <MenuItem 
+                        value="limpeza"
+                        >
                         Limpeza
-                      </MenuItem>
-                      <MenuItem value="higiene">
-                        Higiene
                       </MenuItem>
                     </Select>
                 </FormControl>
 
-                <TextField
-                  label='Valor Unitário'
-                  type='number'
-                  value={valorUnitario}
-                  onChange={(event) => setValorUnitario(event.target.value)}
-                />
-                <TextField
-                  label='Link de Compra'
-                  value={linkCompra}
-                  onChange={(event) => setLinkCompra(event.target.value)}
-                  />
-                <TextField
-                  label='Quantidade Total'
-                  type='number'
-                  value={quantidadeTotal}
-                  onChange={(event) => setQuantidadeTotal(event.target.value)}
-                  />
-                <TextField
-                  label='Qantidade Mínima'
-                  type='number'
-                  value={quantidadeMinima}
-                  onChange={(event) => setQuantidadeMinima(event.target.value)}
-                  />
-                <TextField
-                  label='Tempo de Duração em Dias'
-                  type='number'
-                  value={tempoDuracaoEmDias}
-                  onChange={(event) => setTempoDuracaoEmDias(event.target.value)}
-                />
+                {categoria && (
+                    <>
+                      <TextField
+                        label='Nome do Produto'
+                        value={nome}
+                        onChange={(event) => setNome(event.target.value)}
+                      />
+    
+                      <TextField
+                        multiline
+                        rows={10}
+                        label='Descrição'
+                        value={descricao}
+                        onChange={(event) => setDescricao(event.target.value)}
+                      />
 
-              <Button
-                type='submit'
-                variant='contained'
-              >
-                Salvar
-              </Button>
+                        <>
+                        <div className='container-button-edit-categoria'>
+                            <Button
+                                className='button-delete-edit-categoria'
+                                type='submit'
+                                variant='contained'
+                                color='secondary'
+                            >
+                              Excluir Categoria
+                            </Button>
+                            <Button
+                                className='button-salve-edit-categoria'
+                                type='submit'
+                                variant='contained'
+                            >
+                              Salvar
+                            </Button>
+                        </div>
+                        </>
+                    </>
+
+            )}
             </Box>
-          </div>
 
         </Box>
 
