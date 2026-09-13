@@ -1,5 +1,5 @@
 import ImageLogo from "../../assets/Nav/Logo.png"
-import './LoginModule.css'
+import './CadastroModule.css'
 import { Button, Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -27,7 +27,7 @@ const styleFormLogin = {
                 }
             }
 
-export default function Login() {
+export default function Cadastro() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -87,13 +87,6 @@ export default function Login() {
             </Box>
             </div>
 
-            <div className="conatiner-sem-cadastro">
-                <p>Ainda não tem Cadastro?</p>
-                <Link to="/cadastro">
-                    <p>Realize seu Cadastro</p>
-                </Link>
-                
-            </div>
         </main>
         
     )
