@@ -4,13 +4,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-import './ModalAddAsideModule.css';
+import './ModalEditModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
 import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
 import { useState } from 'react';
 
 
-export default function ModalAddAside({ open, handleClose }) {
+export default function ModalEdit({ open, handleClose }) {
 
   const [nome, setNome] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -43,7 +43,7 @@ export default function ModalAddAside({ open, handleClose }) {
     >
         <Box className='container-modal'>
            <div className='container-title'>
-             <h1 className='title-modal'>Cadastrar produto</h1>
+             <h1 className='title-modal'>Editar Produto</h1>
            </div>
 
           <div className="container-info-product">

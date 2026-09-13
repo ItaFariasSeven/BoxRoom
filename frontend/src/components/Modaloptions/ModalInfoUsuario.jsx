@@ -4,13 +4,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-import './ModalAddAsideModule.css';
+import './ModalInfoUsuarioModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
 import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
 import { useState } from 'react';
 
 
-export default function ModalAddAside({ open, handleClose }) {
+export default function ModalInfoUsuario({ open, handleClose }) {
 
   const [nome, setNome] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -41,7 +41,7 @@ export default function ModalAddAside({ open, handleClose }) {
       open={open} 
       onClose={handleClose} 
     >
-        <Box className='container-modal'>
+        <Box className='container-modal-info-usuario'>
            <div className='container-title'>
              <h1 className='title-modal'>Cadastrar produto</h1>
            </div>
@@ -102,7 +102,7 @@ export default function ModalAddAside({ open, handleClose }) {
                   onChange={(event) => setQuantidadeTotal(event.target.value)}
                   />
                 <TextField
-                  label='Quantidade Mínima'
+                  label='Qantidade Mínima'
                   type='number'
                   value={quantidadeMinima}
                   onChange={(event) => setQuantidadeMinima(event.target.value)}

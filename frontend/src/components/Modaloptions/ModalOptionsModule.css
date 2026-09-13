@@ -1,0 +1,20 @@
+.container-modal-options{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 90%;
+    transform: translate(233.2%, 11%);
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 5px;;
+    box-shadow: 2px 5px 5px black;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.user-modal{
+    width: 10dvh;
+    transform: translate(500%, 660%);
+    cursor: pointer;
+}

@@ -18,7 +18,7 @@
 
 .number-low{
     text-align: center;
-    font-size: 25px;
+    font-size: 35px;
     font-weight: bold;
     background-color: #FF2C2C;
     transform: scale(0.7, 0.7) translate(20%, 0%);
@@ -28,7 +28,7 @@
 
 .title-low{
     text-align: center;
-    font-size: 25px;
+    font-size: 35px;
     font-weight: bold;
 }
 
@@ -44,6 +44,6 @@
 .container-list-low-itens{
     display: flex;
     flex-direction: row;
-    gap: 155px;
-    
+    gap: 285px;
+    padding-left: 5%;
 }

@@ -19,7 +19,7 @@ import './CardItemModule.css';
 import * as React from 'react'
 import Modal from '@mui/material/Modal'
 
-import BasicModal from '../ModalAdd/ModalAddAside';
+import ModalEdit from '../ModalEdit/ModalEdit';
 
 const style = {
   position: 'absolute',
@@ -68,11 +68,14 @@ const handleClose = () => setOpen(false);
                           Pasta de Dente
                         </Typography>
                         <Typography
+                        className='description'
                           variant="subtitle1"
                           component="div"
-                          sx={{ color: 'text.secondary' }}
+                          // sx={{ color: 'text.secondary' }}
                         >
-                          Breve Descrição
+                          <p>Quantidade</p>
+                          <p>Tempode de Duração</p>
+                          <p>Link de comprar</p>
                         </Typography>
                       </CardContent>
                     </div>
@@ -82,7 +85,7 @@ const handleClose = () => setOpen(false);
                 <Box className='buttom-edit'>
                   {/* Ícones de Editar Informações */}
                   <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                      <Fab color="primary" aria-label="edit" >
+                      <Fab color="primary" aria-label="edit" onClick={handleOpen}>
                           <EditIcon />
                       </Fab>
                   </Box>
@@ -103,7 +106,10 @@ const handleClose = () => setOpen(false);
         </div>
       </Card>
 
-      <BasicModal open={open} handleClose={handleClose} />
+      <ModalEdit 
+        open={open} 
+        handleClose={handleClose} 
+      />
     </>
   );
 }

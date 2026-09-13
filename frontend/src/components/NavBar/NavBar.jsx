@@ -15,7 +15,8 @@ import AddIcon from '@mui/icons-material/Add';
 import imagemLogo from '../../assets/Nav/Logo.png';
 import ImagemUser from '../../assets/Nav/user.png';
 import './NavBarModule.css';
-import BasicModal from '../ModalAdd/ModalAddAside';
+import ModalAddAside from '../ModalAdd/ModalAddAside';
+import ModalOptions from '../Modaloptions/ModalOptions';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,9 +58,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openAdd, setOpenAdd] = React.useState(false);
+  const [openOptions, setOpenOptions] = React.useState(false);
+
+  const handleOpenAdd = () => setOpenAdd(true);
+  const handleCloseAdd = () => setOpenAdd(false);
+
+  const handleOpenOptions = () => setOpenOptions(true);
+  const handleCloseOptions = () => setOpenOptions(false);
 
   return (
     <>
@@ -93,7 +99,6 @@ export default function NavBar() {
               <IconButton
                 size="large"
                 aria-label="show more"
-                onClick={handleOpen}
                 color="inherit"
               >
                 <MoreIcon />
@@ -102,7 +107,7 @@ export default function NavBar() {
 
                 {/* Ícone de adicionar coisas ao estoque */}
               <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                <Fab color="error" aria-label="add" onClick={handleOpen}>
+                <Fab color="error" aria-label="add" onClick={handleOpenAdd}>
                     <AddIcon />
                 </Fab>
               </Box>
@@ -110,11 +115,16 @@ export default function NavBar() {
               <img className='user'
                 src={ImagemUser}
                 alt="Imagem de usuário"
+                onClick={handleOpenOptions}
               />
 
-              <BasicModal 
-                open={open}
-                handleClose={handleClose}
+              <ModalAddAside
+                open={openAdd}
+                handleClose={handleCloseAdd}
+              />
+              <ModalOptions
+                open={openOptions}
+                handleClose={handleCloseOptions}
               />
               
           </Toolbar>
