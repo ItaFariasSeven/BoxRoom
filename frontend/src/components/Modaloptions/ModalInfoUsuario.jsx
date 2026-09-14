@@ -43,7 +43,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
     >
         <Box className='container-modal-info-usuario'>
            <div className='container-title'>
-             <h1 className='title-modal'>Cadastrar produto</h1>
+             <h1 className='title-modal'>Informações do Usuário</h1>
            </div>
 
           <div className="container-info-product">
@@ -55,7 +55,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
             </div>
 
             <Box
-              className='form-add'
+              className='form-user'
               component='form'
               onSubmit={handleSubmit}
             >
@@ -65,61 +65,22 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                   onChange={(event) => setNome(event.target.value)}
                   />
 
-                <FormControl fullWidth>
-                    <InputLabel id='categoria-label'>
-                        Categoria
-                    </InputLabel>
-                    <Select
-                      labelId='categoria-label'
-                      label='Categoria'
-                      value={categoria}
-                      onChange={(event) => setCategoria(event.target.value)}
-                    >
-                      <MenuItem value="limpeza">
-                        Limpeza
-                      </MenuItem>
-                      <MenuItem value="higiene">
-                        Higiene
-                      </MenuItem>
-                    </Select>
-                </FormControl>
-
-                <TextField
-                  label='Valor Unitário'
-                  type='number'
-                  value={valorUnitario}
-                  onChange={(event) => setValorUnitario(event.target.value)}
-                />
-                <TextField
-                  label='Link de Compra'
-                  value={linkCompra}
-                  onChange={(event) => setLinkCompra(event.target.value)}
-                  />
-                <TextField
-                  label='Quantidade Total'
-                  type='number'
-                  value={quantidadeTotal}
-                  onChange={(event) => setQuantidadeTotal(event.target.value)}
-                  />
-                <TextField
-                  label='Qantidade Mínima'
-                  type='number'
-                  value={quantidadeMinima}
-                  onChange={(event) => setQuantidadeMinima(event.target.value)}
-                  />
-                <TextField
-                  label='Tempo de Duração em Dias'
-                  type='number'
-                  value={tempoDuracaoEmDias}
-                  onChange={(event) => setTempoDuracaoEmDias(event.target.value)}
-                />
-
-              <Button
-                type='submit'
-                variant='contained'
-              >
-                Salvar
-              </Button>
+              <div className='conatiner-button-user'>
+                  <Button
+                    className='button-delete-user'
+                    type='submit'
+                    variant='contained'
+                  >
+                    Excluir conta
+                  </Button>
+                  <Button
+                    className='button-save-user'
+                    type='submit'
+                    variant='contained'
+                  >
+                    Salvar
+                  </Button>
+              </div>
             </Box>
           </div>
 

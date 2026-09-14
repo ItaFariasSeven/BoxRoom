@@ -38,11 +38,28 @@
     align-items: center;
 }
 
-.form-add{
+.form-user{
     display: flex;
     flex-direction: column;
     width: 90%;
     text-align: center;
     padding-left: 10%;
     gap: 5px;
+    justify-content: space-between;
+}
+
+.conatiner-button-user{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.button-delete-user{
+    width: 30%;
+    background-color: #FF2C2C !important;
+}
+
+.button-save-user{
+    width: 30%;
+
 }
