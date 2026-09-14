@@ -13,6 +13,16 @@
     width: 40%;
 }
 
+.codigo-error{
+    position: fixed;
+    width: 100%;
+    justify-content: center;
+    background-color: #FF2C2C !important;
+    color: #000080 !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
 .form-login{
     display: flex;
     gap: 25px;

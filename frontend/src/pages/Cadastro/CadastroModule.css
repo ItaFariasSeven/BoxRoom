@@ -1,19 +1,19 @@
-.container-login{
+.container-cadastro{
     display: grid;
-    grid-template-rows: 1fr 1fr 2fr;
+    grid-template-rows: 1fr 2fr 1fr;
     background-color: #000080;
 }
 
-.container-logo-login{
+.container-logo-cadastro{
     display: flex;
     justify-content: center;
 }
 
-.logo-login{
+.logo-cadastro{
     width: 40%;
 }
 
-.form-login{
+.form-cadastro{
     display: flex;
     gap: 25px;
     flex-direction: column;
@@ -22,24 +22,24 @@
     text-align: center;
 }
 
-.input-form-login{
+.input-form-cadastro{
     width: 60%;
 }
 
-.button-login{
+.button-cadastro{
     width: 15%;
     border-radius: 15px !important;
     color: #000080 !important;
     background-color: #fff !important;
 }
 
-.button-login:hover{
+.button-cadastro:hover{
     transition: all ease 2s;
     transform: scale(1.1);
     border-radius: 40px !important;
 }
 
-.conatiner-sem-cadastro{
+.conatiner-com-cadastro{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,6 +47,6 @@
     text-align: center;
 }
 
-.conatiner-sem-cadastro p{
+.conatiner-com-cadastro p{
     color: #fff;
 }

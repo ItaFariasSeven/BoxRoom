@@ -1,8 +1,9 @@
 import ImageLogo from "../../assets/Nav/Logo.png"
 import './LoginModule.css'
-import { Button, Box, TextField } from "@mui/material";
+import { Button, Box, TextField,Alert } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { realizarLogin } from "../../services/api";
 
 const styleFormLogin = {
                 '& label':{
@@ -31,17 +32,25 @@ export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [erro, setErro] = useState("");
+
+    const navigate = useNavigate();
     
-      function handleSubmit(event) {
+    
+      async function handleSubmit(event) {
             event.preventDefault();
-    
-            const user = {
-                email: email,
-                password: password,
-                
-            };
-    
-            console.log(user);
+
+            try{
+                setErro("");
+                const resposta = await realizarLogin(
+                    email, password
+                );
+                console.log("Login Realizado: ", resposta);
+                navigate("/");
+            }catch(error){
+                console.error(error);
+                setErro(error.message);
+            }
         }
 
 
@@ -54,6 +63,15 @@ export default function Login() {
                     alt="Imagem do Produto"
                 />
             </div>
+            {erro && ( 
+                <Alert
+                    className="codigo-error"
+                    severity="error"
+                    icon={false}
+                >
+                    {erro}
+                </Alert>
+            )}
 
             <div >
                 <Box
@@ -72,6 +90,7 @@ export default function Login() {
                 <TextField
                   className="input-form-login"
                   label='Senha'
+                  type="password"
                   value={password}
                   sx={styleFormLogin}
                   onChange={(event) => setPassword(event.target.value)}
@@ -90,10 +109,11 @@ export default function Login() {
             <div className="conatiner-sem-cadastro">
                 <p>Ainda não tem Cadastro?</p>
                 <Link to="/cadastro">
-                    <p>Realize seu Cadastro</p>
+                    <p><u>Realize seu Cadastro</u></p>
                 </Link>
                 
             </div>
+
         </main>
         
     )
