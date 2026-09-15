@@ -8,6 +8,7 @@ import './ModalAddAsideModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
 import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
 import { useState } from 'react';
+import { criarItem, listarCategorias } from '../../services/api';
 
 
 export default function ModalAddAside({ open, handleClose }) {
@@ -24,17 +25,66 @@ export default function ModalAddAside({ open, handleClose }) {
         event.preventDefault();
 
         const produto = {
-            nome: nome,
-            categoria: categoria,
-            valorUnitario: valorUnitario,
-            linkCompra: linkCompra,
-            quantidadeTotal: quantidadeTotal,
-            quantidadeMinima: quantidadeMinima,
-            tempoDuracaoEmDias: tempoDuracaoEmDias
-        };
-
-        console.log(produto);
+            nome,
+            categoria: Number(categoria),
+            valor_unitario: valorUnitario,
+            link_compra: linkCompra,
+            quantidade_total: Number(quantidadeTotal),
+            quantidade_minima: Number(quantidadeMinima),
+            tempo_duracao_unidade: Number(tempoDuracaoEmDias)
+          };
+          criarMutation.mutate(produto)
     }
+
+    const queryClient =
+    useQueryClient();
+
+
+const {
+    data: categorias = []
+} = useQuery({
+
+    queryKey: ["categorias"],
+
+    queryFn: listarCategorias,
+
+    // Só busca quando o modal estiver aberto.
+    enabled: open
+});
+
+
+const criarMutation =
+    useMutation({
+        mutationFn: criarItem,
+        onSuccess: () => {
+
+            // Atualiza os Cards.
+            queryClient.invalidateQueries({
+                queryKey: ["itens"]
+            });
+
+            // Atualiza o dashboard.
+            queryClient.invalidateQueries({
+                queryKey: ["dashboard"]
+            });
+
+            // Limpa os campos.
+            setNome("");
+            setCategoria("");
+            setValorUnitario("");
+            setLinkCompra("");
+            setQuantidadeTotal("");
+            setQuantidadeMinima("");
+            setTempoDuracaoEmDias("");
+
+            // Fecha o modal.
+            handleClose();
+        },
+
+        onError: (error) => {
+            alert(error.message);
+        }
+    });
 
   return (
     <Modal
@@ -75,12 +125,13 @@ export default function ModalAddAside({ open, handleClose }) {
                       value={categoria}
                       onChange={(event) => setCategoria(event.target.value)}
                     >
-                      <MenuItem value="limpeza">
-                        Limpeza
+                      {categorias.map((categoria) =>(
+                      <MenuItem
+                        key={categoria.id}
+                        value={categoria.id}
+                      >
                       </MenuItem>
-                      <MenuItem value="higiene">
-                        Higiene
-                      </MenuItem>
+                      ))}
                     </Select>
                 </FormControl>
 

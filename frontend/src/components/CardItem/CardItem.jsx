@@ -15,11 +15,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 import './CardItemModule.css';
+import ImagemProduct from "../../assets/Nav/user.png";
 
 import * as React from 'react'
 import Modal from '@mui/material/Modal'
 
 import ModalEdit from '../ModalEdit/ModalEdit';
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { incrementarItem, decrementarItem } from "../../services/api";
 
 const style = {
   position: 'absolute',
@@ -33,12 +38,50 @@ const style = {
   p: 4,
 };
 
-export default function CardItem() {
-  const theme = useTheme();
+export default function CardItem({item}) {
 
 const [open, setOpen] = React.useState(false);
 const handleOpen = () => setOpen(true);
 const handleClose = () => setOpen(false);
+
+const queryClient = useQueryClient();
+
+
+const incrementarMutation = useMutation({
+    mutationFn: () =>
+        incrementarItem(item.id),
+
+    onSuccess: () => {
+        // Atualiza os cards.
+        queryClient.invalidateQueries({
+            queryKey: ["itens"]
+        });
+        // Atualiza gráficos, valores e baixo estoque.
+        queryClient.invalidateQueries({
+            queryKey: ["dashboard"]
+        });
+    }
+});
+
+const decrementarMutation = useMutation({
+
+    mutationFn: () =>
+        decrementarItem(item.id),
+    onSuccess: () => {
+      // Atualiza os cards.
+        queryClient.invalidateQueries({
+            queryKey: ["itens"]
+        });
+      // Atualiza gráficos, valores e baixo estoque.
+        queryClient.invalidateQueries({
+            queryKey: ["dashboard"]
+        });
+    },
+
+    onError: (error) => {
+        alert(error.message);
+    }
+});
 
   return (
     <>
@@ -55,8 +98,11 @@ const handleClose = () => setOpen(false);
                 <CardMedia
                   component="img"
                   sx={{ width: 151 }}
-                  image="https://www.drogaraia.com.br/_next/image?url=https%3A%2F%2Fproduct-data.raiadrogasil.io%2Fimages%2F9777082.webp&w=1080&q=75"
-                  alt="Imagem do seu produto em estoque"
+                  image={
+                    item.foto ||
+                    ImagemProduct
+                  }
+                  alt={item.nome}
                 />
               </div>
 
@@ -65,7 +111,7 @@ const handleClose = () => setOpen(false);
                     <div>
                       <CardContent className='container-texto' sx={{ flex: '1 0 auto' }}>
                         <Typography component="div" variant="h5">
-                          Pasta de Dente
+                          {item.nome}
                         </Typography>
                         <Typography
                         className='description'
@@ -73,9 +119,19 @@ const handleClose = () => setOpen(false);
                           component="div"
                           // sx={{ color: 'text.secondary' }}
                         >
-                          <p>Quantidade</p>
-                          <p>Tempode de Duração</p>
-                          <p>Link de comprar</p>
+                          <p>Quantidade: {" "} {item.quantidade_total}</p>
+                          <p>Duração: {" "} {item.tempo_duracao_unidade} {" "} dias</p>
+                          <p>Categoria: {" "} {item.categoria_nome}</p>
+                          {item.link_compra &&(
+                            <a
+                              href={item.link_compra}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                            >
+                              Comprar
+                            </a>
+                          )}
+                          
                         </Typography>
                       </CardContent>
                     </div>
@@ -91,13 +147,13 @@ const handleClose = () => setOpen(false);
                   </Box>
                 {/* Ícone de adicionar */}
                 <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                    <Fab color="secondary" aria-label="add" >
+                    <Fab color="secondary" aria-label="add" onClick={incrementarMutation.mutate()}>
                         <AddIcon />
                     </Fab>
                 </Box>
                 {/* Ícone de Subtrair */}
                 <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                    <Fab color="error" aria-label="subtract" >
+                    <Fab color="error" aria-label="subtract" onClick={decrementarMutation.mutate()}>
                         <RemoveIcon />
                     </Fab>
                 </Box>
@@ -109,6 +165,7 @@ const handleClose = () => setOpen(false);
       <ModalEdit 
         open={open} 
         handleClose={handleClose} 
+        item={item}
       />
     </>
   );

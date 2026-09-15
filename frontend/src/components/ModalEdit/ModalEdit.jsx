@@ -7,10 +7,10 @@ import Modal from '@mui/material/Modal';
 import './ModalEditModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
 import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
-export default function ModalEdit({ open, handleClose }) {
+export default function ModalEdit({ open, handleClose, item }) {
 
   const [nome, setNome] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -35,6 +35,34 @@ export default function ModalEdit({ open, handleClose }) {
 
         console.log(produto);
     }
+
+    useEffect(() => {
+        if (!item) {
+            return;
+        }
+        // Quando abrir o modal, preenche automaticamente os campos com os dados atuais do produto.
+        setNome(
+            item.nome ?? ""
+        );
+        setCategoria(
+            item.categoria ?? ""
+        );
+        setValorUnitario(
+            item.valor_unitario ?? ""
+        );
+        setLinkCompra(
+            item.link_compra ?? ""
+        );
+        setQuantidadeTotal(
+            item.quantidade_total ?? ""
+        );
+        setQuantidadeMinima(
+            item.quantidade_minima ?? ""
+        );
+        setTempoDuracaoEmDias(
+            item.tempo_duracao_unidade ?? ""
+        );
+}, [item, open]);
 
   return (
     <Modal
@@ -118,7 +146,7 @@ export default function ModalEdit({ open, handleClose }) {
                  <div className='container-button-edit-produto'>
                      <Button
                         className='button-delete-edit-produto'
-                        type='submit'
+                        type='button'
                         variant='contained'
                         color='secondary'
                     >

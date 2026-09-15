@@ -28,6 +28,14 @@ export default function ModalEditarCategoria({ open, handleClose }) {
         console.log(produto);
     }
 
+    const {
+    data: categorias = []
+} = useQuery({
+    queryKey: ["categorias"],
+    queryFn: listarCategorias,
+    enabled: open
+});
+
   return (
     <Modal
       open={open} 
@@ -54,11 +62,14 @@ export default function ModalEditarCategoria({ open, handleClose }) {
                       value={categoria}
                       onChange={(event) => setCategoria(event.target.value)}
                     >
-                      <MenuItem 
-                        value="limpeza"
-                        >
-                        Limpeza
-                      </MenuItem>
+                        {categorias.map((item) =>(
+                            <MenuItem 
+                              key={item.id}
+                              value={item.id}
+                              >
+                              {item.nome}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
