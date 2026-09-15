@@ -20,5 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls() if hasattr(admin.site, 'get_admin_urls')else admin.site.urls),
-    path('api/auth/', include('itens.urls'))
+    path('api/auth/', include('itens.urls')), # autenticação
+    path('api/', include('itens.api_urls')) # dados da aplicação
+
 ]

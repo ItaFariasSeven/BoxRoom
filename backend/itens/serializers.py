@@ -1,7 +1,55 @@
-from .models import Item
+from .models import Item, Categoria
 from rest_framework import serializers
 
+
+class CategoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categoria
+        fields = [
+            "id",
+            "nome",
+            "descricao",
+            "criado_em",
+            "atualizado_em",
+        ]
+        read_only_fields = [
+            "id",
+            "criado_em",
+            "atualizado_em",
+        ]
+
 class ItemSerializer(serializers.ModelSerializer):
+    categoria_nome = serializers.CharField(
+        source="categoria.nome",
+        read_only=True
+    )
     class Meta:
         model = Item
-        fields = '__all__'
+        fields = [
+            "id",
+            "nome",
+            "categoria",
+            "categoria_nome",
+            "valor_unitario",
+            "link_compra",
+            "quantidade_total",
+            "quantidade_minima",
+            "tempo_duracao_unidade",
+            "foto",
+            "criado_em",
+            "atualizado_em",
+        ]
+        read_only_fields = [
+            "id",
+            "categoria_nome",
+            "criado_em",
+            "atualizado_em",
+        ]
+
+        def validate_categoria(self, categoria):
+            request = self.context["request"]
+            if categoria.usuario_id != request.user.id:
+                raise serializers.ValidationError(
+                    "Categoria Inválida"
+                )
+            return categoria
