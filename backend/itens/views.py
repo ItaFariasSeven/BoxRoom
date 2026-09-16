@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
-from .models import Item, Categoria
+from .models import Item, Categoria, Perfil
 from .serializers import ItemSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
@@ -17,7 +17,9 @@ from django.db.models.deletion import ProtectedError
 from .serializers import ItemSerializer, CategoriaSerializer
 from django.db.models import (F,Sum,Value,Case,When,IntegerField,DecimalField,ExpressionWrapper,)
 from django.db.models.functions import Coalesce
-
+from rest_framework.views import APIView
+from decimal import Decimal
+from django.views.decorators.http import (require_http_methods)
 
 
 # Create your views here.
@@ -90,6 +92,100 @@ def me(request):
         "email": request.user.email,
         "username": request.user.username,
     })
+
+@require_http_methods([
+    "GET",
+    "PATCH",
+    "DELETE"
+])
+
+def perfil_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "erro":
+            "Usuário não autenticado"
+        },
+        status=401
+    )
+    if request.method == "GET":
+        perfil, criado = Perfil.objects.get_or_create(
+            usuario=request.user
+        )
+
+        foto_url = None
+
+        if perfil.foto:
+
+            foto_url = request.build_absolute_uri(
+                perfil.foto.url
+        )
+        return JsonResponse({
+            "id":
+            request.user.id,
+            "nome":
+            request.user.first_name,
+            "email":
+            request.user.email,
+            "foto":
+            foto_url,
+        })
+    try:
+        dados = json.loads(request.body or "{}")
+    except json.JSONDecodeError:
+        return JsonResponse({
+                "erro":
+                "JSON inválido"
+            },
+            status=400
+        )
+    if request.method == "PATCH":
+        nome = (dados.get("nome", "").strip())
+        if not nome:
+            return JsonResponse({
+                "erro":
+                "O nome é obrigatório"
+            },
+            status=400
+        )
+        request.user.first_name = nome
+        request.user.save(update_fields=["first_name"])
+
+        return JsonResponse({
+            "message":
+                "Perfil atualizado com sucesso",
+            "user":{
+                "id":
+                request.user.id,
+                "nome":
+                request.user.first_name,
+                "email":
+                request.user.email,
+            }
+        })
+
+    if request.method == "DELETE":
+        password = dados.get("password")
+        if not password:
+            return JsonResponse({
+                "erro":
+                "Digite sua senha para excluir conta"
+            },
+            status=400
+        )
+        if not request.user.check_password(password):
+            return JsonResponse({
+                "erro":
+                "Senha incorreta"
+            },
+            status=401
+        )
+        usuario = request.user
+        logout(request)
+        usuario.delete()
+        return JsonResponse({
+            "message":
+            "Conta excluída com sucesso"
+        })
 
 @require_POST
 def logout_view(request):
@@ -215,7 +311,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     def incrementar(self, request, pk=None):
         with transaction.atomic():
             item = get_object_or_404(
-                self.get_queryset().select_for_update(),
+                Item.objects.select_for_update().filter(
+                    usuario=request.user
+                ),
                 pk=pk
             )
             item.quantidade_total += 1
@@ -228,6 +326,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Response(
             self.get_serializer(item).data
         )
+    
     @action(
         detail=True,
         methods=["post"]
@@ -237,7 +336,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     def decrementar(self, request, pk=None):
         with transaction.atomic():
             item = get_object_or_404(
-                self.get_queryset().select_for_update(),
+                Item.objects.select_for_update().filter(
+                    usuario=request.user
+                ),
                 pk=pk
             )
             if item.quantidade_total == 0:
@@ -325,22 +426,32 @@ class DashboardView(APIView):
         )
 
         #Produtos com estoque baixo
-        baixo_estoque = list(
-            itens.filter(quantidade_total__lte=F("quantidade_minima"))
-            .annotate(duracao_restante=(
-                F("quantidade_total") *
-                F("tempo_duracao_unidade")
-            )).values(
-                "id",
-                "nome",
-                "quantidade_total",
-                "quantidade_minima",
-                "duracao_restante"
-            ).order_by(
-                "quantidade_total",
-                "nome"
-            )[:10]
+        baixo_estoque_query = itens.filter(
+            quantidade_total__lte=F("quantidade_minima")
         )
+        baixo_estoque_total = (
+            baixo_estoque_query.count()
+        )
+
+        baixo_estoque = list(
+        baixo_estoque_query.annotate(
+            duracao_restante=(
+                F("quantidade_total")
+                * F("tempo_duracao_unidade")
+            )
+        ).values(
+            "id",
+            "nome",
+            "quantidade_total",
+            "quantidade_minima",
+            "duracao_restante"
+        ).order_by(
+            "quantidade_total",
+            "nome"
+        )
+        [:10]
+    )
+
         return Response({
             # Quantidade de produtos cadastrados.
             "total_produtos": itens.count(),
@@ -358,4 +469,68 @@ class DashboardView(APIView):
             "categorias": categorias,
 
             "baixo_estoque": baixo_estoque,
+
+            "baixo_estoque_total": baixo_estoque_total
         })
+
+@require_POST
+def foto_perfil_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "erro":
+            "Usuário não autenticado"
+        },
+        status=401
+    )
+
+    foto = request.FILES.get("foto")
+    if not foto:
+        return JsonResponse({
+            "erro":
+            "Nenhuma imagem foi enviada"
+        },
+        status=400
+    )
+    tamanho_maximo = 5 * 1024 * 1024
+
+    if foto.size > tamanho_maximo:
+        return JsonResponse({
+            "erro":
+            "A imagem deve ter no máximo 5 MB"
+        },
+        status=400
+    )
+
+    tipos_permitidos = [
+         "image/jpeg",
+         "image/png",
+         "image/webp",
+    ]
+
+    if foto.content_type not in tipos_permitidos:
+        return JsonResponse({
+            "erro":
+            "Formato não permitido. Use JPG, PNG ou WEBP"
+        },
+        status=400
+    )
+
+    perfil, criado = Perfil.objects.get_or_create(usuario=request.user)
+    if perfil.foto:
+        perfil.foto.delete(save=False)
+
+    perfil.foto = foto
+    perfil.save(update_fields=[
+        "foto",
+        "atualizado_em"
+    ])
+
+    foto_url = request.build_absolute_uri(perfil.foto.url)
+    return JsonResponse({
+            "message":
+            "Foto atualizada com sucesso",
+
+            "foto":
+            foto_url
+        }
+    )

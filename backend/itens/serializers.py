@@ -23,6 +23,9 @@ class ItemSerializer(serializers.ModelSerializer):
         source="categoria.nome",
         read_only=True
     )
+
+    duracao_total = serializers.SerializerMethodField()
+
     class Meta:
         model = Item
         fields = [
@@ -35,6 +38,7 @@ class ItemSerializer(serializers.ModelSerializer):
             "quantidade_total",
             "quantidade_minima",
             "tempo_duracao_unidade",
+            "duracao_total",
             "foto",
             "criado_em",
             "atualizado_em",
@@ -42,14 +46,25 @@ class ItemSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "categoria_nome",
+            "duracao_total",
             "criado_em",
             "atualizado_em",
         ]
 
-        def validate_categoria(self, categoria):
-            request = self.context["request"]
-            if categoria.usuario_id != request.user.id:
-                raise serializers.ValidationError(
-                    "Categoria Inválida"
-                )
-            return categoria
+    def get_duracao_total(self, item):
+        return(
+            item.quantidade_total * item.tempo_duracao_unidade
+        )
+
+    def validate_categoria(self, categoria):
+        request = self.context.get("request")
+        if (
+            request is None 
+            or not request.user.is_authenticated
+            or categoria.usuario_id != request.user.id
+        ):
+            raise serializers.ValidationError(
+                "Categoria Inválida"
+            )
+        return categoria
+
