@@ -18,6 +18,9 @@ import './NavBarModule.css';
 import ModalAddAside from '../ModalAdd/ModalAddAside';
 import ModalOptions from '../Modaloptions/ModalOptions';
 
+import { useQuery } from "@tanstack/react-query";
+import { buscarPerfil } from "../../services/api";
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -67,6 +70,13 @@ export default function NavBar() {
   const handleOpenOptions = () => setOpenOptions(true);
   const handleCloseOptions = () => setOpenOptions(false);
 
+  const {
+    data: usuario
+  } = useQuery({
+      queryKey: ["perfil"],
+      queryFn: buscarPerfil
+  });
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -113,7 +123,10 @@ export default function NavBar() {
               </Box>
 
               <img className='user'
-                src={ImagemUser}
+                src={
+                  usuario?.foto ||
+                  ImagemUser
+                }
                 alt="Imagem de usuário"
                 onClick={handleOpenOptions}
               />
@@ -125,6 +138,7 @@ export default function NavBar() {
               <ModalOptions
                 open={openOptions}
                 handleClose={handleCloseOptions}
+                usuario={usuario}
               />
               
           </Toolbar>

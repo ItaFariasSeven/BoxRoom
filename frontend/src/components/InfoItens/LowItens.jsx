@@ -1,15 +1,13 @@
 import './LowItensModule.css';
-import  Chart  from 'chart.js/auto';
-import { useEffect, useRef } from 'react';
 
 export default function LowItens({dashboard}) {
   const itens = dashboard?.baixo_estoque || [];
 
-
+    
   return (
     <div className='container-low-itens'>
         <div className='cabecalho'>
-          <div className='number-low'>{itens.length}</div>
+          <div className='number-low'>{dashboard?.baixo_estoque_total ?? 0}</div>
           <div className='title-low'>Itens em baixo estoque</div>
         </div>
 

@@ -11,11 +11,17 @@ export default function PrivateRoute({ children }) {
     useEffect(() => {
 
         async function verificarUsuario() {
-
-            const usuarioLogado = await buscarUsuario();
-
-            setUsuario(usuarioLogado);
-            setCarregando(false);
+            try{
+                const usuarioLogado = await buscarUsuario();
+                setUsuario(usuarioLogado);
+            } catch (error){
+                console.error(
+                    "Erro ao verificar autenticação", error
+                );
+                setUsuario(null);
+            } finally{
+                setCarregando(false);
+            }
         }
 
         verificarUsuario();

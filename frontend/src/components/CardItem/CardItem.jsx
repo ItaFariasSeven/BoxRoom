@@ -60,11 +60,13 @@ const incrementarMutation = useMutation({
         queryClient.invalidateQueries({
             queryKey: ["dashboard"]
         });
+    },
+    onError: (error) => {
+        alert(error.message);
     }
 });
 
 const decrementarMutation = useMutation({
-
     mutationFn: () =>
         decrementarItem(item.id),
     onSuccess: () => {
@@ -120,7 +122,7 @@ const decrementarMutation = useMutation({
                           // sx={{ color: 'text.secondary' }}
                         >
                           <p>Quantidade: {" "} {item.quantidade_total}</p>
-                          <p>Duração: {" "} {item.tempo_duracao_unidade} {" "} dias</p>
+                          <p>Duração do estoque: {" "} {item.duracao_total} {" "} dias</p>
                           <p>Categoria: {" "} {item.categoria_nome}</p>
                           {item.link_compra &&(
                             <a
@@ -147,13 +149,23 @@ const decrementarMutation = useMutation({
                   </Box>
                 {/* Ícone de adicionar */}
                 <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                    <Fab color="secondary" aria-label="add" onClick={incrementarMutation.mutate()}>
+                    <Fab 
+                      color="secondary" 
+                      aria-label="add" 
+                      disabled={incrementarMutation.isPending}
+                      onClick={() =>
+                        incrementarMutation.mutate()}>
                         <AddIcon />
                     </Fab>
                 </Box>
                 {/* Ícone de Subtrair */}
                 <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                    <Fab color="error" aria-label="subtract" onClick={decrementarMutation.mutate()}>
+                    <Fab 
+                      color="error" 
+                      aria-label="subtract" 
+                      disabled={decrementarMutation.isPending}
+                      onClick={() =>
+                        decrementarMutation.mutate()}>
                         <RemoveIcon />
                     </Fab>
                 </Box>

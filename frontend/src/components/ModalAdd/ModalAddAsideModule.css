@@ -31,6 +31,11 @@
     height: 100%;
 }
 
+.input-cadastrar-product{
+    display: flex;
+    justify-content: center; 
+}
+
 .photo{
     width: 100%;
     object-fit: contain;

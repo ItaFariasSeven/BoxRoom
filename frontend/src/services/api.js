@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 function getCookie(name) {
     const cookies = document.cookie.split(";");
@@ -16,22 +16,34 @@ function getCookie(name) {
 }
 
 export async function prepararCsrf() {
-    await fetch(
+    
+    const response = await fetch(
         `${API_URL}/api/auth/csrf/`,
         {credentials: "include"}
     );
+    if(!response.ok) {
+        throw new Error("Não foi possível preparar a proteção CSRF");
+    }
 }
 
 export async function apiFetch(endpoint, options ={}) {
     const method =options.method?.toUpperCase() || "GET";
-    const alterarDados = ![
+    const alteraDados = ![
         "GET",
         "HEAD",
         "OPTIONS"
     ].includes(method);
 
-    if(alterarDados){
-        await prepararCsrf();
+    if(alteraDados){
+        let csrfToken = getCookie("csrftoken");
+        
+        if(!csrfToken){
+            await prepararCsrf();
+            csrfToken = getCookie("csrftoken");
+        }
+        if(!csrfToken){
+            throw new Error("Token CSRF não disponível");       
+        }
     }
 
     const headers = new Headers(options.headers || {});
@@ -44,13 +56,12 @@ export async function apiFetch(endpoint, options ={}) {
             );
         }
 
-    if(alterarDados){
-        const csrfToken = getCookie("csrftoken");
-        headers.set("X-CSRFToken", csrfToken);
+    if(alteraDados){
+        headers.set("X-CSRFToken", getCookie("csrftoken"));
     }
 
     const response = await fetch(
-        `${API_URL} ${endpoint}`,
+        `${API_URL}${endpoint}`,
         {
             ...options,
             method,
@@ -58,9 +69,12 @@ export async function apiFetch(endpoint, options ={}) {
             credentials: "include"
         }
     );
+    if(response.status === 204){
+        return null;
+    }
 
     const contentType = response.headers.get("content-type") || "";
-    let dados = null;
+    let dados;
 
     if(
         contentType.includes(
@@ -70,10 +84,10 @@ export async function apiFetch(endpoint, options ={}) {
         dados = await response.json()
     }else{
         const texto = await response.text();
+        console.error("Resposta não-JSON do servidor");
         dados = {
             erro: 
-                texto ||
-                "Resposta inválida do servidor."
+                `Erro ${response.status} no servidor.`
         };
     }
 
@@ -102,7 +116,10 @@ export function criarItem(item) {
         {
             method: "POST",
 
-            body: JSON.stringify(item)
+            body: 
+                item instanceof FormData
+                    ? item
+                    : JSON.stringify(item)
         }
     );
 }
@@ -115,7 +132,10 @@ export function atualizarItem( id, item ) {
         {
             method: "PATCH",
 
-            body: JSON.stringify(item)
+            body:
+                item instanceof FormData
+                    ? item 
+                    : JSON.stringify(item)
         }
     );
 }
@@ -162,7 +182,7 @@ export function listarCategorias() {
     );
 }
 
-export function buscarDashBoard() {
+export function buscarDashboard() {
     
     return apiFetch(
         "/api/dashboard/"
@@ -286,4 +306,57 @@ export async function realizarCadastro( nome, email, password, confirmPassword) 
     }
 
     return dados;
+}
+
+export function buscarPerfil() {
+
+    return apiFetch(
+        "/api/auth/perfil/"
+    );
+}
+
+export function atualizarPerfil(
+    dados
+) {
+
+    return apiFetch(
+        "/api/auth/perfil/",
+        {
+            method: "PATCH",
+
+            body: JSON.stringify(
+                dados
+            )
+        }
+    );
+}
+
+export function excluirConta(
+    password
+) {
+
+    return apiFetch(
+        "/api/auth/perfil/",
+        {
+            method: "DELETE",
+
+            body: JSON.stringify({
+                password
+            })
+        }
+    );
+}
+
+export function atualizarFotoPerfil(foto) {
+    const formData = new FormData();
+    formData.append("foto", foto);
+
+    return apiFetch(
+        "/api/auth/perfil/foto/",
+        {
+            method: "POST",
+    
+            body: formData
+        }
+    );
 }

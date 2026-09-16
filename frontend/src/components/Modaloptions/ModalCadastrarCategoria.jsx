@@ -8,6 +8,8 @@ import './ModalCadastrarCategoriaModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
 import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { criarCategoria } from "../../services/api";
 
 
 export default function ModalCadastrarCategoria({ open, handleClose }) {
@@ -18,13 +20,30 @@ export default function ModalCadastrarCategoria({ open, handleClose }) {
   function handleSubmit(event) {
         event.preventDefault();
 
-        const produto = {
-            nome: nome,
-            descricao: descricao,
+        const categoria = {
+            nome,
+            descricao,
         };
-
-        console.log(produto);
+        criarMutation.mutate(categoria);
     }
+
+    const queryClient = useQueryClient();
+    
+    const criarMutation = useMutation({
+            mutationFn: criarCategoria, 
+            onSuccess: () => {
+                queryClient.invalidateQueries({
+                    queryKey: ["categorias"]
+                });
+                setNome("");
+                setDescricao("");
+                handleClose();
+            },
+            onError: (error) => {
+                alert(error.message);
+            }
+        });
+    
 
   return (
     <Modal
@@ -42,7 +61,7 @@ export default function ModalCadastrarCategoria({ open, handleClose }) {
               onSubmit={handleSubmit}
             >
                 <TextField
-                  label='Nome do Produto'
+                  label='Nome da Categoria'
                   value={nome}
                   onChange={(event) => setNome(event.target.value)}
                   />

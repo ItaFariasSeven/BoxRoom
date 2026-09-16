@@ -8,6 +8,9 @@ import './ModalEditarCategoriaModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
 import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
 import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { listarCategorias, atualizarCategoria, excluirCategoria } from "../../services/api";
 
 
 export default function ModalEditarCategoria({ open, handleClose }) {
@@ -19,14 +22,58 @@ export default function ModalEditarCategoria({ open, handleClose }) {
   function handleSubmit(event) {
         event.preventDefault();
 
-        const produto = {
-            nome: nome,
-            categoria: categoria,
-            descricao: descricao,
+        const dados = {
+            nome,
+            descricao,
         };
 
-        console.log(produto);
+        atualizarMutation.mutate(dados);
     }
+
+    const queryClient = useQueryClient();
+
+    const atualizarMutation = useMutation({
+    mutationFn: (dados) =>
+        atualizarCategoria(
+            categoria,
+            dados
+        ),
+    onSuccess: () => {
+        queryClient.invalidateQueries({
+            queryKey: ["categorias"]
+        });
+        queryClient.invalidateQueries({
+            queryKey: ["itens"]
+        });
+        queryClient.invalidateQueries({
+            queryKey: ["dashboard"]
+        });
+        handleClose();
+    },
+    onError: (error) => {
+        alert(error.message);
+    }
+});
+
+const excluirMutation = useMutation({
+    mutationFn: () =>
+        excluirCategoria(categoria),
+    onSuccess: () => {
+        queryClient.invalidateQueries({
+            queryKey: ["categorias"]
+        });
+        queryClient.invalidateQueries({
+            queryKey: ["dashboard"]
+        });
+        setCategoria("");
+        setNome("");
+        setDescricao("");
+        handleClose();
+    },
+    onError: (error) => {
+        alert(error.message);
+    }
+});
 
     const {
     data: categorias = []
@@ -35,6 +82,18 @@ export default function ModalEditarCategoria({ open, handleClose }) {
     queryFn: listarCategorias,
     enabled: open
 });
+
+function handleSelecionarCategoria(event) {
+    const id = event.target.value;
+    setCategoria(id);
+
+    const categoriaSelecionada = categorias.find(item => item.id === id);
+
+    if(categoriaSelecionada){
+        setNome(categoriaSelecionada.nome);
+        setDescricao(categoriaSelecionada.descricao ?? "");
+    }
+}
 
   return (
     <Modal
@@ -60,7 +119,7 @@ export default function ModalEditarCategoria({ open, handleClose }) {
                       labelId='categoria-label'
                       label='Categoria'
                       value={categoria}
-                      onChange={(event) => setCategoria(event.target.value)}
+                      onChange={handleSelecionarCategoria}
                     >
                         {categorias.map((item) =>(
                             <MenuItem 
@@ -76,7 +135,7 @@ export default function ModalEditarCategoria({ open, handleClose }) {
                 {categoria && (
                     <>
                       <TextField
-                        label='Nome do Produto'
+                        label='Nome da Categoria'
                         value={nome}
                         onChange={(event) => setNome(event.target.value)}
                       />
@@ -93,9 +152,18 @@ export default function ModalEditarCategoria({ open, handleClose }) {
                         <div className='container-button-edit-categoria'>
                             <Button
                                 className='button-delete-edit-categoria'
-                                type='submit'
+                                type='button'
                                 variant='contained'
-                                color='secondary'
+                                color='error'
+                                disabled={excluirMutation.isPending}
+                                onClick={() => {
+                                    const confirmar = window.confirm(
+                                        "Deseja realmente excluir esta categoria?"
+                                    );
+                                    if(confirmar){
+                                        excluirMutation.mutate();
+                                    }
+                                }}
                             >
                               Excluir Categoria
                             </Button>

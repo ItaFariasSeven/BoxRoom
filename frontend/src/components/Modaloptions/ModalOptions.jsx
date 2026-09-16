@@ -15,7 +15,7 @@ import ModalEditarCategoria from './ModalEditarCategoria';
 import ModalInfoUsuario from './ModalInfoUsuario';
 
 
-export default function ModalOptions({ open, handleClose }) {
+export default function ModalOptions({ open, handleClose, usuario }) {
 
   const [openCadastrarCategoria, setOpenCadastrarCategoria] = React.useState(false);
   const [openEditarCategoria, setOpenEditarCategoria] = React.useState(false);
@@ -47,7 +47,7 @@ export default function ModalOptions({ open, handleClose }) {
       >
         <Box className='container-modal-options'>
               <Button
-                type='submit'
+                type='button'
                 variant='contained'
                 onClick={handleOpenCadastrarCategoria}
               >
@@ -55,7 +55,7 @@ export default function ModalOptions({ open, handleClose }) {
               </Button>
 
               <Button
-                type='submit'
+                type='button'
                 variant='contained'
                 onClick={handleOpenEditarCategoria}
               >
@@ -63,7 +63,10 @@ export default function ModalOptions({ open, handleClose }) {
               </Button>
 
               <img className='user-modal'
-                src={ImagemUser}
+                src={
+                  usuario?.foto ||
+                  ImagemUser
+                }
                 alt="Imagem de usuário"
                 onClick={handleOpenInfoUsuarios}
               />

@@ -29,6 +29,7 @@
     grid-template-columns: 2fr 3fr;
     width: 100%;
     height: 100%;
+    justify-content: center;
 }
 
 .photo{
@@ -38,13 +39,14 @@
     align-items: center;
 }
 
+
 .form-add{
     display: flex;
     flex-direction: column;
     width: 90%;
     text-align: center;
     padding-left: 10%;
-    gap: 5px;
+    gap: 10px;
 }
 
 .container-button-edit-produto{
