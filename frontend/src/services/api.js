@@ -1,21 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 let csrfToken = null;
 
-function getCookie(name) {
-    const cookies = document.cookie.split(";");
-
-    for(let cookie of cookies){
-        cookie = cookie.trim();
-
-        if (cookie.startsWith(name + "=")){
-            return decodeURIComponent(
-                cookie.substring(name.length + 1)
-            );
-        }
-    }
-    return null;
-}
-
 export async function prepararCsrf() {
     
     const response = await fetch(
@@ -38,17 +23,18 @@ export async function apiFetch(endpoint, options ={}) {
         "OPTIONS"
     ].includes(method);
 
-    if(alteraDados){
-        let csrfToken = getCookie("csrftoken");
-        
-        if(!csrfToken){
+    if (alteraDados) {
+
+        if (!csrfToken) {
             await prepararCsrf();
-            csrfToken = getCookie("csrftoken");
         }
-        if(!csrfToken){
-            throw new Error("Token CSRF não disponível");       
-        }
+
+        if (!csrfToken) {
+            throw new Error(
+                "Token CSRF não disponível"
+        );
     }
+}
 
     const headers = new Headers(options.headers || {});
 
@@ -61,7 +47,7 @@ export async function apiFetch(endpoint, options ={}) {
         }
 
     if(alteraDados){
-        headers.set("X-CSRFToken", getCookie("csrftoken"));
+        headers.set("X-CSRFToken", csrfToken);
     }
 
     const response = await fetch(
@@ -73,9 +59,6 @@ export async function apiFetch(endpoint, options ={}) {
             credentials: "include"
         }
     );
-    if(response.status === 204){
-        return null;
-    }
 
     const contentType = response.headers.get("content-type") || "";
     let dados;
@@ -242,27 +225,16 @@ export function excluirCategoria(id) {
 }
 
 export async function realizarLogin(email, password) {
-    await prepararCsrf();
-    const csrftoken = getCookie("csrftoken");
-
-    const response = await fetch(
-        `${API_URL}/api/auth/login/`,
+     
+    const dados = await apiFetch(
+        `/api/auth/login/`,
         {
             method: "POST",
-            credentials: "include",
-            headers:{
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken,
-            },
             body: JSON.stringify({email, password})
         }
     );
-    const dados = await response.json();
-    if(!response.ok){
-        throw new Error(
-            dados.erro || "Erro ao realizar login"
-        );
-    }
+    csrfToken = null;
+    await prepararCsrf();
     return dados;
 }
 
@@ -280,21 +252,11 @@ export async function buscarUsuario() {
 
 export async function realizarCadastro( nome, email, password, confirmPassword) {
 
-    await prepararCsrf();
-
-    const csrftoken = getCookie("csrftoken");
-
-    const response = await fetch(
-        `${API_URL}/api/auth/cadastro/`,
+    
+    const dados = await fetch(
+        `/api/auth/cadastro/`,
         {
             method: "POST",
-
-            credentials: "include",
-
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken,
-            },
 
             body: JSON.stringify({
                 nome,
@@ -304,14 +266,8 @@ export async function realizarCadastro( nome, email, password, confirmPassword) 
             })
         }
     );
-
-    const dados = await response.json();
-
-    if (!response.ok) {
-        throw new Error(
-            dados.erro || "Erro ao realizar cadastro"
-        );
-    }
+    csrfToken = null
+    await prepararCsrf();
 
     return dados;
 }
@@ -369,12 +325,14 @@ export function atualizarFotoPerfil(foto) {
     );
 }
 
-export function realizarLogout() {
+export async function realizarLogout() {
 
-    return apiFetch(
+    const dados = await apiFetch(
         "/api/auth/logout/",
         {
             method: "POST"
         }
     );
+    csrfToken = null;
+    return dados;
 }
