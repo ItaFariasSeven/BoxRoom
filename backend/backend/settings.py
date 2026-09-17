@@ -66,12 +66,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     "cloudinary_storage",
     "cloudinary",
-    'django.contrib.staticfiles',
-    'itens',
     'rest_framework',
     'corsheaders',
+    'itens',
 ]
 
 MIDDLEWARE = [
@@ -234,16 +234,10 @@ CLOUDINARY_STORAGE = {
 }
 
 STORAGES = {
-
-    # Arquivos enviados pelos usuários:
-    # fotos de produtos e fotos de perfil.
     "default": {
         "BACKEND":
             "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
-
-    # Arquivos estáticos do Django continuam
-    # sendo tratados normalmente.
     "staticfiles": {
         "BACKEND":
             "whitenoise.storage.CompressedManifestStaticFilesStorage",
