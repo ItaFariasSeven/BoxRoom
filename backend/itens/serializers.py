@@ -24,7 +24,7 @@ class ItemSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
-    duracao_total = serializers.SerializerMethodField()
+    duracao_restante = serializers.SerializerMethodField()
 
     class Meta:
         model = Item
@@ -38,7 +38,7 @@ class ItemSerializer(serializers.ModelSerializer):
             "quantidade_total",
             "quantidade_minima",
             "tempo_duracao_unidade",
-            "duracao_total",
+            "duracao_restante",
             "foto",
             "criado_em",
             "atualizado_em",
@@ -46,15 +46,13 @@ class ItemSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "categoria_nome",
-            "duracao_total",
+            "duracao_restante",
             "criado_em",
             "atualizado_em",
         ]
 
-    def get_duracao_total(self, item):
-        return(
-            item.quantidade_total * item.tempo_duracao_unidade
-        )
+    def get_duracao_restante(self, item):
+        return item.duracao_restante
 
     def validate_categoria(self, categoria):
         request = self.context.get("request")

@@ -2,6 +2,9 @@ from django.db import models
 from decimal import Decimal
 from django.conf import settings
 from django.core.validators import MinValueValidator
+from django.utils import timezone
+from datetime import timedelta
+import math
 
 # Create your models here.
 
@@ -39,9 +42,21 @@ class Item(models.Model):
     tempo_duracao_unidade = models.PositiveIntegerField(default=0)
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
+    previsao_fim_estoque = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ["nome"]
+
+    @property
+    def duracao_restante(self):
+        if not self.previsao_fim_estoque:
+            return 0
+        segundos_restantes = (
+            self.previsao_fim_estoque - timezone.now()
+        ).total_seconds()
+        if segundos_restantes <= 0:
+            return 0
+        return math.ceil(segundos_restantes/86400)
 
     def __str__(self):
         return f"{self.nome}, {self.quantidade_total} unidade"

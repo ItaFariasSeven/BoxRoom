@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,12 +27,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--gm51ly(_!bfmx^6*2%=*w$4d#%m!oqc0#+($$av5q5_h+r0dd'
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    'django-insecure--gm51ly(_!bfmx^6*2%=*w$4d#%m!oqc0#+($$av5q5_h+r0dd'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (
+    os.getenv(
+        "DEBUG",
+        "True"
+    ).lower()
+    == "true"
+)
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+]
+
+render_hostname = os.getenv(
+    "RENDER_EXTERNAL_HOSTNAME"
+)
+
+if render_hostname:
+
+    ALLOWED_HOSTS.append(
+        render_hostname
+    )
 
 
 # Application definition
@@ -50,6 +74,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -95,7 +120,34 @@ DATABASES = {
         }
     }
 }
+DATABASE_URL = os.getenv(
+    "DATABASE_URL"
+)
 
+if DATABASE_URL:
+    DATABASES = {
+        "default":
+            dj_database_url.parse(
+                DATABASE_URL,
+                conn_max_age=600,
+                ssl_require=True
+            )
+    }
+else:
+    DATABASES = {
+        "default": {
+            'ENGINE': 
+                'django.db.backends.postgresql',
+                'NAME': os.getenv('DB_NAME','postgres'),
+                'USER': os.getenv('DB_USERNAME'),
+                'PASSWORD': os.getenv('DB_PASSWORD'),
+                'HOST': os.getenv('DB_HOST'),
+                'PORT': os.getenv('DB_PORT','5432'),
+                'OPTIONS': {
+                    'sslmode': 'require',
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -131,18 +183,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = (BASE_DIR / "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+FRONTEND_URL = os.getenv(
+    "FRONTEND_URL",
+    "http://localhost:5173"
+)
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    FRONTEND_URL
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
+    FRONTEND_URL
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SECURE = not DEBUG
+
+CSRF_COOKIE_SECURE = not DEBUG
+
+if DEBUG:
+    SESSION_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SAMESITE = "Lax"
+else:
+    SESSION_COOKIE_SAMESITE = "None"
+    CSRF_COOKIE_SAMESITE = "None"

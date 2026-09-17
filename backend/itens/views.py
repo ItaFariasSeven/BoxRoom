@@ -20,13 +20,15 @@ from django.db.models.functions import Coalesce
 from rest_framework.views import APIView
 from decimal import Decimal
 from django.views.decorators.http import (require_http_methods)
-
+from django.utils import timezone
+from datetime import timedelta
+from django.middleware.csrf import get_token
 
 # Create your views here.
 @ensure_csrf_cookie
 def csrf(request):
     return JsonResponse({
-        "message": "CSRF configurado"
+        "csrfToken": get_token(request)
     })
 
 @require_POST
@@ -298,8 +300,21 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     #Define o usuário autenticado como proprietário
     def perform_create(self, serializer):
-        serializer.save(
+        item = serializer.save(
             usuario=self.request.user
+        )
+        dias_totais = (
+            item.quantidade_total * item.tempo_duracao_unidade
+        )
+        item.previsao_fim_estoque = (
+            timezone.now() + timedelta(
+                days=dias_totais
+            )
+        )
+        item.save(
+            update_fields=[
+                "previsao_fim_estoque"
+            ]
         )
 
     @action(
@@ -317,9 +332,24 @@ class ItemViewSet(viewsets.ModelViewSet):
                 pk=pk
             )
             item.quantidade_total += 1
+            agora = timezone.now()
+            if(
+                item.previsao_fim_estoque and 
+                item.previsao_fim_estoque > agora
+            ):
+                item.previsao_fim_estoque += (
+                    timedelta(days=item.tempo_duracao_unidade)
+                )
+            else:
+                item.previsao_fim_estoque = (
+                    agora + timedelta(
+                        days=item.tempo_duracao_unidade
+                    )
+                )
             item.save(
                 update_fields=[
                     "quantidade_total",
+                    "previsao_fim_estoque",
                     "atualizado_em"
                 ]
             )
@@ -349,13 +379,44 @@ class ItemViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
             item.quantidade_total -= 1
+            if item.quantidade_total == 0:
+
+                item.previsao_fim_estoque = (timezone.now())
+
             item.save(update_fields=[
                 "quantidade_total",
+                "previsao_fim_estoque",
                 "atualizado_em"
             ])
         return Response(
             self.get_serializer(item).data
         )
+
+    def perform_update(self, serializer):
+        item_antigo = self.get_object()
+        quantidade_antiga = (item_antigo.quantidade_total)
+        duracao_antiga = (item_antigo.tempo_duracao_unidade)
+
+        item = serializer.save()
+
+        if(
+            quantidade_antiga
+            != item.quantidade_total
+            or
+            duracao_antiga
+            != item.tempo_duracao_unidade
+        ):
+            dias = (
+                item.quantidade_total* item.tempo_duracao_unidade
+            )
+            item.previsao_fim_estoque = (
+                timezone.now() + timedelta(days=dias)
+            )
+            item.save(
+                update_fields=[
+                    "previsao_fim_estoque"
+                ]
+            )
 
 class DashboardView(APIView):
     #Só usuário autenticado pode consultar o dashboard
@@ -425,32 +486,31 @@ class DashboardView(APIView):
             ).order_by("categoria__nome")
         )
 
-        #Produtos com estoque baixo
-        baixo_estoque_query = itens.filter(
-            quantidade_total__lte=F("quantidade_minima")
+        baixo_estoque_queryset = itens.filter(
+            quantidade_total__lte=F(
+                "quantidade_minima",
+            )
         )
         baixo_estoque_total = (
-            baixo_estoque_query.count()
+            baixo_estoque_queryset.count()
+        )
+        baixo_estoque_queryset = (
+            baixo_estoque_queryset.order_by(
+                "quantidade_total",
+                "nome"
+            )[:10]
         )
 
-        baixo_estoque = list(
-        baixo_estoque_query.annotate(
-            duracao_restante=(
-                F("quantidade_total")
-                * F("tempo_duracao_unidade")
-            )
-        ).values(
-            "id",
-            "nome",
-            "quantidade_total",
-            "quantidade_minima",
-            "duracao_restante"
-        ).order_by(
-            "quantidade_total",
-            "nome"
-        )
-        [:10]
-    )
+        baixo_estoque = [
+            {
+                "id": item.id,
+                "nome": item.nome,
+                "quantidade_total": item.quantidade_total,
+                "quantidade_minima": item.quantidade_minima,
+                "duracao_restante": item.duracao_restante,
+            }
+            for item in baixo_estoque_queryset
+        ]
 
         return Response({
             # Quantidade de produtos cadastrados.
