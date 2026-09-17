@@ -8,9 +8,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { listarItens, buscarDashboard } from "../../services/api";
 
-export default function Home() {
+import { useSearchParams } from "react-router-dom";
 
-    // Buscar produtos
+export default function Home() {
+    const [searchParams] = useSearchParams();
+
+    // Buscar produtos para carregar na tela
     const {
         data: itens = [],
         isLoading: carregandoItens,
@@ -43,6 +46,36 @@ export default function Home() {
             <p>Não foi possível carregar o estoque.</p>
         );
     }
+    
+    // Pega o que a NavBar colocou na URL.
+    const termoBusca = (
+        searchParams.get("busca") ?? ""
+    )
+        .trim()
+        .toLowerCase();
+    // Cria outra lista. Não altera a lista original do React Query.
+    const itensFiltrados = itens.filter(
+        (item) => {
+    
+            // Pesquisar pelo nome.
+            const nome =
+                item.nome
+                    ?.toLowerCase()
+                    ?? "";
+    
+            // Pesquisar pela categoria.
+            const categoria =
+                item.categoria_nome
+                    ?.toLowerCase()
+                    ?? "";
+    
+            return (
+                nome.includes(termoBusca)
+                ||
+                categoria.includes(termoBusca)
+            );
+        }
+    );
 
     return (
         <main>
@@ -52,7 +85,7 @@ export default function Home() {
                 <ValueStock dashboard={dashboard}/>
             </div>
             <div className="cards-itens">
-                {itens.map((item) =>(
+                {itensFiltrados.map((item) =>(
                 <div key={item.id}>
                     <CardItem
                         item={item}

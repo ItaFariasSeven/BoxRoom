@@ -122,7 +122,7 @@ const decrementarMutation = useMutation({
                           // sx={{ color: 'text.secondary' }}
                         >
                           <p>Quantidade: {" "} {item.quantidade_total}</p>
-                          <p>Duração do estoque: {" "} {item.duracao_total} {" "} dias</p>
+                          <p>Duração do estoque: {" "} {item.duracao_restante} {" "} dias</p>
                           <p>Categoria: {" "} {item.categoria_nome}</p>
                           {item.link_compra &&(
                             <a

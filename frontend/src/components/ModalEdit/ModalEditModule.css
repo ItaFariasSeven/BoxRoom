@@ -1,17 +1,20 @@
 .container-modal{
     display: flex;
     flex-direction: column;
-    width: 80%;
-    height: 80%;
-    transform: translate(-50%, -50%);
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(
+        1200px,
+        92vw
+    );
+    max-height: 90vh;
     background-color: #fff;
     border: 2px solid #000;
     border-radius: 5px;;
     box-shadow: 2px 5px 5px black;
     padding: 2px;
-    top: 50%;
-    left: 50%;
     box-sizing: border-box;
 }
 
@@ -24,36 +27,42 @@
     text-align: center;
 }
 
-.container-info-product{
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
+.container-info-product {
+   display: grid;
+   grid-template-columns:
+       minmax(260px, 2fr)
+       minmax(0, 3fr);
+       
+   gap: 40px;
+   width: 100%;
+   align-items: center;
 }
 
 .photo{
+    display: block;
     width: 100%;
+    max-width: 480px;
+    max-height: 500px;
+    margin: auto;
     object-fit: contain;
-    justify-content: center;
-    align-items: center;
 }
 
 
 .form-add{
     display: flex;
     flex-direction: column;
-    width: 90%;
-    text-align: center;
-    padding-left: 10%;
+    width: 100%;
+    padding: 0;
     gap: 10px;
+    box-sizing: border-box;
 }
 
 .container-button-edit-produto{
     display: flex;
-    margin: 0;
-    width: 100%;
     justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .button-salve-edit-produto{

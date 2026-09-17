@@ -21,6 +21,8 @@ import ModalOptions from '../Modaloptions/ModalOptions';
 import { useQuery } from "@tanstack/react-query";
 import { buscarPerfil } from "../../services/api";
 
+import { useSearchParams } from "react-router-dom";
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -77,6 +79,41 @@ export default function NavBar() {
       queryFn: buscarPerfil
   });
 
+
+const [searchParams, setSearchParams] = useSearchParams();
+// Pega o valor atual da busca pela URL. Se não existir, usa uma string vazia.
+const busca = searchParams.get("busca") ?? "";
+
+function handleBusca(event) {
+    const valor = event.target.value;
+
+    // Cria uma cópia dos parâmetros atuais.
+    const novosParametros = new URLSearchParams(searchParams);
+
+    // Se houver alguma coisa digitada, adiciona na URL.
+    if (valor.trim()) {
+        novosParametros.set(
+            "busca",
+            valor
+        );
+
+    } else {
+
+        // Se apagar a busca inteira, remove a busca da URL.
+        novosParametros.delete(
+            "busca"
+        );
+    }
+
+    // replace evita criar dezenas de entradas no histórico enquanto o usuário digita.
+    setSearchParams(
+        novosParametros,
+        {
+            replace: true
+        }
+    );
+}
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -95,7 +132,10 @@ export default function NavBar() {
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
-                placeholder="Search…"
+                type='text'
+                placeholder="Pesquisar…"
+                value={busca}
+                onChange={handleBusca}
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>

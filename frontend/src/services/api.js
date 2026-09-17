@@ -1,4 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+let csrfToken = null;
 
 function getCookie(name) {
     const cookies = document.cookie.split(";");
@@ -24,6 +25,9 @@ export async function prepararCsrf() {
     if(!response.ok) {
         throw new Error("Não foi possível preparar a proteção CSRF");
     }
+    const dados = await response.json();
+    csrfToken = dados.csrfToken;
+    return csrfToken;
 }
 
 export async function apiFetch(endpoint, options ={}) {
@@ -357,6 +361,16 @@ export function atualizarFotoPerfil(foto) {
             method: "POST",
     
             body: formData
+        }
+    );
+}
+
+export function realizarLogout() {
+
+    return apiFetch(
+        "/api/auth/logout/",
+        {
+            method: "POST"
         }
     );
 }

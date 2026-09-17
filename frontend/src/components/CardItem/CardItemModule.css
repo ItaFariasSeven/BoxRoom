@@ -1,19 +1,59 @@
 .container-texto{
-    padding-top: 2.5rem;
+    padding: 5px;
 }
 
-.container-card{
-    width: 98%;
+.container-card {
+    width: 100%;
     background-color: #B5B5B5;
     padding: 10px;
-    margin: 7px;
+    box-sizing: border-box;
 }
 
-.container-card-int{
+.container-card-int {
     display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
+    /*
+      imagem -> informações -> botões
+    */
+    grid-template-columns:
+        160px
+        minmax(0, 1fr)
+        auto;
+
+    gap: 25px;
+    align-items: center;
+    width: 100%;
 }
 
-.description{
-    
+.description{ 
+    overflow-wrap: anywhere;
+}
+
+/* 
+    Faz imagem não estourar o Card 
+*/
+
+.container-card .MuiCardMedia-root {
+    width: 100% !important;
+    max-width: 160px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+@media (max-width: 650px) {
+
+    .container-card-int {
+        grid-template-columns: 1fr;
+    }
+
+    .container-card .MuiCardMedia-root {
+        max-width: 220px;
+
+        margin: auto;
+    }
+
+    .buttom-edit {
+        display: flex;
+
+        justify-content: center;
+    }
 }

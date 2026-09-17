@@ -1,7 +1,7 @@
 .container-login{
-    display: grid;
-    grid-template-rows: 1fr 1fr 2fr;
+    min-height: 100vh;
     background-color: #000080;
+    box-sizing: border-box;
 }
 
 .container-logo-login{
@@ -10,7 +10,12 @@
 }
 
 .logo-login{
-    width: 40%;
+    width: min(
+        450px,
+        70vw
+    );
+
+    height: auto;
 }
 
 .codigo-error{
@@ -33,7 +38,10 @@
 }
 
 .input-form-login{
-    width: 60%;
+    width: min(
+        650px,
+        85vw
+    );
 }
 
 .button-login{

@@ -1,7 +1,7 @@
 .container-cadastro{
-    display: grid;
-    grid-template-rows: 1fr 2fr 1fr;
+    min-height: 100vh;
     background-color: #000080;
+    box-sizing: border-box;
 }
 
 .container-logo-cadastro{
@@ -10,7 +10,12 @@
 }
 
 .logo-cadastro{
-    width: 40%;
+    width: min(
+        450px,
+        70vw
+    );
+
+    height: auto;
 }
 
 .form-cadastro{
@@ -23,13 +28,20 @@
 }
 
 .input-form-cadastro{
-    width: 60%;
+    width: min(
+        650px,
+        85vw
+    );
 }
 
 .button-cadastro{
-    width: 15%;
-    border-radius: 15px !important;
-    color: #000080 !important;
+    width: min(
+        250px,
+        70vw
+    );
+    border-radius:
+        15px !important;
+    color:#000080 !important;
     background-color: #fff !important;
 }
 

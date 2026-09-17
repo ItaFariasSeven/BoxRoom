@@ -10,6 +10,10 @@ import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/mater
 import { useState } from 'react';
 import ImagemUser from '../../assets/Nav/user.png'
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { realizarLogout } from "../../services/api";
+
 import ModalCadastrarCategoria from './ModalCadastrarCategoria';
 import ModalEditarCategoria from './ModalEditarCategoria';
 import ModalInfoUsuario from './ModalInfoUsuario';
@@ -39,6 +43,32 @@ export default function ModalOptions({ open, handleClose, usuario }) {
     };
     const handleCloseInfoUsuarios = () => setOpenInfoUsuarios(false);
 
+    
+const navigate = useNavigate();
+const queryClient = useQueryClient();
+
+const logoutMutation =
+    useMutation({
+        // Faz POST no Django.
+        mutationFn: realizarLogout,
+        onSuccess: () => {
+            // apagamos do cache itens, dashboard, perfil, categorias etc.
+            queryClient.clear();
+            // Volta para login.
+            navigate(
+                "/login",
+                {
+                    replace: true
+                }
+            );
+        },
+        onError: (error) => {
+            alert(
+                error.message
+            );
+        }
+    });
+
   return (
     <>
     <Modal
@@ -60,6 +90,20 @@ export default function ModalOptions({ open, handleClose, usuario }) {
                 onClick={handleOpenEditarCategoria}
               >
                 Editar Categoria
+              </Button>
+
+              <Button
+                type='button'
+                variant='contained'
+                color='error'
+                disabled={logoutMutation.isPending}
+                onClick={() => logoutMutation.mutate()}
+              >
+                {
+                  logoutMutation.isPending
+                  ? "Saindo"
+                  : "Sair da conta"
+                }
               </Button>
 
               <img className='user-modal'

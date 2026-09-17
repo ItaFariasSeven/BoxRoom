@@ -3,6 +3,25 @@
 }
 
 .user{
-    width: 10dvh;
+    width: clamp(
+        45px,
+        5vw,
+        65px
+    );
+
+    height: clamp(
+        45px,
+        5vw,
+        65px
+    );
+
+    min-width: 45px;
+    object-fit: cover;
+    border-radius: 50%;
     cursor: pointer;
+}
+
+.user:hover{
+    transform: scale(1.05);
+    transition: all ease 1s;
 }

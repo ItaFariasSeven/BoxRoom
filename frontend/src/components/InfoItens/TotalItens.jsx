@@ -39,7 +39,10 @@ export default function TotalItens({dashboard}) {
   return (
     <div className='container-total-itens'>
         <div className='text-total-itens'>
-            <h2>Total de Ítens: {" "} {dashboard?.total_unidades ?? 0}</h2>
+            <h2>Total de Ítens:</h2>
+            <h2>
+              {dashboard?.total_unidades ?? 0}
+            </h2>
         </div>
 
         <div className='grafic-category'>
