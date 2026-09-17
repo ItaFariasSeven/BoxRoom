@@ -80,6 +80,10 @@ export async function apiFetch(endpoint, options ={}) {
     const contentType = response.headers.get("content-type") || "";
     let dados;
 
+    if(response.status === 204){
+        return null
+    }
+
     if(
         contentType.includes(
             "application/json"
@@ -88,7 +92,7 @@ export async function apiFetch(endpoint, options ={}) {
         dados = await response.json()
     }else{
         const texto = await response.text();
-        console.error("Resposta não-JSON do servidor");
+        console.error("Resposta não-JSON do servidor", texto);
         dados = {
             erro: 
                 `Erro ${response.status} no servidor.`
@@ -98,7 +102,7 @@ export async function apiFetch(endpoint, options ={}) {
     if(!response.ok){
         throw new Error(
             dados?.erro ||
-            "Erro na comunicação com o servidor."
+            `Erro ${response.status} no servidor`
         );
     }
     return dados;
