@@ -66,10 +66,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    "cloudinary_storage",
+    "cloudinary",
     'django.contrib.staticfiles',
     'itens',
     'rest_framework',
-    'corsheaders'   
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -214,3 +216,36 @@ if DEBUG:
 else:
     SESSION_COOKIE_SAMESITE = "None"
     CSRF_COOKIE_SAMESITE = "None"
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv(
+        "CLOUDINARY_CLOUD_NAME"
+    ),
+
+    "API_KEY": os.getenv(
+        "CLOUDINARY_API_KEY"
+    ),
+
+    "API_SECRET": os.getenv(
+        "CLOUDINARY_API_SECRET"
+    ),
+
+    "SECURE": True,
+}
+
+STORAGES = {
+
+    # Arquivos enviados pelos usuários:
+    # fotos de produtos e fotos de perfil.
+    "default": {
+        "BACKEND":
+            "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+
+    # Arquivos estáticos do Django continuam
+    # sendo tratados normalmente.
+    "staticfiles": {
+        "BACKEND":
+            "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
