@@ -19,7 +19,8 @@
 }
 
 .codigo-error{
-    position: fixed;
+    position: sticky;
+    top:0;
     width: 100%;
     justify-content: center;
     background-color: #FF2C2C !important;
