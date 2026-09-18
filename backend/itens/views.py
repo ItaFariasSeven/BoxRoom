@@ -182,12 +182,39 @@ def perfil_view(request):
             status=401
         )
         usuario = request.user
-        logout(request)
-        usuario.delete()
-        return JsonResponse({
-            "message":
-            "Conta excluída com sucesso"
-        })
+        try:
+            with transaction.atomic():
+                Item.objects.filter(usuario=usuario).delete()
+                Categoria.objects.filter(usuario=usuario).delete()
+                usuario.delete()
+            logout(request)
+            return JsonResponse({
+                "message":
+                "Conta excluída com sucesso"
+            })
+
+        except ProtectedError:
+            return JsonResponse(
+                {
+                    "erro":
+                        "Não foi possível excluir a conta porque existem dados protegidos vinculados a ela."
+                },
+                status=409
+            )
+    
+        except Exception as erro:
+            print(
+                "Erro ao excluir conta:",
+                erro
+            )
+
+            return JsonResponse(
+                {
+                    "erro":
+                        "Não foi possível excluir a conta."
+                },
+                status=500
+            )
 
 @require_POST
 def logout_view(request):
