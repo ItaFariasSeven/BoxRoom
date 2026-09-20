@@ -42,28 +42,21 @@ export default function Cadastro() {
             event.preventDefault();
     
             try {
+                const resposta = await realizarCadastro(
+                    nome,
+                    email,
+                    password,
+                    confirmPassword
+                );
 
-        setErro("");
-
-        const resposta = await realizarCadastro(
-            nome,
-            email,
-            password,
-            confirmPassword
-        );
-
-        console.log("Cadastro realizado:", resposta);
-
-        navigate("/");
-
-    } catch (error) {
-
-        console.error(error);
-
-        setErro(error.message);
-    }
+                console.log("Cadastro realizado:", resposta);
+                
+                navigate("/");
+            } catch (error) {
+                console.error(error);
+                setErro(error.message);
+            }
         }
-
 
     return(
         
