@@ -253,7 +253,7 @@ export async function buscarUsuario() {
 export async function realizarCadastro( nome, email, password, confirmPassword) {
 
     
-    const dados = await fetch(
+    const dados = await apiFetch(
         `/api/auth/cadastro/`,
         {
             method: "POST",
