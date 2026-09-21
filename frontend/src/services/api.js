@@ -344,6 +344,9 @@ export function atualizarFotoPerfil(foto) {
 
 export async function realizarLogout() {
 
+    csrfToken = null;
+    await prepararCsrf();
+    
     const dados = await apiFetch(
         "/api/auth/logout/",
         {
