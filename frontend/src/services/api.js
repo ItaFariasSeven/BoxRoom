@@ -1,6 +1,18 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 let csrfToken = null;
 
+// Teste
+console.log(
+    "VITE_API_URL recebida:",
+    import.meta.env.VITE_API_URL
+);
+
+console.log(
+    "API_URL final:",
+    API_URL
+);
+// Teste
+
 export async function prepararCsrf() {
     
     const response = await fetch(
@@ -35,7 +47,6 @@ export async function apiFetch(endpoint, options ={}) {
         );
     }
 }
-
     const headers = new Headers(options.headers || {});
 
     if(options.body && !(options.body instanceof FormData))
@@ -252,6 +263,12 @@ export async function buscarUsuario() {
 
 export async function realizarCadastro( nome, email, password, confirmPassword) {
 
+    // Teste
+    console.log(
+        "CADASTRO VAI PARA:",
+        `${API_URL}/api/auth/cadastro/`
+    );
+    // Teste
     
     const dados = await apiFetch(
         `/api/auth/cadastro/`,
