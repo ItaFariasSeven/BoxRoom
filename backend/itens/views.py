@@ -359,20 +359,21 @@ class ItemViewSet(viewsets.ModelViewSet):
                 pk=pk
             )
             item.quantidade_total += 1
-            agora = timezone.now()
-            if(
-                item.previsao_fim_estoque and 
-                item.previsao_fim_estoque > agora
-            ):
-                item.previsao_fim_estoque += (
-                    timedelta(days=item.tempo_duracao_unidade)
-                )
-            else:
-                item.previsao_fim_estoque = (
-                    agora + timedelta(
-                        days=item.tempo_duracao_unidade
-                    )
-                )
+            recalcular_duracao(item)
+            # agora = timezone.now()
+            # if(
+            #     item.previsao_fim_estoque and 
+            #     item.previsao_fim_estoque > agora
+            # ):
+            #     item.previsao_fim_estoque += (
+            #         timedelta(days=item.tempo_duracao_unidade)
+            #     )
+            # else:
+            #     item.previsao_fim_estoque = (
+            #         agora + timedelta(
+            #             days=item.tempo_duracao_unidade
+            #         )
+            #     )
             item.save(
                 update_fields=[
                     "quantidade_total",
@@ -398,7 +399,7 @@ class ItemViewSet(viewsets.ModelViewSet):
                 ),
                 pk=pk
             )
-            if item.quantidade_total == 0:
+            if item.quantidade_total <= 0:
                 return Response({
                     "erro":
                     "A quantidade de produtos já está zerada, não é permitido diminuir mais"
@@ -406,9 +407,10 @@ class ItemViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
             item.quantidade_total -= 1
-            if item.quantidade_total == 0:
+            recalcular_duracao(item)
+            # if item.quantidade_total == 0:
 
-                item.previsao_fim_estoque = (timezone.now())
+            #     item.previsao_fim_estoque = (timezone.now())
 
             item.save(update_fields=[
                 "quantidade_total",
@@ -421,8 +423,8 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         item_antigo = self.get_object()
-        quantidade_antiga = (item_antigo.quantidade_total)
-        duracao_antiga = (item_antigo.tempo_duracao_unidade)
+        quantidade_antiga = item_antigo.quantidade_total
+        duracao_antiga = item_antigo.tempo_duracao_unidade
 
         item = serializer.save()
 
@@ -433,15 +435,17 @@ class ItemViewSet(viewsets.ModelViewSet):
             duracao_antiga
             != item.tempo_duracao_unidade
         ):
-            dias = (
-                item.quantidade_total* item.tempo_duracao_unidade
-            )
-            item.previsao_fim_estoque = (
-                timezone.now() + timedelta(days=dias)
-            )
+            recalcular_duracao(item)
+            # dias = (
+            #     item.quantidade_total* item.tempo_duracao_unidade
+            # )
+            # item.previsao_fim_estoque = (
+            #     timezone.now() + timedelta(days=dias)
+            # )
             item.save(
                 update_fields=[
-                    "previsao_fim_estoque"
+                    "previsao_fim_estoque",
+                    "atualizado_em"
                 ]
             )
 
@@ -621,3 +625,19 @@ def foto_perfil_view(request):
             foto_url
         }
     )
+
+def recalcular_duracao(item):
+
+    if item.quantidade_total <= 0:
+        item.previsao_fim_estoque = (timezone.now())
+    else:
+        dias = (
+            item.quantidade_total
+            *
+            item.tempo_duracao_unidade
+        )
+        item.previsao_fim_estoque = (
+            timezone.now()
+            +
+            timedelta(days=dias)
+        )
