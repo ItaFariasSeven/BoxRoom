@@ -112,7 +112,10 @@ const decrementarMutation = useMutation({
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <div>
                       <CardContent className='container-texto' sx={{ flex: '1 0 auto' }}>
-                        <Typography component="div" variant="h5">
+                        <Typography 
+                          className='title-product'
+                          component="div" 
+                          variant="h5">
                           {item.nome}
                         </Typography>
                         <Typography
