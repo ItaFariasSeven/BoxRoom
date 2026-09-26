@@ -25,12 +25,14 @@ from datetime import timedelta
 from django.middleware.csrf import get_token
 
 # Create your views here.
+# Endpoint que gera e retorna o token CSRF para o frontend usar em requisições POST
 @ensure_csrf_cookie
 def csrf(request):
     return JsonResponse({
         "csrfToken": get_token(request)
     })
 
+# Endpoint de login: recebe email/senha via JSON e autentica o usuário
 @require_POST
 def login_view(request):
     try:
@@ -38,7 +40,7 @@ def login_view(request):
         email = dados.get("email")
         password = dados.get("password")
 
-        # Nenhum e-mail ou senha informado 
+        # Valida se os campos obrigatórios foram enviados
         if not email or not password:
             return JsonResponse(
                 {"erro": "E-mail e senha são obrigatórios"},
@@ -47,6 +49,7 @@ def login_view(request):
 
         User = get_user_model()
 
+        # Busca usuário pelo e-mail (case-insensitive)
         usuario_encontrado =User.objects.filter(
             email__iexact=email
         ).first()
@@ -58,18 +61,21 @@ def login_view(request):
                 status=401
             )
 
+        # Tenta autenticar usando o username interno (que é o próprio e-mail)
         usuario = authenticate(
             request,
             username=usuario_encontrado.username,
             password=password
         )
 
+        # Senha incorreta
         if usuario is None:
             return JsonResponse(
                 {"erro": "E-mail ou senha incorretos"},
                 status=401
             )
 
+        # Cria a sessão do usuário autenticado
         login(request, usuario)
 
         return JsonResponse({
@@ -83,6 +89,7 @@ def login_view(request):
         )
 
 
+# Endpoint simples que retorna dados básicos do usuário logado (verificação de sessão)
 def me(request):
     if not request.user.is_authenticated:
         return JsonResponse(
@@ -95,6 +102,8 @@ def me(request):
         "username": request.user.username,
     })
 
+
+# Endpoint de perfil: suporta GET (ver dados), PATCH (editar nome) e DELETE (excluir conta)
 @require_http_methods([
     "GET",
     "PATCH",
@@ -110,6 +119,7 @@ def perfil_view(request):
         status=401
     )
     if request.method == "GET":
+        # Busca ou cria o Perfil vinculado ao usuário (relação 1:1)
         perfil, criado = Perfil.objects.get_or_create(
             usuario=request.user
         )
@@ -117,7 +127,7 @@ def perfil_view(request):
         foto_url = None
 
         if perfil.foto:
-
+            # Monta URL completa (com domínio) da foto de perfil
             foto_url = request.build_absolute_uri(
                 perfil.foto.url
         )
@@ -131,6 +141,8 @@ def perfil_view(request):
             "foto":
             foto_url,
         })
+
+    # Para PATCH e DELETE, faz o parse do corpo JSON
     try:
         dados = json.loads(request.body or "{}")
     except json.JSONDecodeError:
@@ -141,6 +153,7 @@ def perfil_view(request):
             status=400
         )
     if request.method == "PATCH":
+        # Atualiza apenas o nome (first_name) do usuário
         nome = (dados.get("nome", "").strip())
         if not nome:
             return JsonResponse({
@@ -166,6 +179,7 @@ def perfil_view(request):
         })
 
     if request.method == "DELETE":
+        # Exclusão de conta exige confirmação de senha por segurança
         password = dados.get("password")
         if not password:
             return JsonResponse({
@@ -183,17 +197,19 @@ def perfil_view(request):
         )
         usuario = request.user
         try:
+            # transaction.atomic garante que tudo seja excluído junto, ou nada é excluído (rollback em caso de erro)
             with transaction.atomic():
                 Item.objects.filter(usuario=usuario).delete()
                 Categoria.objects.filter(usuario=usuario).delete()
                 usuario.delete()
-            logout(request)
+            logout(request) # encerra a sessão após excluir
             return JsonResponse({
                 "message":
                 "Conta excluída com sucesso"
             })
 
         except ProtectedError:
+            # Caso existam registros protegidos (FK com on_delete=PROTECT) impedindo a exclusão
             return JsonResponse(
                 {
                     "erro":
@@ -216,6 +232,7 @@ def perfil_view(request):
                 status=500
             )
 
+# Endpoint de logout: encerra a sessão do usuário
 @require_POST
 def logout_view(request):
     logout(request)
@@ -224,7 +241,7 @@ def logout_view(request):
         "message": "Logout Realizado com sucesso"
     })
 
-# Cadastro
+# Endpoint de cadastro de novo usuário
 @require_POST
 def cadastro_view(request):
     try:
@@ -251,13 +268,14 @@ def cadastro_view(request):
 
         User = get_user_model()
 
-        # E-mail já cadastrado
+        # Impede cadastro duplicado com o mesmo e-mail
         if User.objects.filter(email__iexact=email).exists():
             return JsonResponse(
                 {"erro": "Este e-mail já está cadastrado"},
                 status=400
             )
 
+        # Cria o usuário usando o e-mail como username também
         usuario = User.objects.create_user(
             username=email,
             email=email,
@@ -265,7 +283,7 @@ def cadastro_view(request):
             first_name=nome
         )
 
-        # Já deixa o usuário autenticado
+        # Já deixa o usuário autenticado após cadastro
         login(request, usuario)
 
         return JsonResponse(
@@ -287,8 +305,12 @@ def cadastro_view(request):
         )
 
 
+# CRUD
 class CategoriaViewSet(viewsets.ModelViewSet):
+    #ViewSet que gera automaticamente as rotas de list, create, retrieve,
+    #update e destroy para o model Categoria.
     serializer_class = CategoriaSerializer
+
     #somente usuários autenticados podem acessar categorias
     permission_classes = [IsAuthenticated]
 
@@ -304,6 +326,7 @@ class CategoriaViewSet(viewsets.ModelViewSet):
             usuario=self.request.user
         )
 
+    # Sobrescreve o delete para tratar erro quando a categoria tem itens vinculados
     def destroy(self, request, *args, **kwargs):
         try:
             return super().destroy(request, *args, **kwargs)
@@ -316,6 +339,8 @@ class CategoriaViewSet(viewsets.ModelViewSet):
 
 
 class ItemViewSet(viewsets.ModelViewSet):
+    #ViewSet do model Item, com ações extras de incrementar/decrementar estoque
+    #e recálculo automático de previsão de fim de estoque.
     serializer_class = ItemSerializer
     permission_classes = [IsAuthenticated]
 
@@ -344,6 +369,8 @@ class ItemViewSet(viewsets.ModelViewSet):
             ]
         )
 
+    # Ação customizada: POST /itens/{id}/incrementar/
+    # Aumenta a quantidade em estoque em 1 unidade
     @action(
         detail=True,
         methods=["post"]
@@ -360,20 +387,7 @@ class ItemViewSet(viewsets.ModelViewSet):
             )
             item.quantidade_total += 1
             recalcular_duracao(item)
-            # agora = timezone.now()
-            # if(
-            #     item.previsao_fim_estoque and 
-            #     item.previsao_fim_estoque > agora
-            # ):
-            #     item.previsao_fim_estoque += (
-            #         timedelta(days=item.tempo_duracao_unidade)
-            #     )
-            # else:
-            #     item.previsao_fim_estoque = (
-            #         agora + timedelta(
-            #             days=item.tempo_duracao_unidade
-            #         )
-            #     )
+            
             item.save(
                 update_fields=[
                     "quantidade_total",
@@ -408,9 +422,6 @@ class ItemViewSet(viewsets.ModelViewSet):
             )
             item.quantidade_total -= 1
             recalcular_duracao(item)
-            # if item.quantidade_total == 0:
-
-            #     item.previsao_fim_estoque = (timezone.now())
 
             item.save(update_fields=[
                 "quantidade_total",
@@ -421,6 +432,8 @@ class ItemViewSet(viewsets.ModelViewSet):
             self.get_serializer(item).data
         )
 
+    # Sobrescreve o update padrão do DRF para recalcular a previsão de estoque
+    # sempre que a quantidade ou a duração da unidade mudarem
     def perform_update(self, serializer):
         item_antigo = self.get_object()
         quantidade_antiga = item_antigo.quantidade_total
@@ -436,12 +449,6 @@ class ItemViewSet(viewsets.ModelViewSet):
             != item.tempo_duracao_unidade
         ):
             recalcular_duracao(item)
-            # dias = (
-            #     item.quantidade_total* item.tempo_duracao_unidade
-            # )
-            # item.previsao_fim_estoque = (
-            #     timezone.now() + timedelta(days=dias)
-            # )
             item.save(
                 update_fields=[
                     "previsao_fim_estoque",
@@ -474,6 +481,7 @@ class DashboardView(APIView):
             output_field=IntegerField()
         )
 
+        # Anota cada item com a quantidade a repor e o valor necessário para reposição
         itens_calculados = (
             itens.annotate(
                 quantidade_repor=quantidade_repor
@@ -517,6 +525,7 @@ class DashboardView(APIView):
             ).order_by("categoria__nome")
         )
 
+        # Filtra itens cujo estoque está igual ou abaixo do mínimo definido
         baixo_estoque_queryset = itens.filter(
             quantidade_total__lte=F(
                 "quantidade_minima",
@@ -525,6 +534,8 @@ class DashboardView(APIView):
         baixo_estoque_total = (
             baixo_estoque_queryset.count()
         )
+
+        # Pega os 10 itens mais críticos (menor quantidade primeiro)
         baixo_estoque_queryset = (
             baixo_estoque_queryset.order_by(
                 "quantidade_total",
@@ -532,6 +543,7 @@ class DashboardView(APIView):
             )[:10]
         )
 
+        # Monta a lista simplificada para o frontend
         baixo_estoque = [
             {
                 "id": item.id,
@@ -564,6 +576,7 @@ class DashboardView(APIView):
             "baixo_estoque_total": baixo_estoque_total
         })
 
+# Endpoint para upload/atualização da foto de perfil do usuário
 @require_POST
 def foto_perfil_view(request):
     if not request.user.is_authenticated:
@@ -582,6 +595,7 @@ def foto_perfil_view(request):
         },
         status=400
     )
+    # Limite de tamanho: 5 MB
     tamanho_maximo = 5 * 1024 * 1024
 
     if foto.size > tamanho_maximo:
@@ -591,7 +605,7 @@ def foto_perfil_view(request):
         },
         status=400
     )
-
+    # Só aceita esses formatos de imagem
     tipos_permitidos = [
          "image/jpeg",
          "image/png",
@@ -607,6 +621,7 @@ def foto_perfil_view(request):
     )
 
     perfil, criado = Perfil.objects.get_or_create(usuario=request.user)
+    # Remove a foto antiga do storage antes de salvar a nova (evita lixo acumulado)
     if perfil.foto:
         perfil.foto.delete(save=False)
 
@@ -626,9 +641,14 @@ def foto_perfil_view(request):
         }
     )
 
+# FUNÇÃO AUXILIAR
+# Recalcula a data prevista de término do estoque (previsao_fim_estoque)
+# com base na quantidade atual e no tempo de duração de cada unidade.
+# Usada em incrementar, decrementar e perform_update.
 def recalcular_duracao(item):
 
     if item.quantidade_total <= 0:
+        # Estoque zerado: a previsão de fim é agora
         item.previsao_fim_estoque = (timezone.now())
     else:
         dias = (

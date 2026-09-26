@@ -16,28 +16,31 @@ import { Alert } from '@mui/material';
 
 import { buscarPerfil, atualizarPerfil, excluirConta, atualizarFotoPerfil } from "../../services/api";
 
-
+// Modal que mostra as informações do usuário logado, permitindo editar nome,
+// trocar foto de perfil e excluir a conta
 export default function ModalInfoUsuario({ open, handleClose }) {
 
   const [nome, setNome] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); // senha exigida para confirmar exclusão da conta
 
-  const [erro, setErro] = useState("");
+  const [erro, setErro] = useState(""); // mensagem de erro exibida no Alert
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [fotoSelecionada, setFotoSelecionada] = useState(null);
-  const [previewFoto, setPreviewFoto] = useState(null);
+  const [fotoSelecionada, setFotoSelecionada] = useState(null); // arquivo escolhido para upload
+  const [previewFoto, setPreviewFoto] = useState(null); // URL local para pré-visualização
 
+  // Busca os dados do perfil do usuário (nome, email, foto)
   const {
         data: usuario,
         isLoading
     } = useQuery({
         queryKey: ["perfil"],
         queryFn: buscarPerfil,
-        enabled: open
+        enabled: open // só busca quando o modal está aberto
     });
 
+    // Sempre que os dados do usuário chegarem, preenche o campo "nome"
     useEffect(() => {
         if (!usuario) {
             return;
@@ -47,6 +50,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
         );
     }, [usuario]);
 
+    // Mutação para atualizar o nome do perfil
     const atualizarMutation =
         useMutation({
             mutationFn: atualizarPerfil,
@@ -67,12 +71,15 @@ export default function ModalInfoUsuario({ open, handleClose }) {
             }
         });
 
+    // Mutação para excluir a conta do usuário
     const excluirMutation =
         useMutation({
             mutationFn: excluirConta,
             onSuccess: () => {
+                // Limpa TODO o cache do React Query (itens, categorias, dashboard, perfil etc.)
                 queryClient.clear();
-                handleClose();
+                handleClose();      
+                // Redireciona para a tela de login, substituindo o histórico (não permite "voltar" para a área logada)
                 navigate(
                     "/login",
                     {
@@ -87,6 +94,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
             }
         });
 
+    // Mutação para enviar a nova foto de perfil
     const fotoMutation =
         useMutation({
             mutationFn: atualizarFotoPerfil,
@@ -94,6 +102,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                 queryClient.invalidateQueries({
                     queryKey: ["perfil"]
                 });
+                // Limpa a seleção após o upload ser concluído
                 setFotoSelecionada(null);
                 setPreviewFoto(null);
             },
@@ -106,7 +115,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
 
     
 
-
+  // Envia o formulário para atualizar apenas o nome do usuário
   function handleSubmit(event) {
         event.preventDefault();
 
@@ -115,6 +124,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
         atualizarMutation.mutate({nome});
     }
 
+    // Valida a senha e confirma antes de excluir a conta
     function handleExcluirConta() {
         setErro("");
         if (!password) {
@@ -138,6 +148,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
         );
     }
 
+    // Trata a seleção da nova foto de perfil, validando tipo e tamanho
     function handleSelecionarFoto(event) {
 
     const arquivo = event.target.files?.[0];
@@ -193,6 +204,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
              <h1 className='title-modal'>Informações do Usuário</h1>
            </div>
 
+            {/* Exibe mensagem de erro, se houver */}
            {erro && (
 
               <Alert
@@ -203,12 +215,14 @@ export default function ModalInfoUsuario({ open, handleClose }) {
               </Alert>
             )}
 
+            {/* Enquanto os dados do perfil estão carregando, mostra um texto simples */}
             {isLoading ?(
                 <p>Carregando Informações ...</p>
             ) : (
                 <>
                     <div className="container-info-usuario">
                     <div>
+                    {/* Prioridade de exibição: preview novo > foto atual do usuário > imagem padrão */}
                       <img className='photo'
                         src={
                             previewFoto
@@ -239,6 +253,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                         </label>
                     </div>
 
+                    {/* Botão de salvar foto só aparece depois que uma nova foto for selecionada */}
                     {fotoSelecionada && (
                         <div className='buttom-photo-select'>
                             <Button
@@ -257,6 +272,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                     )}
                     </div>
 
+                    {/* Formulário com nome, senha (para exclusão) e e-mail (somente leitura) */}
                     <Box
                       className='form-user'
                       component='form'
@@ -277,6 +293,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                       onChange={(event) => setPassword(event.target.value)}
                     />
 
+                    {/* E-mail é somente leitura, pois não pode ser alterado pelo usuário */}
                     <TextField
                       required
                       label='E-mail'

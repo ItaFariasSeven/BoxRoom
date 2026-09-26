@@ -19,24 +19,29 @@ import ModalEditarCategoria from './ModalEditarCategoria';
 import ModalInfoUsuario from './ModalInfoUsuario';
 
 
+// Modal "menu" com as opções principais: cadastrar/editar categoria,
+// sair da conta e abrir informações do usuário
 export default function ModalOptions({ open, handleClose, usuario }) {
-
+  // Controla a abertura de cada sub-modal individualmente
   const [openCadastrarCategoria, setOpenCadastrarCategoria] = React.useState(false);
   const [openEditarCategoria, setOpenEditarCategoria] = React.useState(false);
   const [openInfoUsuarios, setOpenInfoUsuarios] = React.useState(false);
   
+    // Fecha o menu de opções e abre o modal de cadastro de categoria
     const handleOpenCadastrarCategoria = () => {
       handleClose();
       setOpenCadastrarCategoria(true);
     };
     const handleCloseCadastrarCategoria = () => setOpenCadastrarCategoria(false);
 
+    // Fecha o menu de opções e abre o modal de edição de categoria
     const handleOpenEditarCategoria = () => {
       handleClose();
       setOpenEditarCategoria(true);
     };
     const handleCloseEditarCategoria = () => setOpenEditarCategoria(false);
 
+    // Fecha o menu de opções e abre o modal de informações do usuário
     const handleOpenInfoUsuarios = () => {
       handleClose();
       setOpenInfoUsuarios(true);
@@ -47,6 +52,7 @@ export default function ModalOptions({ open, handleClose, usuario }) {
 const navigate = useNavigate();
 const queryClient = useQueryClient();
 
+// Mutação de logout: chama o backend e limpa todo o estado local
 const logoutMutation =
     useMutation({
         // Faz POST no Django.
@@ -71,6 +77,7 @@ const logoutMutation =
 
   return (
     <>
+    {/* Modal principal: menu de opções */}
     <Modal
       open={open} 
       onClose={handleClose} 
@@ -106,6 +113,7 @@ const logoutMutation =
                 }
               </Button>
 
+              {/* Avatar do usuário; ao clicar, abre o modal de informações do usuário */}
               <img className='user-modal'
                 src={
                   usuario?.foto ||
@@ -118,7 +126,7 @@ const logoutMutation =
             </Box>
 
     </Modal>
-
+            {/* Sub-modais, cada um controlado pelo seu próprio estado open/close */}
             <ModalCadastrarCategoria
               open={openCadastrarCategoria}
               handleClose={handleCloseCadastrarCategoria}

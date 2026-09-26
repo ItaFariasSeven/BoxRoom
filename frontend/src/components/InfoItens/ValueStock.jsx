@@ -2,10 +2,11 @@ import './ValueStockModule.css';
 import  Chart  from 'chart.js/auto';
 import { useEffect, useRef } from 'react';
 
+// Componente que exibe o valor total em estoque e o valor necessário para reposição
 export default function ValueStock({dashboard}) {
 
+  // Formata um número para o padrão monetário brasileiro (ex: 1234.5 -> "1.234,50")
   const formatarValor = (valor) => {
-
         return new Intl.NumberFormat(
             "pt-BR",
             {
@@ -13,7 +14,7 @@ export default function ValueStock({dashboard}) {
                 maximumFractionDigits: 2
             }
         ).format(
-            Number(valor || 0)
+            Number(valor || 0) // converte para número, usando 0 como fallback se for undefined/null
         );
     };
 

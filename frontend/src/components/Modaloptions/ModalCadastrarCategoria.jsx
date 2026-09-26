@@ -12,11 +12,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { criarCategoria } from "../../services/api";
 
 
+// Modal simples para cadastrar uma nova categoria
 export default function ModalCadastrarCategoria({ open, handleClose }) {
-
+  // Estados dos campos do formulário
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
 
+  // Envia o formulário para criar a categoria
   function handleSubmit(event) {
         event.preventDefault();
 
@@ -29,14 +31,18 @@ export default function ModalCadastrarCategoria({ open, handleClose }) {
 
     const queryClient = useQueryClient();
     
+    // Mutação responsável por chamar a API e criar a categoria
     const criarMutation = useMutation({
             mutationFn: criarCategoria, 
             onSuccess: () => {
+                // Atualiza a lista de categorias em qualquer lugar que a use (selects, listas etc.)
                 queryClient.invalidateQueries({
                     queryKey: ["categorias"]
                 });
+                // Limpa os campos após sucesso
                 setNome("");
                 setDescricao("");
+                // Fecha o modal
                 handleClose();
             },
             onError: (error) => {
@@ -55,6 +61,7 @@ export default function ModalCadastrarCategoria({ open, handleClose }) {
              <h1 className='title-modal'>Cadastrar Categoria</h1>
            </div>
 
+            {/* Formulário com nome e descrição da categoria */}
             <Box
               className='form-add'
               component='form'

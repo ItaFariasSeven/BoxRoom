@@ -15,8 +15,10 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
+# Diretório raiz do projeto (2 níveis acima deste arquivo)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Carrega variáveis de ambiente do arquivo .env, sobrescrevendo variáveis já existentes no sistema
 load_dotenv(BASE_DIR / '.env', override=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,6 +49,7 @@ ALLOWED_HOSTS = [
     "localhost",
 ]
 
+# Se estiver rodando no Render, adiciona o hostname externo automaticamente
 render_hostname = os.getenv(
     "RENDER_EXTERNAL_HOSTNAME"
 )
@@ -61,17 +64,17 @@ if render_hostname:
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    "cloudinary_storage",
-    "cloudinary",
-    'rest_framework',
-    'corsheaders',
-    'itens',
+    'django.contrib.admin',             #Painel Administrativo
+    'django.contrib.auth',              #Sistema de autenticação
+    'django.contrib.contenttypes',      #Framework de tipos de conteúdo
+    'django.contrib.sessions',          #Gerenciamento de sessões
+    'django.contrib.messages',          #Sistema de mensagens flash
+    'django.contrib.staticfiles',       #Gerenciamento de arquivos estáticos
+    "cloudinary_storage",               #Armazenamento de mídia na nuvem
+    "cloudinary",                       
+    'rest_framework',                   #Django REST Framework (API)
+    'corsheaders',                      #Permite requisições cross-origin (CORS)
+    'itens',                            #App prórpio do projeto
 ]
 
 MIDDLEWARE = [
@@ -191,31 +194,38 @@ STATIC_ROOT = (BASE_DIR / "staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# URL do frontend (React/Vite), usada para liberar CORS e CSRF
 FRONTEND_URL = os.getenv(
     "FRONTEND_URL",
     "http://localhost:5173"
 )
 
+# Só esse domínio pode fazer requisições cross-origin para a API
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL
 ]
 
+# Só esse domínio é confiável para enviar tokens CSRF
 CSRF_TRUSTED_ORIGINS = [
     FRONTEND_URL
 ]
-
+# Permite que o frontend envie cookies/credenciais nas requisições
 CORS_ALLOW_CREDENTIALS = True
 
+# Cookies só são enviados via HTTPS quando não está em DEBUG (produção)
 SESSION_COOKIE_SECURE = not DEBUG
-
 CSRF_COOKIE_SECURE = not DEBUG
 
+# Política de SameSite dos cookies:
+# - Em DEBUG (dev local): "Lax" (funciona sem HTTPS)
+# - Em produção: "None" (necessário para cross-site com HTTPS)
 if DEBUG:
     SESSION_COOKIE_SAMESITE = "Lax"
     CSRF_COOKIE_SAMESITE = "Lax"
 else:
     SESSION_COOKIE_SAMESITE = "None"
     CSRF_COOKIE_SAMESITE = "None"
+
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv(
@@ -232,7 +242,7 @@ CLOUDINARY_STORAGE = {
 
     "SECURE": True,
 }
-
+# Define onde cada tipo de arquivo é armazenado
 STORAGES = {
     "default": {
         "BACKEND":

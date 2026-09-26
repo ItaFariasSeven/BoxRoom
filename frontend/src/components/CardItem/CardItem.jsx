@@ -38,6 +38,7 @@ const style = {
   p: 4,
 };
 
+// Componente que renderiza o card de um item/produto na listagem
 export default function CardItem({item}) {
 
 const [open, setOpen] = React.useState(false);
