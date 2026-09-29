@@ -17,6 +17,7 @@ import { realizarLogout } from "../../services/api";
 import ModalCadastrarCategoria from './ModalCadastrarCategoria';
 import ModalEditarCategoria from './ModalEditarCategoria';
 import ModalInfoUsuario from './ModalInfoUsuario';
+import ModalAddAside from '../ModalAdd/ModalAddAside';
 
 
 // Modal "menu" com as opções principais: cadastrar/editar categoria,
@@ -25,7 +26,7 @@ export default function ModalOptions({ open, handleClose, usuario }) {
   // Controla a abertura de cada sub-modal individualmente
   const [openCadastrarCategoria, setOpenCadastrarCategoria] = React.useState(false);
   const [openEditarCategoria, setOpenEditarCategoria] = React.useState(false);
-  const [openInfoUsuarios, setOpenInfoUsuarios] = React.useState(false);
+  const [openAddAside, setOpenAddAside] = React.useState(false);
   
     // Fecha o menu de opções e abre o modal de cadastro de categoria
     const handleOpenCadastrarCategoria = () => {
@@ -42,11 +43,11 @@ export default function ModalOptions({ open, handleClose, usuario }) {
     const handleCloseEditarCategoria = () => setOpenEditarCategoria(false);
 
     // Fecha o menu de opções e abre o modal de informações do usuário
-    const handleOpenInfoUsuarios = () => {
+    const handleOpenAddAside = () => {
       handleClose();
-      setOpenInfoUsuarios(true);
+      setOpenAddAside(true);
     };
-    const handleCloseInfoUsuarios = () => setOpenInfoUsuarios(false);
+    const handleCloseAddAside = () => setOpenAddAside(false);
 
     
 const navigate = useNavigate();
@@ -102,26 +103,27 @@ const logoutMutation =
               <Button
                 type='button'
                 variant='contained'
-                color='error'
-                disabled={logoutMutation.isPending}
-                onClick={() => logoutMutation.mutate()}
+                onClick={handleOpenAddAside}
               >
-                {
-                  logoutMutation.isPending
-                  ? "Saindo"
-                  : "Sair da conta"
-                }
+                Cadastrar Produto
               </Button>
 
-              {/* Avatar do usuário; ao clicar, abre o modal de informações do usuário */}
-              <img className='user-modal'
-                src={
-                  usuario?.foto ||
-                  ImagemUser
-                }
-                alt="Imagem de usuário"
-                onClick={handleOpenInfoUsuarios}
-              />
+              <div
+                className='butto-sair'>
+                <Button
+                  type='button'
+                  variant='contained'
+                  color='error'
+                  disabled={logoutMutation.isPending}
+                  onClick={() => logoutMutation.mutate()}
+                >
+                  {
+                    logoutMutation.isPending
+                    ? "Saindo"
+                    : "Sair da conta"
+                  }
+                </Button>
+              </div>
 
             </Box>
 
@@ -136,10 +138,11 @@ const logoutMutation =
               open={openEditarCategoria}
               handleClose={handleCloseEditarCategoria}
             />
-            <ModalInfoUsuario 
-              open={openInfoUsuarios}
-              handleClose={handleCloseInfoUsuarios}
-              />
+
+            <ModalAddAside 
+              open={openAddAside}
+              handleClose={handleCloseAddAside}
+            />
 
     </>
 

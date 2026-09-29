@@ -34,3 +34,8 @@
     transform: scale(1.15);
     transition: all ease 1s;
 }
+
+.butto-sair{
+    transform: translate(60%, 65vh);
+}
+

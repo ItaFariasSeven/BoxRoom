@@ -17,6 +17,7 @@ import ImagemUser from '../../assets/Nav/user.png';
 import './NavBarModule.css';
 import ModalAddAside from '../ModalAdd/ModalAddAside';
 import ModalOptions from '../Modaloptions/ModalOptions';
+import ModalInfoUsuario from '../Modaloptions/ModalInfoUsuario';
 
 import { useQuery } from "@tanstack/react-query";
 import { buscarPerfil } from "../../services/api";
@@ -34,7 +35,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(1),
     width: 'auto',
   },
 }));
@@ -57,20 +58,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '30ch',
     },
   },
 }));
 
 export default function NavBar() {
-  const [openAdd, setOpenAdd] = React.useState(false);
   const [openOptions, setOpenOptions] = React.useState(false);
-
-  const handleOpenAdd = () => setOpenAdd(true);
-  const handleCloseAdd = () => setOpenAdd(false);
+  const [openInfoUsuarios, setOpenInfoUsuarios] = React.useState(false);
 
   const handleOpenOptions = () => setOpenOptions(true);
   const handleCloseOptions = () => setOpenOptions(false);
+
+  const handleOpenInfoUsuarios = () => setOpenInfoUsuarios(true);
+  const handleCloseInfoUsuarios = () => setOpenInfoUsuarios(false);
 
   const {
     data: usuario
@@ -132,6 +133,7 @@ function handleBusca(event) {
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
+                className='barra-pesquisa'
                 type='text'
                 placeholder="Pesquisar…"
                 value={busca}
@@ -156,8 +158,18 @@ function handleBusca(event) {
             </Box>
 
                 {/* Ícone de adicionar coisas ao estoque */}
-              <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                <Fab color="error" aria-label="add" onClick={handleOpenAdd}>
+              <Box sx={{ '& > :not(style)' : { m: 0.5 }  }}>
+                <Fab 
+                  color="error" 
+                  aria-label="add" 
+                  onClick={handleOpenOptions}
+                  sx={{
+                    '@media (max-width: 800px)':{
+                      width: 36,
+                      height: 36,
+                    }
+                  }}
+                >
                     <AddIcon />
                 </Fab>
               </Box>
@@ -168,16 +180,16 @@ function handleBusca(event) {
                   ImagemUser
                 }
                 alt="Imagem de usuário"
-                onClick={handleOpenOptions}
+                onClick={handleOpenInfoUsuarios}
               />
 
-              <ModalAddAside
-                open={openAdd}
-                handleClose={handleCloseAdd}
-              />
               <ModalOptions
                 open={openOptions}
                 handleClose={handleCloseOptions}
+              />
+              <ModalInfoUsuario
+                open={openInfoUsuarios}
+                handleClose={handleCloseInfoUsuarios}
                 usuario={usuario}
               />
               

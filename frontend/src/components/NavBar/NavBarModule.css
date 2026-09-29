@@ -25,3 +25,14 @@
     transform: scale(1.05);
     transition: all ease 1s;
 }
+
+@media (max-width: 800px) {
+
+    .logo {
+        width: 10dvh;
+    }
+
+    .barra-pesquisa {
+        width: 50%;
+    }
+}
