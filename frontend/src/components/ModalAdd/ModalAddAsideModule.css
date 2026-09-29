@@ -70,8 +70,8 @@
 @media (max-width: 800px) {
 
     .container-modal{
-        width: 90%;
-        height: 95%;
+        width: 85%;
+        height: 98%;
     }
 
     .container-info-product {
@@ -79,7 +79,7 @@
     }
 
     .photo {
-        max-width: 40%
+        max-width: 30%
     }
 
     .title-modal{

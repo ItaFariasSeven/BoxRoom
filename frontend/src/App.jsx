@@ -18,9 +18,9 @@ function App() {
     {mostrarNavBar && <NavBar />}
       <Routes>
         <Route path="/" element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <Home />
-          // </PrivateRoute>
+          </PrivateRoute>
         }/>
 
         <Route path="/login" element={
