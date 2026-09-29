@@ -20,7 +20,7 @@ function App() {
         <Route path="/" element={
           <PrivateRoute>
             <Home />
-          </PrivateRoute>
+          </PrivateRoute> 
         }/>
 
         <Route path="/login" element={
