@@ -51,7 +51,7 @@
 
 @media (max-width: 800px) {
 
-    .container-button-edit-categoria{
+    .container-modal-edit-categoria{
         width: 80%;
         height: 65%;
     }
@@ -67,6 +67,10 @@
 
     .form-add{
         gap: 25px
+    }
+
+    .container-button-edit-categoria{
+        justify-content: space-between;
     }
 
     .button-salve-edit-categoria{
