@@ -1,0 +1,29 @@
+.container-dashboard{
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    position: relative;      
+    padding: 5px 0;
+} 
+
+.title-dashboard{
+    padding: 0;
+    margin: 0;
+    font-size: 25px;
+    text-align: center;
+    text-shadow: 1px 2px 5px black;
+}
+
+
+.seta-image-dashboard-esquerda{
+    width: 3dvh;
+    position: absolute; 
+    left: 15px;
+}
+
+.seta-image-dashboard-direita{
+    width: 3dvh;
+    position: absolute; 
+    right: 15px;
+}

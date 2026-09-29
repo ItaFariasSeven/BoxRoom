@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+import cloudinary
 
 # Diretório raiz do projeto (2 níveis acima deste arquivo)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -253,3 +254,9 @@ STORAGES = {
             "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.getenv('CLOUDINARY_API_KEY'),
+    api_secret = os.getenv('CLOUDINARY_API_SECRET')
+)

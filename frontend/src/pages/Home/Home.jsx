@@ -2,6 +2,8 @@ import CardItem from "../../components/CardItem/CardItem"
 import TotalItens from "../../components/InfoItens/TotalItens"
 import LowItens from "../../components/InfoItens/LowItens"
 import ValueStock from "../../components/InfoItens/ValueStock"
+import DashBoardBar from "../../components/InfoBar/DashBoardBar"
+import ItensList from "../../components/InfoBar/ItensList"
 import './HomeModule.css'
 
 import { useQuery } from "@tanstack/react-query";
@@ -79,11 +81,13 @@ export default function Home() {
 
     return (
         <main>
+            <DashBoardBar/>
             <div className="detail-itens">
                 <TotalItens dashboard={dashboard}/>
                 <LowItens dashboard={dashboard}/>
                 <ValueStock dashboard={dashboard}/>
             </div>
+            <ItensList />
             <div className="cards-itens">
                 {itensFiltrados.map((item) =>(
                 <div key={item.id}>
