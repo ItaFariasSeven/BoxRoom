@@ -53,7 +53,7 @@
 
     .container-modal-edit-categoria{
         width: 80%;
-        height: 65%;
+        height: 70%;
     }
 
     .container-title{
@@ -66,7 +66,7 @@
     }
 
     .form-add{
-        gap: 25px
+        gap: 20px
     }
 
     .container-button-edit-categoria{
