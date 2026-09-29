@@ -34,7 +34,7 @@ class Item(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="itens", null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="itens", null=True, blank=True)
     nome = models.CharField(max_length=100)
-    link_compra = models.TextField(max_length=2500, blank=True)
+    link_compra = models.TextField(max_length=500, blank=True)
     foto = models.ImageField(upload_to='itens/', blank=True, null=True)
     quantidade_total = models.PositiveIntegerField(default=0)
     quantidade_minima = models.PositiveIntegerField(default=0)
@@ -57,6 +57,11 @@ class Item(models.Model):
         if segundos_restantes <= 0:
             return 0
         return math.ceil(segundos_restantes/86400)
+
+    def save(self, *args, **kwargs):
+        if self.link_compra:
+            self.link_compra = self.link_compra.split('?')[0]
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.nome}, {self.quantidade_total} unidade"
