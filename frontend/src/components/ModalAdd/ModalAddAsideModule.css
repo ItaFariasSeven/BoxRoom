@@ -26,7 +26,7 @@
     margin: 10px;
     text-align: center;
     font-size: clamp(
-        1.7rem,
+        1.4rem,
         3vw,
         2.3rem
     );
@@ -91,7 +91,11 @@
     }
 
     .container-info-product{
-        gap: 10px
+        gap: 2px
+    }
+
+    .form-add{
+        gap: 2px
     }
 
 }
