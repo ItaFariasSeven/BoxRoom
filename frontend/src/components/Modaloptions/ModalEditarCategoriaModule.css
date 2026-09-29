@@ -48,3 +48,32 @@
     width: 30%;
 
 }
+
+@media (max-width: 800px) {
+
+    .container-button-edit-categoria{
+        width: 80%;
+        height: 70%;
+    }
+
+    .container-title{
+        margin: 0;
+    }
+
+    .title-modal{
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .form-add{
+        gap: 15px
+    }
+
+    .button-salve-edit-categoria{
+        width: 40%;
+    }
+
+    .button-salve-edit-categoria{
+        width: 40%;
+    }
+}

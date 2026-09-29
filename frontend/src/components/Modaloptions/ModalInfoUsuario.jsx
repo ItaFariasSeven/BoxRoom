@@ -279,54 +279,54 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                       onSubmit={handleSubmit}
                     >
 
-                    <TextField
-                      required
-                      label='Nome'
-                      value={nome}
-                      onChange={(event) => setNome(event.target.value)}
-                      />
-
-                    <TextField
-                      label="Senha"
-                      type="password"
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                    />
-
-                    {/* E-mail é somente leitura, pois não pode ser alterado pelo usuário */}
-                    <TextField
-                      required
-                      label='E-mail'
-                      value={usuario?.email ?? ""}
-                      InputProps={{readOnly: true}}
-                      />
-
-                    <div className='conatiner-button-user'>
-                        <Button
-                          className='button-delete-user'
-                          type='button'
-                          variant='contained'
-                          disabled={excluirMutation.isPending}
-                          onClick={handleExcluirConta}
-                        >
-                        {
-                            excluirMutation.isPending 
-                            ? "Excluindo..."
-                            : "Excluir minha conta"
-                        }
-                         </Button>
-                        <Button
-                          className='button-save-user'
-                          type='submit'
-                          variant='contained'
-                          disabled={atualizarMutation.isPending}
-                        >
-                          {
-                              atualizarMutation.isPending 
-                              ? "Salvando..."
-                              : "Salvar Alterações"
-                          }
-                        </Button>
+                        <TextField
+                          required
+                          label='Nome'
+                          value={nome}
+                          onChange={(event) => setNome(event.target.value)}
+                          />
+    
+                        <TextField
+                          label="Senha"
+                          type="password"
+                          value={password}
+                          onChange={(event) => setPassword(event.target.value)}
+                        />
+    
+                        {/* E-mail é somente leitura, pois não pode ser alterado pelo usuário */}
+                        <TextField
+                          required
+                          label='E-mail'
+                          value={usuario?.email ?? ""}
+                          InputProps={{readOnly: true}}
+                          />
+    
+                        <div className='conatiner-button-user'>
+                            <Button
+                              className='button-delete-user'
+                              type='button'
+                              variant='contained'
+                              disabled={excluirMutation.isPending}
+                              onClick={handleExcluirConta}
+                            >
+                            {
+                                excluirMutation.isPending 
+                                ? "Excluindo..."
+                                : "Excluir minha conta"
+                            }
+                             </Button>
+                            <Button
+                              className='button-save-user'
+                              type='submit'
+                              variant='contained'
+                              disabled={atualizarMutation.isPending}
+                            >
+                              {
+                                  atualizarMutation.isPending 
+                                  ? "Salvando..."
+                                  : "Salvar Alterações"
+                              }
+                            </Button>
                         </div>
                     </Box>
                 </div>

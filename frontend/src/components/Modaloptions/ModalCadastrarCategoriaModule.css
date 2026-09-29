@@ -32,3 +32,12 @@
     padding-left: 10%;
     gap: 5px;
 }
+
+@media (max-width: 800px) {
+    
+    .container-modal-cadastro-categoria{
+        width: 90%;
+        height: 60%;
+        transform: translate(-50%, -50%);
+    }
+}

@@ -88,4 +88,34 @@
     .conatiner-button-user {
         flex-direction: column;
     }
+
+    .container-title{
+        margin: 0px;
+    }
+
+    .title-modal{
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .form-user{
+        gap: 20px;
+    }
+
+    .photo{
+        width: 70%;
+    }
+
+    .conatiner-button-user{
+        flex-direction: row;
+        margin: 0px;
+    }
+
+    .button-delete-user{
+        width: 45%;
+    }
+
+    .button-save-user{
+        width: 45%;
+    }
 }
