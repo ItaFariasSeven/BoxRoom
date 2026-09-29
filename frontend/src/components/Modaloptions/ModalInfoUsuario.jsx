@@ -14,7 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Alert } from '@mui/material';
 
-import { buscarPerfil, atualizarPerfil, excluirConta, atualizarFotoPerfil } from "../../services/api";
+import { buscarPerfil, atualizarPerfil, excluirConta, atualizarFotoPerfil, realizarLogout } from "../../services/api";
 
 // Modal que mostra as informações do usuário logado, permitindo editar nome,
 // trocar foto de perfil e excluir a conta
@@ -112,6 +112,29 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                 );
             }
         });
+
+// Mutação de logout: chama o backend e limpa todo o estado local
+const logoutMutation =
+    useMutation({
+        // Faz POST no Django.
+        mutationFn: realizarLogout,
+        onSuccess: () => {
+            // apagamos do cache itens, dashboard, perfil, categorias etc.
+            queryClient.clear();
+            // Volta para login.
+            navigate(
+                "/login",
+                {
+                    replace: true
+                }
+            );
+        },
+        onError: (error) => {
+            alert(
+                error.message
+            );
+        }
+    });
 
     
 
@@ -235,11 +258,7 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                         <input 
                             id="foto-perfil"
                             type='file'
-                            accept='
-                                image/jpeg,
-                                image/png,
-                                image/webp,
-                            '
+                            accept=' image/jpeg, image/png, image/web'
                             hidden
                             onChange={handleSelecionarFoto}
                         />
@@ -327,6 +346,23 @@ export default function ModalInfoUsuario({ open, handleClose }) {
                                   : "Salvar Alterações"
                               }
                             </Button>
+                        </div>
+
+                        <div
+                          className='butto-sair'>
+                          <Button
+                            type='button'
+                            variant='contained'
+                            color='error'
+                            disabled={logoutMutation.isPending}
+                            onClick={() => logoutMutation.mutate()}
+                          >
+                            {
+                              logoutMutation.isPending
+                              ? "Saindo"
+                              : "Sair da conta"
+                            }
+                          </Button>
                         </div>
                     </Box>
                 </div>

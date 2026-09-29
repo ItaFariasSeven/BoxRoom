@@ -53,29 +53,6 @@ export default function ModalOptions({ open, handleClose, usuario }) {
 const navigate = useNavigate();
 const queryClient = useQueryClient();
 
-// Mutação de logout: chama o backend e limpa todo o estado local
-const logoutMutation =
-    useMutation({
-        // Faz POST no Django.
-        mutationFn: realizarLogout,
-        onSuccess: () => {
-            // apagamos do cache itens, dashboard, perfil, categorias etc.
-            queryClient.clear();
-            // Volta para login.
-            navigate(
-                "/login",
-                {
-                    replace: true
-                }
-            );
-        },
-        onError: (error) => {
-            alert(
-                error.message
-            );
-        }
-    });
-
   return (
     <>
     {/* Modal principal: menu de opções */}
@@ -108,7 +85,7 @@ const logoutMutation =
                 Cadastrar Produto
               </Button>
 
-              <div
+              {/* <div
                 className='butto-sair'>
                 <Button
                   type='button'
@@ -123,7 +100,7 @@ const logoutMutation =
                     : "Sair da conta"
                   }
                 </Button>
-              </div>
+              </div> */}
 
             </Box>
 
