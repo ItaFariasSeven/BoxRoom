@@ -69,13 +69,29 @@
 
 @media (max-width: 800px) {
 
+    .container-modal{
+        width: 90%;
+        height: 95%;
+    }
+
     .container-info-product {
         grid-template-columns: 1fr;
     }
 
     .photo {
-        max-width: 300px;
-
-        max-height: 300px;
+        max-width: 40%
     }
+
+    .title-modal{
+        margin: 5px;
+    }
+
+    .input-cadastrar-product{
+        margin-top: 5px;
+    }
+
+    .container-info-product{
+        gap: 10px
+    }
+
 }
