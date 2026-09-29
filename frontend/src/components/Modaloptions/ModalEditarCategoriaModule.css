@@ -53,7 +53,7 @@
 
     .container-button-edit-categoria{
         width: 80%;
-        height: 70%;
+        height: 65%;
     }
 
     .container-title{
@@ -70,10 +70,10 @@
     }
 
     .button-salve-edit-categoria{
-        width: 60%;
+        width: 50%;
     }
 
-    .button-salve-edit-categoria{
-        width: 60%;
+    .button-delete-edit-categoria{
+        width: 50%;
     }
 }
