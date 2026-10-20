@@ -83,6 +83,7 @@
 
     .container-info-usuario {
         grid-template-columns: 1fr;
+        overflow-y: auto;
     }
 
     .conatiner-button-user {

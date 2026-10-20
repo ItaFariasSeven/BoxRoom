@@ -54,6 +54,7 @@
     .container-modal-edit-categoria{
         width: 80%;
         height: 70%;
+        overflow-y: auto;
     }
 
     .container-title{

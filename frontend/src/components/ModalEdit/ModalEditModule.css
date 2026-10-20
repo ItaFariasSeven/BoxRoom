@@ -73,3 +73,10 @@
     width: 40%;
 
 }
+
+@media (max-width: 800px) {
+
+    .container-modal{
+        overflow-y: auto;
+    }
+}

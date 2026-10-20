@@ -72,6 +72,7 @@
     .container-modal{
         width: 85%;
         height: 98%;
+        overflow-y: auto;
     }
 
     .container-info-product {

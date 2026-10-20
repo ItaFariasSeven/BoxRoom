@@ -1,7 +1,17 @@
 // URL base da API: usa a variável de ambiente do Vite, ou localhost como fallback (dev local)
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL ?? ""; // rodar na minha máquina para teste
 // Guarda o token CSRF em memória (módulo), para ser reutilizado em requisições que alteram dados
 let csrfToken = null;
+
+import axios from 'axios'; // rodar na minha máquina para teste
+
+// Isso diz ao navegador para enviar o cookie CSRF mesmo em portas diferentes
+axios.defaults.withCredentials = true;  // rodar na minha máquina para teste
+axios.defaults.xsrfCookieName = 'csrftoken'; // rodar na minha máquina para teste
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'; // rodar na minha máquina para teste
+
+
 
 // Teste
 console.log(

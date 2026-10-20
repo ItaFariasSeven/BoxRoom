@@ -197,19 +197,30 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # URL do frontend (React/Vite), usada para liberar CORS e CSRF
 FRONTEND_URL = os.getenv(
-    "FRONTEND_URL",
-    "http://localhost:5173"
+    "FRONTEND_URL", 
+    "http://localhost:5173" 
 )
 
 # Só esse domínio pode fazer requisições cross-origin para a API
 CORS_ALLOWED_ORIGINS = [
-    FRONTEND_URL
+    FRONTEND_URL,
+    'http://localhost:5173', # rodar na minha máquina para teste
+    'http://127.0.0.1:5173', # rodar na minha máquina para teste
 ]
 
 # Só esse domínio é confiável para enviar tokens CSRF
 CSRF_TRUSTED_ORIGINS = [
-    FRONTEND_URL
+    FRONTEND_URL,
+    'http://localhost:5173', # rodar na minha máquina para teste
+    'http://127.0.0.1:5173', # rodar na minha máquina para teste
 ]
+
+# Permite que o JavaScript (Axios) consiga ler o cookie 'csrftoken'
+CSRF_COOKIE_HTTPONLY = False 
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 # Permite que o frontend envie cookies/credenciais nas requisições
 CORS_ALLOW_CREDENTIALS = True
 
