@@ -61,80 +61,75 @@ export default function Cadastro() {
     return(
         
         <main className="container-cadastro">
-            <div className="container-logo-cadastro">
-                <img className='logo-cadastro'
-                    src={ImageLogo}
-                    alt="Imagem do Produto"
-                />
-            </div>
-
-            {erro && ( 
-                <Alert
-                    className="codigo-error"
-                    severity="error"
-                    icon={false}
-                >
-                    {erro}
-                </Alert>
-            )}
-
-            <div >
-                <Box
-                  className='form-cadastro'
-                  component='form'
-                  onSubmit={handleSubmit}
-                >
-                <TextField
-                  className="input-form-cadastro"
-                  label='Nome'
-                  value={nome}
-                  sx={styleFormCadastro}
-                  onChange={(event) => setNome(event.target.value)}
-                  />
-
-                <TextField
-                  className="input-form-cadastro"
-                  label='E-mail'
-                  value={email}
-                  sx={styleFormCadastro}
-                  onChange={(event) => setEmail(event.target.value)}
-                  />
-
-                <TextField
-                  className="input-form-cadastro"
-                  label='Senha'
-                  type="password"
-                  value={password}
-                  sx={styleFormCadastro}
-                  onChange={(event) => setPassword(event.target.value)}
-                  />
-
-                <TextField
-                  className="input-form-cadastro"
-                  label='Confirmar Senha'
-                  type="password"
-                  value={confirmPassword}
-                  sx={styleFormCadastro}
-                  onChange={(event) => setConfirmPassword(event.target.value)}
-                />
-
-              <Button
-                className="button-cadastro"
-                type='submit'
-                variant='contained'
-              >
-                Cadastrar
-              </Button>
-            </Box>
-            </div>
-
-            <div className="conatiner-com-cadastro">
-                <p>Já possui Cadastro?</p>
-                <Link to="/login">
-                    <p><u>Faça seu Login</u></p>
-                </Link>
+            <section></section>
+            <section className="container-lateral-cadastro">
+                <div className="container-logo-cadastro">
+                    <img className='logo-cadastro'
+                        src={ImageLogo}
+                        alt="Imagem do Produto"
+                    />
+                </div>
+                {erro && (
+                    <Alert
+                        className="codigo-error"
+                        severity="error"
+                        icon={false}
+                    >
+                        {erro}
+                    </Alert>
+                )}
+                <div >
+                    <Box
+                      className='form-cadastro'
+                      component='form'
+                      onSubmit={handleSubmit}
+                    >
+                    <TextField
+                      className="input-form-cadastro"
+                      label='Nome'
+                      value={nome}
+                      sx={styleFormCadastro}
+                      onChange={(event) => setNome(event.target.value)}
+                      />
+                    <TextField
+                      className="input-form-cadastro"
+                      label='E-mail'
+                      value={email}
+                      sx={styleFormCadastro}
+                      onChange={(event) => setEmail(event.target.value)}
+                      />
+                    <TextField
+                      className="input-form-cadastro"
+                      label='Senha'
+                      type="password"
+                      value={password}
+                      sx={styleFormCadastro}
+                      onChange={(event) => setPassword(event.target.value)}
+                      />
+                    <TextField
+                      className="input-form-cadastro"
+                      label='Confirmar Senha'
+                      type="password"
+                      value={confirmPassword}
+                      sx={styleFormCadastro}
+                      onChange={(event) => setConfirmPassword(event.target.value)}
+                    />
+                  <Button
+                    className="button-cadastro"
+                    type='submit'
+                    variant='contained'
+                  >
+                    Cadastrar
+                  </Button>
+                </Box>
+                </div>
+                <div className="conatiner-com-cadastro">
+                    <Link to="/login">
+                        <p>Já possui Cadastro? <u>Faça seu Login</u></p>
+                    </Link>
                 
-            </div>
+                </div>
+            </section>
 
         </main>
         

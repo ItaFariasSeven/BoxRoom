@@ -1,7 +1,15 @@
 .container-cadastro{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
     min-height: 100vh;
     background-color: #000080;
     box-sizing: border-box;
+    background-image: url('../../assets/login/criarContaImage.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin: 0;
+    height: 100vh
 }
 
 .container-logo-cadastro{
@@ -9,9 +17,16 @@
     justify-content: center;
 }
 
+.container-lateral-cadastro{
+    display: grid;
+    grid-template-rows: 1fr 4fr 1fr;
+    padding: 0 20px ;
+    box-sizing: border-box;
+}
+
 .logo-cadastro{
     width: min(
-        450px,
+        300px,
         70vw
     );
 
@@ -29,7 +44,7 @@
 
 .input-form-cadastro{
     width: min(
-        650px,
+        400px,
         85vw
     );
 }

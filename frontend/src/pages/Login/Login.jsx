@@ -57,13 +57,7 @@ export default function Login() {
     return(
         
         <main className="container-login">
-            <div className="container-logo-login">
-                <img className='logo-login'
-                    src={ImageLogo}
-                    alt="Imagem do Produto"
-                />
-            </div>
-            {erro && ( 
+            {erro && (
                 <Alert
                     className="codigo-error"
                     severity="error"
@@ -72,47 +66,69 @@ export default function Login() {
                     {erro}
                 </Alert>
             )}
+            <section></section>
+            <section className="container-lateral-login">
+                <div className="container-logo-login">
+                    <img className='logo-login'
+                        src={ImageLogo}
+                        alt="Imagem do Produto"
+                    />
+                </div>
+                <div>
+                    <Box
+                      className='form-login'
+                      component='form'
+                      onSubmit={handleSubmit}
+                    >
+                    <TextField
+                      className="input-form-login"
+                      label='E-mail'
+                      value={email}
+                      sx={styleFormLogin}
+                      onChange={(event) => setEmail(event.target.value)}
+                      />
+                    <TextField
+                      className="input-form-login"
+                      label='Senha'
+                      type="password"
+                      value={password}
+                      sx={styleFormLogin}
+                      onChange={(event) => setPassword(event.target.value)}
+                    />
+                  <div className="container-buttons">
+                      <Button
+                        className="button-login"
+                        type='submit'
+                        variant='contained'
+                      >
+                        Login
+                      </Button>
 
-            <div >
-                <Box
-                  className='form-login'
-                  component='form'
-                  onSubmit={handleSubmit}
-                >
-                <TextField
-                  className="input-form-login"
-                  label='E-mail'
-                  value={email}
-                  sx={styleFormLogin}
-                  onChange={(event) => setEmail(event.target.value)}
-                  />
+                      <Button
+                        className="button-login-google"
+                        type='submit'
+                        variant='contained'
+                      >
+                        Login com Google
+                      </Button>
+                  </div>
 
-                <TextField
-                  className="input-form-login"
-                  label='Senha'
-                  type="password"
-                  value={password}
-                  sx={styleFormLogin}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
+                    <div className="conatiner-esqueci-senha">
+                        <Link to="/cadastro">
+                            <p>Não lembra a <u>senha?</u></p>
+                        </Link>
+                    
+                    </div>
 
-              <Button
-                className="button-login"
-                type='submit'
-                variant='contained'
-              >
-                Login
-              </Button>
-            </Box>
-            </div>
-
-            <div className="conatiner-sem-cadastro">
-                <p>Ainda não tem Cadastro?</p>
-                <Link to="/cadastro">
-                    <p><u>Realize seu Cadastro</u></p>
-                </Link>
+                </Box>
+                </div>
+                <div className="conatiner-sem-cadastro">
+                    <Link to="/cadastro">
+                        <p>Não tem <u>Cadastro?</u></p>
+                    </Link>
                 
-            </div>
+                </div>
+            </section>
 
         </main>
         
