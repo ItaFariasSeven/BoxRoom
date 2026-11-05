@@ -322,35 +322,6 @@ const logoutMutation =
     
                         <div className='conatiner-button-user'>
                             <Button
-                              className='button-delete-user'
-                              type='button'
-                              variant='contained'
-                              disabled={excluirMutation.isPending}
-                              onClick={handleExcluirConta}
-                            >
-                            {
-                                excluirMutation.isPending 
-                                ? "Excluindo..."
-                                : "Excluir minha conta"
-                            }
-                             </Button>
-                            <Button
-                              className='button-save-user'
-                              type='submit'
-                              variant='contained'
-                              disabled={atualizarMutation.isPending}
-                            >
-                              {
-                                  atualizarMutation.isPending 
-                                  ? "Salvando..."
-                                  : "Salvar Alterações"
-                              }
-                            </Button>
-                        </div>
-
-                        <div
-                          className='butto-sair'>
-                          <Button
                             type='button'
                             variant='contained'
                             color='error'
@@ -363,6 +334,37 @@ const logoutMutation =
                               : "Sair da conta"
                             }
                           </Button>
+
+                          <Button
+                            className='button-save-user'
+                            type='submit'
+                            variant='contained'
+                            disabled={atualizarMutation.isPending}
+                          >
+                            {
+                                atualizarMutation.isPending 
+                                ? "Salvando..."
+                                : "Salvar Alterações"
+                            }
+                          </Button>
+                        </div>
+
+                        <div
+                          className='container-button-delete-user'>
+                            <Button
+                              className='button-delete-user'
+                              type='button'
+                              variant='contained'
+                              disabled={excluirMutation.isPending}
+                              onClick={handleExcluirConta}
+                            >
+                            {
+                                excluirMutation.isPending 
+                                ? "Excluindo..."
+                                : "Excluir minha conta"
+                            }
+                             </Button>
+                          
                         </div>
                     </Box>
                 </div>

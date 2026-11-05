@@ -1,0 +1,47 @@
+.dashboard-layout {
+    display: grid;
+    /* Divide em 3 colunas: As duas primeiras maiores, a terceira um pouco menor */
+    grid-template-columns: 1fr 1fr 0.8fr; 
+    /* Linha de cima tem tamanho fixo, linha de baixo preenche o restante */
+    grid-template-rows: 180px 1fr; 
+    gap: 20px;
+    padding: 20px;
+    height: calc(100vh - 80px); /* Desconta o tamanho aproximado da NavBar */
+    background-color: #0f172a; /* Fundo principal escuro (slate-900) */
+    box-sizing: border-box;
+}
+
+.dash-top-left {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.dash-top-mid {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.dash-right {
+    grid-column: 3;
+    grid-row: 1 / 3; /* Ocupa da linha 1 até o final */
+}
+
+.dash-bottom {
+    grid-column: 1 / 3; /* Ocupa a coluna 1 e 2 */
+    grid-row: 2;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+    }
+    
+    .dash-top-left, .dash-top-mid, .dash-right, .dash-bottom {
+        grid-column: 1;
+        grid-row: auto; /* Empilha um embaixo do outro */
+        min-height: 180px;
+    }
+}

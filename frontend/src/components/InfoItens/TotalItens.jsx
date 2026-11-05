@@ -1,68 +1,66 @@
+// TotalItens.jsx
+import React, { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 import './TotalItensModule.css';
-import  Chart  from 'chart.js/auto'; // biblioteca de gráficos
-import { useEffect, useRef } from 'react';
 
-// Componente que exibe o total de itens em estoque e um gráfico de rosca (doughnut) por categoria
-export default function TotalItens({dashboard}) {
-    // Referência para o elemento <canvas> onde o Chart.js vai desenhar o gráfico
+export default function TotalItens({ dashboard }) {
     const chartRef = useRef(null);
 
     useEffect(() => {
-      // Se o canvas ainda não foi renderizado, não faz nada
-      if(!chartRef.current){
-        return;
-      }
-      // Dados de categorias vindos do dashboard (fallback para array vazio)
-      const categorias = dashboard?.categorias || []
+        if (!chartRef.current) return;
 
-      // Extrai os nomes das categorias (labels do gráfico)
-      const labels = categorias.map(categoria => categoria.categoria__nome);
+        const categorias = dashboard?.categorias || [];
+        const labels = categorias.map(c => c.categoria__nome || 'Sem Categoria');
+        const valores = categorias.map(c => c.quantidade || 0);
 
-      // Extrai as quantidades de cada categoria (valores do gráfico)
-      const valores = categorias.map(categoria => categoria.quantidade);
+        // Paleta de cores dinâmica mantendo o padrão do seu código
+        const cores = categorias.length > 0 
+            ? categorias.map((_, index) => `hsl(${(index * 67) % 360}, 75%, 60%)`)
+            : ['#ef4444', '#f97316', '#eab308', '#06b6d4'];
 
-      // Cor para categorias
-      const cores = categorias.map((_, index) => `hsl(${(index * 67) % 360}, 70%, 60%)`);
+        const chart = new Chart(chartRef.current, {
+            type: 'doughnut',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Itens por categoria',
+                    data: valores,
+                    backgroundColor: cores,
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        labels: {
+                            color: '#ffffff',
+                            font: { size: 11, family: 'Inter' },
+                            boxWidth: 12
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
 
-      // Cria o gráfico do tipo "doughnut" (rosca)
-      const chart = new Chart(
-        chartRef.current,{
-          type: "doughnut",
-          data: {
-            labels,
-            datasets: [{
-              label: "Itens por categoria",
-              data: valores,
-              backgroundColor: cores,
-              hoverOffset: 4 // efeito de destaque ao passar o mouse sobre uma fatia
-            }]
-          }
-        }
-      );
-      // Função de limpeza: destrói o gráfico anterior antes de recriar
-      // (evita memory leak e gráficos duplicados ao atualizar o dashboard)
-      return () => {
-        chart.destroy();
-      };
-    },[dashboard]); // reexecuta sempre que os dados do dashboard mudarem
+        return () => chart.destroy();
+    }, [dashboard]);
 
-  return (
-    <div className='container-total-itens'>
-        <div className='text-total-itens'>
-            <h2>Total de Ítens:</h2>
-            <h2>
-              {dashboard?.total_unidades ?? 0}
-            </h2>
+    return (
+        <div className="container-total-itens">
+            <div className="text-total-itens">
+                <span>Total de Ítens:</span>
+                <h2>{dashboard?.total_unidades ?? 0}</h2>
+            </div>
+
+            <div className="grafic-category">
+                <canvas ref={chartRef} />
+            </div>
         </div>
-
-        {/* Canvas onde o gráfico de categorias é desenhado */}
-        <div className='grafic-category'>
-            <canvas 
-              ref={chartRef}
-            />
-        </div>
-
-    </div>
-
-  );
+    );
 }

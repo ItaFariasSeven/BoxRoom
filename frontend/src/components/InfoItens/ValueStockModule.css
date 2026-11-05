@@ -1,56 +1,46 @@
-.container-value-itens {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows:
-        auto
-        1fr;
-
-    background-color: #D3D3D3;
-    width: 100%;
-    margin: 0;
-    border-radius: 10px;
-    overflow: hidden;
+/* ValueStockModule.css */
+.valuestock-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
     box-sizing: border-box;
 }
 
-.container-valor-estoque{
-    background-color: #000080;
-    border-top-left-radius: 10px;
-    color: #fff;
+.valuestock-card {
+    background-color: #1e40af;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
-.container-valor-repor{
-    background-color: #FFBFBF;
-    border-top-right-radius: 10px;
-
-}
-
-.text-value-stock{
+.valuestock-header {
     text-align: center;
-    margin: 0;
-    padding: 5px;
+    padding: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
 }
 
-.text-value-stock-height{
-    font-size: clamp(
-        1rem,
-        2vw,
-        1.6rem
-    );
+.blue-header {
+    background-color: #60a5fa;
+    color: #000000;
 }
 
-.text-value-stock-height-rs{
-    text-align: center;
-    font-size: 1.2rem;
-    margin: 20px 0 5px;
+.red-header {
+    background-color: #dc2626;
+    color: #ffffff;
 }
 
-.text-value-repor{
-    text-align: center;
-    font-size: clamp(
-        1.8rem,
-        3vw,
-        2.5rem
-    );
-    margin: 10px;
+.valuestock-body {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
 }

@@ -1,44 +1,34 @@
+// ValueStock.jsx
+import React from 'react';
 import './ValueStockModule.css';
-import  Chart  from 'chart.js/auto';
-import { useEffect, useRef } from 'react';
 
-// Componente que exibe o valor total em estoque e o valor necessário para reposição
-export default function ValueStock({dashboard}) {
-
-  // Formata um número para o padrão monetário brasileiro (ex: 1234.5 -> "1.234,50")
-  const formatarValor = (valor) => {
-        return new Intl.NumberFormat(
-            "pt-BR",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        ).format(
-            Number(valor || 0) // converte para número, usando 0 como fallback se for undefined/null
-        );
+export default function ValueStock({ dashboard }) {
+    const formatarValor = (valor) => {
+        return new Intl.NumberFormat("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(Number(valor || 0));
     };
 
-  return (
-    <div className='container-value-itens'>
-        <div className='container-valor-estoque'>
-          <h2 className='text-value-stock text-value-stock-height'>Valor do estoque</h2>
+    return (
+        <div className="valuestock-container">
+            <div className="valuestock-card">
+                <div className="valuestock-header blue-header">
+                    Valor em estoque
+                </div>
+                <div className="valuestock-body">
+                    R$ {formatarValor(dashboard?.valor_estoque)}
+                </div>
+            </div>
+
+            <div className="valuestock-card">
+                <div className="valuestock-header red-header">
+                    Valor para repor estoque
+                </div>
+                <div className="valuestock-body">
+                    R$ {formatarValor(dashboard?.valor_repor)}
+                </div>
+            </div>
         </div>
-
-        <div className='container-valor-repor'>
-          <h2 className='text-value-stock text-value-stock-height'>Valor para repor</h2>
-        </div>
-
-        <div>
-          <h3 className='text-value-stock text-value-stock-height-rs'>R$</h3>
-          <h2 className='text-value-repor'>{formatarValor(dashboard?.valor_estoque)}</h2>
-        </div>
-
-        <div>
-          <h3 className='text-value-stock text-value-stock-height-rs'>R$</h3>
-          <h2 className='text-value-repor'>{formatarValor(dashboard?.valor_repor)}</h2>
-        </div>
-
-    </div>
-
-  );
+    );
 }

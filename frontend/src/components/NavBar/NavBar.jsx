@@ -144,21 +144,6 @@ function handleBusca(event) {
                 <h1 className="title-boxroom-nav">BoxRoom</h1>
             </div>
 
-            {/* Lupa de Pesquisa e ícone de pesquisa */}
-            {/* <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                className='barra-pesquisa'
-                type='text'
-                placeholder="Pesquisar…"
-                value={busca}
-                onChange={handleBusca}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search> */}
-
             {/* paravras de pesquisa: produtos, dashboard, estoque */}
             <div className='barra-pesquisa'>
               <div className='container-notificacoes-bell'>
@@ -172,13 +157,13 @@ function handleBusca(event) {
                 </Link>
               </div>
 
-              <Link style={{ color: 'inherit',textDecoration: 'none' }}>
+              <Link to={'/dashboard'} style={{ color: 'inherit',textDecoration: 'none' }}>
                 <p className='caminhos-paginas'>Dashboard</p>
               </Link>
 
               {/* Botão de Estoque com gatilho para o Popover */}
               <div className='container-seta-arrow' onClick={handleOpenEstoque}>
-                <Link style={{ color: 'inherit',textDecoration: 'none' }}>
+                <Link to={'/'} style={{ color: 'inherit',textDecoration: 'none' }}>
                   <p className='caminhos-paginas'>Estoque</p>
                 </Link>
                 <img 

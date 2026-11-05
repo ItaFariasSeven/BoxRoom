@@ -1,39 +1,30 @@
+// LowItens.jsx
+import React from 'react';
 import './LowItensModule.css';
 
-// Componente que exibe a lista de itens com estoque baixo (usado no dashboard)
-export default function LowItens({dashboard}) {
-  // Extrai a lista de itens em baixo estoque vinda do dashboard;
-  // usa array vazio como fallback caso dashboard ainda não tenha carregado
-  const itens = dashboard?.baixo_estoque || [];
+export default function LowItens({ dashboard }) {
+    const itens = dashboard?.baixo_estoque || [];
+    const totalBaixoEstoque = dashboard?.baixo_estoque_total ?? 0;
 
-    
-  return (
-    <div className='container-low-itens'>
-        {/* Cabeçalho com o total de itens em baixo estoque */}
-        <div className='cabecalho'>
-          <div className='number-low'>{dashboard?.baixo_estoque_total ?? 0}</div>
-          <div className='title-low'>Itens em baixo estoque</div>
+    return (
+        <div className="lowitens-container">
+            <div className="lowitens-header">
+                <div className="lowitens-badge">{totalBaixoEstoque}</div>
+                <div className="lowitens-title">Ítens em baixo estoque</div>
+            </div>
+
+            <div className="lowitens-list">
+                {itens.length === 0 ? (
+                    <p className="lowitens-empty">Nenhum item em baixo estoque.</p>
+                ) : (
+                    itens.map((item, index) => (
+                        <div className="lowitens-row" key={item.id || index}>
+                            <span className="item-name">{index + 1}. {item.nome}</span>
+                            <span className="item-duration">duração: {item.duracao_restante} dias</span>
+                        </div>
+                    ))
+                )}
+            </div>
         </div>
-
-        {/* Lista ordenada com cada item em baixo estoque */}
-        <div>
-          <ol>
-            
-            {itens.map((item) =>(
-              <li key={item.id}>
-                <div className='container-list-low-itens'>
-                  <p>{item.nome}</p>
-
-                  <p>{item.duracao_restante}{" "}dias</p>
-                </div>
-              </li>
-            ))}
-            
-          </ol>
-
-        </div>
-
-    </div>
-
-  );
+    );
 }
