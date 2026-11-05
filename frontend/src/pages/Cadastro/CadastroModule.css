@@ -9,19 +9,34 @@
     background-position: center;
     background-size: cover;
     margin: 0;
+    padding: 0;
     height: 100vh
 }
 
-.container-logo-cadastro{
+.container-title-boxroom{
     display: flex;
-    justify-content: center;
+    justify-content: start;
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.title-boxroom{
+    font-family: "Irish Grover", system-ui;
+    font-weight: bold;
+    font-size: 80px;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    letter-spacing: 7.5px;
 }
 
 .container-lateral-cadastro{
     display: grid;
     grid-template-rows: 1fr 4fr 1fr;
-    padding: 0 20px ;
+    padding: 0 20px;
     box-sizing: border-box;
+    height: 100vh;
 }
 
 .logo-cadastro{

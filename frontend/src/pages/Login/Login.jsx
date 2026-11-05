@@ -4,6 +4,8 @@ import { Button, Box, TextField,Alert } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { realizarLogin } from "../../services/api";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+
 
 const styleFormLogin = {
                 '& label':{
@@ -68,12 +70,11 @@ export default function Login() {
             )}
             <section></section>
             <section className="container-lateral-login">
-                <div className="container-logo-login">
-                    <img className='logo-login'
-                        src={ImageLogo}
-                        alt="Imagem do Produto"
-                    />
+                
+                <div className="container-title-boxroom-login">
+                    <h1 className="title-boxroom-login">BoxRoom</h1>
                 </div>
+
                 <div>
                     <Box
                       className='form-login'
@@ -104,17 +105,24 @@ export default function Login() {
                         Login
                       </Button>
 
-                      <Button
-                        className="button-login-google"
-                        type='submit'
-                        variant='contained'
-                      >
-                        Login com Google
-                      </Button>
+                      <GoogleOAuthProvider clientId="SEU_CLIENT_ID_DO_GOOGLE">
+                          <GoogleLogin
+                            onSuccess={credentialResponse => {
+                              console.log("Token de login bem-sucedido:", credentialResponse);
+                            }}
+                            onError={() => {
+                              console.log('Falha no Login');
+                            }}
+                            // Você pode customizar o tema e o formato nativamente através de propriedades
+                            theme="outline" // Opções: outline, filled_blue, filled_black
+                            shape="pill" // Opções: rectangular, pill, circle, square
+                            size="large"        // Opções: small, medium, large
+                          />
+                        </GoogleOAuthProvider>
                   </div>
 
                     <div className="conatiner-esqueci-senha">
-                        <Link to="/cadastro">
+                        <Link to="/cadastro" style={{ color: 'inherit', textDecoration: 'none' }}>
                             <p>Não lembra a <u>senha?</u></p>
                         </Link>
                     
@@ -123,8 +131,8 @@ export default function Login() {
                 </Box>
                 </div>
                 <div className="conatiner-sem-cadastro">
-                    <Link to="/cadastro">
-                        <p>Não tem <u>Cadastro?</u></p>
+                    <Link to="/cadastro" style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <p>Não tem uma conta? Faça seu <u>Cadastro</u></p>
                     </Link>
                 
                 </div>

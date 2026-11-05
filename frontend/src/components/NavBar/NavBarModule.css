@@ -1,18 +1,70 @@
-.logo{
-    width: 20dvh;
+.container-title-boxroom-nav{
+    display: flex;
+    justify-content: start;
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.title-boxroom-nav{
+    font-family: "Irish Grover", system-ui;
+    font-weight: 500;
+    font-size: 40px;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    letter-spacing: 1.5px;
+}
+
+.barra-pesquisa{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.container-notificacoes-bell{
+    display: flex;
+}
+
+.notificacoes-bell{
+    width: 25px;
+    height: 25px;
+    top: 15px;
+    position: relative;
+}
+
+.container-seta-arrow{
+    display: flex;
+}
+
+.seta-arrow{
+    width: 25px;
+    height: 25px;
+    top: 20px;
+    position: relative;
+
+}
+
+.caminhos-paginas{
+    font-size: 30px;
+    line-height: 0.1;
+    padding: 0
 }
 
 .user{
     width: clamp(
-        45px,
+        40px,
         5vw,
-        65px
+        60px
     );
 
     height: clamp(
-        45px,
+        40px,
         5vw,
-        65px
+        60px
     );
 
     min-width: 45px;

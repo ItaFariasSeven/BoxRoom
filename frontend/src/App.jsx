@@ -5,6 +5,7 @@ import Cadastro from './pages/Cadastro/Cadastro'
 import NavBar from './components/NavBar/NavBar';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
+import { ViewModeProvider } from './contexts/ViewModeContext'; 
 
 function App() {
 
@@ -15,26 +16,28 @@ function App() {
 
   return(
     <>
-    {mostrarNavBar && <NavBar />}
-      <Routes>
-        <Route path="/" element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute> 
-        }/>
-
-        <Route path="/login" element={
-          // <PrivateRoute>
-            <Login />
-          // {/* </PrivateRoute> */}
-        }/>
-
-        <Route path="/cadastro" element={
-          // <PrivateRoute>
-            <Cadastro />
-          // </PrivateRoute>
-        }/>
-      </Routes>
+      <ViewModeProvider>
+        {mostrarNavBar && <NavBar />}
+          <Routes>
+              <Route path="/" element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }/>
+    
+            <Route path="/login" element={
+              // <PrivateRoute>
+                <Login />
+              // {/* </PrivateRoute> */}
+            }/>
+    
+            <Route path="/cadastro" element={
+              // <PrivateRoute>
+              <Cadastro />
+              // </PrivateRoute>
+            }/>
+          </Routes>
+      </ViewModeProvider>
     </>
   )
 }

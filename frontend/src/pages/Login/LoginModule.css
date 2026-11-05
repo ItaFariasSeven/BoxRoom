@@ -11,6 +11,24 @@
     height: 100vh;
 }
 
+.container-title-boxroom-login{
+    display: flex;
+    justify-content: start;
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.title-boxroom-login{
+    font-family: "Irish Grover", system-ui;
+    font-weight: bold;
+    font-size: 80px;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    letter-spacing: 7.5px;
+}
+
 .container-lateral-login{
     display: grid;
     grid-template-rows: 1fr 4fr 1fr;
@@ -18,10 +36,10 @@
     box-sizing: border-box;
 }
 
-.container-logo-login{
+/* .container-logo-login{
     display: flex;
     justify-content: center;
-}
+} */
 
 .logo-login{
     width: min(
@@ -69,7 +87,7 @@
 
 .button-login{
     width: 40%;
-    border-radius: 15px !important;
+    border-radius: 25px !important;
     color: #000080 !important;
     background-color: #fff !important;
 }
@@ -80,16 +98,9 @@
     border-radius: 40px !important;
 }
 
-.button-login-google{
-    width: 50%;
-    border-radius: 15px !important;
-    color: #000080 !important;
-    background-color: #fff !important;
-}
-
 .conatiner-esqueci-senha{
-    text-decoration: none;
-    color: #fff;
+    text-decoration: none !important;
+    color: #fff !important;
 }
 
 .conatiner-sem-cadastro{

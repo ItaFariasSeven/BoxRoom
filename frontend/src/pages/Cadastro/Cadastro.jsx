@@ -61,23 +61,20 @@ export default function Cadastro() {
     return(
         
         <main className="container-cadastro">
+            {erro && (
+                <Alert
+                    className="codigo-error"
+                    severity="error"
+                    icon={false}
+                >
+                    {erro}
+                </Alert>
+            )}
             <section></section>
             <section className="container-lateral-cadastro">
-                <div className="container-logo-cadastro">
-                    <img className='logo-cadastro'
-                        src={ImageLogo}
-                        alt="Imagem do Produto"
-                    />
+                <div className="container-title-boxroom">
+                    <h1 className="title-boxroom">BoxRoom</h1>
                 </div>
-                {erro && (
-                    <Alert
-                        className="codigo-error"
-                        severity="error"
-                        icon={false}
-                    >
-                        {erro}
-                    </Alert>
-                )}
                 <div >
                     <Box
                       className='form-cadastro'
@@ -124,7 +121,7 @@ export default function Cadastro() {
                 </Box>
                 </div>
                 <div className="conatiner-com-cadastro">
-                    <Link to="/login">
+                    <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
                         <p>Já possui Cadastro? <u>Faça seu Login</u></p>
                     </Link>
                 

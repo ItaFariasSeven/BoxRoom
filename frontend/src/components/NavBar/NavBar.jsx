@@ -23,6 +23,11 @@ import { useQuery } from "@tanstack/react-query";
 import { buscarPerfil } from "../../services/api";
 
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import imageBell from '../../assets/infoBar/bell.png';
+import imageArrow from '../../assets/infoBar/arrow-down.png';
+import MenuEstoque from '../Modaloptions/MenuEstoque';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -35,7 +40,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
     width: 'auto',
   },
 }));
@@ -58,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '30ch',
+      width: '50ch',
     },
   },
 }));
@@ -72,6 +77,17 @@ export default function NavBar() {
 
   const handleOpenInfoUsuarios = () => setOpenInfoUsuarios(true);
   const handleCloseInfoUsuarios = () => setOpenInfoUsuarios(false);
+
+  // Funções do Menu Estoque
+  const [anchorElEstoque, setAnchorElEstoque] = React.useState(null);
+  const handleOpenEstoque = (event) => setAnchorElEstoque(event.currentTarget);
+  const handleCloseEstoque = () => setAnchorElEstoque(null);
+
+  const abrirModal = (tipo) => {
+    setModalAtivo(tipo);
+    handleCloseEstoque(); // Fecha o dropdown ao abrir o modal
+  };
+  const fecharModal = () => setModalAtivo(null);
 
   const {
     data: usuario
@@ -117,18 +133,19 @@ function handleBusca(event) {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
+      <Box sx={{ flexGrow: 1 }} >
+        <AppBar position="static" sx={{ backgroundColor: '#112C5A' }} >
+          <Toolbar sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr 5fr 0.2fr',
+            }}>
 
-            {/* Logo */}
-            <img className='logo'
-              src={imagemLogo}
-              alt="Imagem da logo"
-            />
+            <div className="container-title-boxroom-nav">
+                <h1 className="title-boxroom-nav">BoxRoom</h1>
+            </div>
 
             {/* Lupa de Pesquisa e ícone de pesquisa */}
-            <Search>
+            {/* <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -140,14 +157,44 @@ function handleBusca(event) {
                 onChange={handleBusca}
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </Search>
+            </Search> */}
+
+            {/* paravras de pesquisa: produtos, dashboard, estoque */}
+            <div className='barra-pesquisa'>
+              <div className='container-notificacoes-bell'>
+                <img 
+                  src={imageBell}
+                  alt='Notificações'
+                  className='notificacoes-bell'
+                />
+                <Link style={{ color: 'inherit',textDecoration: 'none' }}>
+                  <p className='caminhos-paginas'>Produtos</p>
+                </Link>
+              </div>
+
+              <Link style={{ color: 'inherit',textDecoration: 'none' }}>
+                <p className='caminhos-paginas'>Dashboard</p>
+              </Link>
+
+              {/* Botão de Estoque com gatilho para o Popover */}
+              <div className='container-seta-arrow' onClick={handleOpenEstoque}>
+                <Link style={{ color: 'inherit',textDecoration: 'none' }}>
+                  <p className='caminhos-paginas'>Estoque</p>
+                </Link>
+                <img 
+                  src={imageArrow}
+                  alt='Flecha'
+                  className='seta-arrow'
+                />
+              </div>
+            </div>
 
             {/* Espaçamento */}
-            <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            {/* <Box sx={{ flexGrow: 1 }} /> */}
+            {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
-            </Box>
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            </Box> */}
+            {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
                 aria-label="show more"
@@ -155,10 +202,10 @@ function handleBusca(event) {
               >
                 <MoreIcon />
               </IconButton>
-            </Box>
+            </Box> */}
 
-                {/* Ícone de adicionar coisas ao estoque */}
-              <Box sx={{ '& > :not(style)' : { m: 0.5 }  }}>
+              {/* Ícone de adicionar coisas ao estoque */}
+              {/* <Box sx={{ '& > :not(style)' : { m: 0.5 }  }}>
                 <Fab 
                   color="error" 
                   aria-label="add" 
@@ -172,7 +219,7 @@ function handleBusca(event) {
                 >
                     <AddIcon />
                 </Fab>
-              </Box>
+              </Box> */}
 
               <img className='user'
                 src={
@@ -182,6 +229,7 @@ function handleBusca(event) {
                 alt="Imagem de usuário"
                 onClick={handleOpenInfoUsuarios}
               />
+              
 
               <ModalOptions
                 open={openOptions}
@@ -196,6 +244,11 @@ function handleBusca(event) {
           </Toolbar>
         </AppBar>
       </Box>
+
+      <MenuEstoque
+        anchorEl={anchorElEstoque}
+        handleClosePopover={handleCloseEstoque}
+      />
     </>
   );
 }

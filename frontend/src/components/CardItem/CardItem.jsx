@@ -39,7 +39,7 @@ const style = {
 };
 
 // Componente que renderiza o card de um item/produto na listagem
-export default function CardItem({item}) {
+export default function CardItem({item, viewMode}) {
 
 const [open, setOpen] = React.useState(false);
 const handleOpen = () => setOpen(true);
@@ -86,103 +86,177 @@ const decrementarMutation = useMutation({
     }
 });
 
-  return (
-    <>
-      <Card className='container-card'
-        sx={{ 
-          display: 'flex',
-          backgroundColor: '#B5B5B5'
-         }}
-      >
-
-        <div className='container-card-int'>
-          {/* Imagem do Card */}
-              <div>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 151 }}
-                  image={
-                    item.foto ||
-                    ImagemProduct
-                  }
-                  alt={item.nome}
-                />
-              </div>
-
-              {/* Textos de título e descrição */}
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <div>
-                      <CardContent className='container-texto' sx={{ flex: '1 0 auto' }}>
-                        <Typography 
-                          className='title-product'
-                          component="div" 
-                          variant="h5">
-                          {item.nome}
-                        </Typography>
-                        <Typography
-                        className='description'
-                          variant="subtitle1"
-                          component="div"
-                          // sx={{ color: 'text.secondary' }}
-                        >
-                          <p>Quantidade: {" "} {item.quantidade_total}</p>
-                          <p>Duração do estoque: {" "} {item.duracao_restante} {" "} dias</p>
-                          <p>Categoria: {" "} {item.categoria_nome}</p>
-                          {item.link_compra &&(
-                            <a
-                              href={item.link_compra}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                            >
-                              Comprar
-                            </a>
-                          )}
-                          
-                        </Typography>
-                      </CardContent>
-                    </div>
-                </Box>
-          
-              <div>
-                <Box className='buttom-edit'>
-                  {/* Ícones de Editar Informações */}
-                  <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                      <Fab color="primary" aria-label="edit" onClick={handleOpen}>
-                          <EditIcon />
-                      </Fab>
-                  </Box>
-                {/* Ícone de adicionar */}
-                <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                    <Fab 
-                      color="secondary" 
-                      aria-label="add" 
-                      disabled={incrementarMutation.isPending}
-                      onClick={() =>
-                        incrementarMutation.mutate()}>
-                        <AddIcon />
-                    </Fab>
-                </Box>
-                {/* Ícone de Subtrair */}
-                <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
-                    <Fab 
-                      color="error" 
-                      aria-label="subtract" 
-                      disabled={decrementarMutation.isPending}
-                      onClick={() =>
-                        decrementarMutation.mutate()}>
-                        <RemoveIcon />
-                    </Fab>
-                </Box>
-              </Box>
-            </div>
+// Componente interno para os botões de ação (Reutilizável nas duas visões)
+    const ActionButtons = () => (
+        <div className="action-buttons">
+            <IconButton size="small" className="btn-edit" onClick={handleOpen}>
+                <EditIcon fontSize="small" />
+            </IconButton>
+            <IconButton 
+                size="small" 
+                className="btn-add" 
+                disabled={incrementarMutation.isPending}
+                onClick={() => incrementarMutation.mutate()}
+            >
+                <AddIcon fontSize="small" />
+            </IconButton>
+            <IconButton 
+                size="small" 
+                className="btn-remove" 
+                disabled={decrementarMutation.isPending}
+                onClick={() => decrementarMutation.mutate()}
+            >
+                <RemoveIcon fontSize="small" />
+            </IconButton>
         </div>
-      </Card>
+    );
 
-      <ModalEdit 
-        open={open} 
-        handleClose={handleClose} 
-        item={item}
-      />
-    </>
-  );
+    // Estrutura para visão Tradicional (Grid)
+    if (viewMode === 'grid') {
+        return (
+            <>
+                <div className="card-container-grid">
+                    <img 
+                        src={item.foto || ImagemProduct} 
+                        alt={item.nome} 
+                        className="card-image-grid"
+                    />
+                    <div className="card-content">
+                        <h3 className="card-title">{item.nome}</h3>
+                        <p className="card-text">Quantidade: {item.quantidade_total}</p>
+                        <p className="card-text">Tempo de duração: {item.duracao_restante} Dias</p>
+                        <p className="card-text">Categoria: {item.categoria_nome}</p>
+                        {item.link_compra && (
+                            <a href={item.link_compra} target='_blank' rel='noopener noreferrer' className="card-link">
+                                Link de compra
+                            </a>
+                        )}
+                    </div>
+                    <ActionButtons />
+                </div>
+                <ModalEdit open={open} handleClose={handleClose} item={item} />
+            </>
+        );
+    }
+
+    // Estrutura para visão em Lista
+    return (
+        <>
+            <div className="card-container-list">
+                <div className="list-col col-name">{item.nome}</div>
+                <div className="list-col col-qtd">Quantidade: {item.quantidade_total}</div>
+                <div className="list-col col-time">Duração: {item.duracao_restante} Dias</div>
+                <div className="list-col col-cat">Categoria: {item.categoria_nome}</div>
+                <div className="list-col col-link">
+                    {item.link_compra ? (
+                        <a href={item.link_compra} target='_blank' rel='noopener noreferrer' className="card-link">
+                            Link de compra
+                        </a>
+                    ) : "Sem link"}
+                </div>
+                <ActionButtons />
+            </div>
+            <ModalEdit open={open} handleClose={handleClose} item={item} />
+        </>
+    );
 }
+
+  // return (
+  //   <>
+  //     <Card className='container-card'
+  //       sx={{ 
+  //         display: 'flex',
+  //         backgroundColor: '#B5B5B5'
+  //        }}
+  //     >
+
+  //       <div className='container-card-int'>
+  //         {/* Imagem do Card */}
+  //             <div>
+  //               <CardMedia
+  //                 component="img"
+  //                 sx={{ width: 151 }}
+  //                 image={
+  //                   item.foto ||
+  //                   ImagemProduct
+  //                 }
+  //                 alt={item.nome}
+  //               />
+  //             </div>
+
+  //             {/* Textos de título e descrição */}
+  //                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+  //                   <div>
+  //                     <CardContent className='container-texto' sx={{ flex: '1 0 auto' }}>
+  //                       <Typography 
+  //                         className='title-product'
+  //                         component="div" 
+  //                         variant="h5">
+  //                         {item.nome}
+  //                       </Typography>
+  //                       <Typography
+  //                       className='description'
+  //                         variant="subtitle1"
+  //                         component="div"
+  //                         // sx={{ color: 'text.secondary' }}
+  //                       >
+  //                         <p>Quantidade: {" "} {item.quantidade_total}</p>
+  //                         <p>Duração do estoque: {" "} {item.duracao_restante} {" "} dias</p>
+  //                         <p>Categoria: {" "} {item.categoria_nome}</p>
+  //                         {item.link_compra &&(
+  //                           <a
+  //                             href={item.link_compra}
+  //                             target='_blank'
+  //                             rel='noopener noreferrer'
+  //                           >
+  //                             Comprar
+  //                           </a>
+  //                         )}
+                          
+  //                       </Typography>
+  //                     </CardContent>
+  //                   </div>
+  //               </Box>
+          
+  //             <div>
+  //               <Box className='buttom-edit'>
+  //                 {/* Ícones de Editar Informações */}
+  //                 <Box sx={{ '& > :not(style)': { m: 1 } }}>
+  //                     <Fab color="primary" aria-label="edit" onClick={handleOpen}>
+  //                         <EditIcon />
+  //                     </Fab>
+  //                 </Box>
+  //               {/* Ícone de adicionar */}
+  //               <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
+  //                   <Fab 
+  //                     color="secondary" 
+  //                     aria-label="add" 
+  //                     disabled={incrementarMutation.isPending}
+  //                     onClick={() =>
+  //                       incrementarMutation.mutate()}>
+  //                       <AddIcon />
+  //                   </Fab>
+  //               </Box>
+  //               {/* Ícone de Subtrair */}
+  //               <Box sx={{ '& > :not(style)' : { m: 1 }  }}>
+  //                   <Fab 
+  //                     color="error" 
+  //                     aria-label="subtract" 
+  //                     disabled={decrementarMutation.isPending}
+  //                     onClick={() =>
+  //                       decrementarMutation.mutate()}>
+  //                       <RemoveIcon />
+  //                   </Fab>
+  //               </Box>
+  //             </Box>
+  //           </div>
+  //       </div>
+  //     </Card>
+
+  //     <ModalEdit 
+  //       open={open} 
+  //       handleClose={handleClose} 
+  //       item={item}
+  //     />
+  //   </>
+  // );

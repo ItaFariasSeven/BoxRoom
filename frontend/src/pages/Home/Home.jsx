@@ -11,9 +11,16 @@ import { useQuery } from "@tanstack/react-query";
 import { listarItens, buscarDashboard } from "../../services/api";
 
 import { useSearchParams } from "react-router-dom";
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import Button from '@mui/material/Button';
+import { useViewMode } from '../../contexts/ViewModeContext';
+
 
 export default function Home() {
     const [searchParams] = useSearchParams();
+
+    const { viewMode, setViewMode } = useViewMode();
 
     // Buscar produtos para carregar na tela
     const {
@@ -80,21 +87,16 @@ export default function Home() {
     );
 
     return (
-        <main>
-            <DashBoardBar/>
-            <div className="detail-itens">
-                <TotalItens dashboard={dashboard}/>
-                <LowItens dashboard={dashboard}/>
-                <ValueStock dashboard={dashboard}/>
-            </div>
-            <ItensList />
-            <div className="cards-itens">
+        <main className="home-container">
+
+            {/* Apenas um mapeamento com as classes corretas baseadas no Contexto */}
+            <div className={viewMode === 'grid' ? "cards-itens" : "cards-itens-list"}>
                 {itensFiltrados.map((item) =>(
-                <div key={item.id}>
                     <CardItem
+                        key={item.id}
                         item={item}
+                        viewMode={viewMode} // Passando a prop pro card entender
                     />
-                </div>
                 ))}
             </div>
         </main>

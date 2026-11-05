@@ -1,0 +1,79 @@
+/* MenuEstoque.css */
+
+.estoque-menu-container {
+  width: 725px;
+  height: 160px;
+  background-color: #112C5A; 
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 10px;
+  align-items: center;
+  border: 1px solid #1e3a8a; /* Corresponde ao border-blue-900 */
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.estoque-menu-item {
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.2rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.estoque-menu-item:hover {
+  opacity: 0.8;
+}
+
+.estoque-menu-text {
+  height: 2.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+.estoque-menu-icon-wrapper {
+  width: 2rem;
+  height: 2rem;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Formas geométricas baseadas nos vetores do Figma */
+.icon-cadastrar {
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  left: 5.63px;
+  top: 5.63px;
+  outline: 2px solid white;
+  outline-offset: -1px;
+}
+
+.icon-visao {
+  width: 2.25rem;
+  height: 1.5rem;
+  position: absolute;
+  left: 3.75px;
+  top: 11.25px;
+  outline: 2px solid white;
+  outline-offset: -1px;
+}
+
+.icon-editar {
+  width: 1.75rem;
+  height: 1.75rem;
+  position: absolute;
+  left: 7.50px;
+  top: 8.28px;
+  outline: 2px solid white;
+  outline-offset: -1px;
+}
