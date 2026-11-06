@@ -212,7 +212,7 @@ const {data: categorias = []} = useQuery({queryKey:["categorias"], queryFn:lista
 
           <div className="container-info-product">
             {/* Área de imagem: mostra preview nova > foto atual do item > imagem padrão */}
-            <div>
+            <div className='alterar-image-product'>
               <img className='photo'
                 src={
                     previewFoto

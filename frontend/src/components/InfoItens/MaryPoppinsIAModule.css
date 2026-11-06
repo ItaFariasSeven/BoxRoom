@@ -1,0 +1,27 @@
+/* MaryPoppinsIAModule.css */
+.mary-poppins-container {
+    background-color: #1e40af; /* bg-blue-800 */
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border: 1px solid #3b82f6; /* Borda suave azul clara */
+}
+
+.mary-poppins-header {
+    background-color: #60a5fa; /* bg-blue-400 */
+    color: #ffffff;
+    text-align: center;
+    padding: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.25rem;
+    margin: 12px;
+    border-radius: 8px;
+}
+
+.mary-poppins-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}

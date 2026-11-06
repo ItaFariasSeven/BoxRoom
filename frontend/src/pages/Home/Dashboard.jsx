@@ -20,7 +20,7 @@ export default function Dashboard() {
     });
 
     if (isLoading) {
-        return <h2 style={{ color: 'white', padding: '20px' }}>Carregando dados do Dashboard...</h2>;
+        return <h2 style={{ color: '#1e40af', padding: '20px' }}>Carregando dados do Dashboard...</h2>;
     }
 
     // Tela de erro caso o Django falhe

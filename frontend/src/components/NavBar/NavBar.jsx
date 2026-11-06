@@ -22,7 +22,7 @@ import ModalInfoUsuario from '../Modaloptions/ModalInfoUsuario';
 import { useQuery } from "@tanstack/react-query";
 import { buscarPerfil } from "../../services/api";
 
-import { useSearchParams } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import imageBell from '../../assets/infoBar/bell.png';
 import imageArrow from '../../assets/infoBar/arrow-down.png';
@@ -82,12 +82,6 @@ export default function NavBar() {
   const [anchorElEstoque, setAnchorElEstoque] = React.useState(null);
   const handleOpenEstoque = (event) => setAnchorElEstoque(event.currentTarget);
   const handleCloseEstoque = () => setAnchorElEstoque(null);
-
-  const abrirModal = (tipo) => {
-    setModalAtivo(tipo);
-    handleCloseEstoque(); // Fecha o dropdown ao abrir o modal
-  };
-  const fecharModal = () => setModalAtivo(null);
 
   const {
     data: usuario
@@ -152,20 +146,29 @@ function handleBusca(event) {
                   alt='Notificações'
                   className='notificacoes-bell'
                 />
-                <Link style={{ color: 'inherit',textDecoration: 'none' }}>
-                  <p className='caminhos-paginas'>Produtos</p>
-                </Link>
+                {/* 1. Link Produtos */}
+                <NavLink to={'/produtos'} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {({ isActive }) => (
+                    <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Produtos</p>
+                  )}
+                </NavLink>
               </div>
 
-              <Link to={'/dashboard'} style={{ color: 'inherit',textDecoration: 'none' }}>
-                <p className='caminhos-paginas'>Dashboard</p>
-              </Link>
+              {/* 2. Link Dashboard */}
+              <NavLink to={'/dashboard'} style={{ color: 'inherit', textDecoration: 'none' }}>
+                {({ isActive }) => (
+                  <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Dashboard</p>
+                )}
+              </NavLink>
 
-              {/* Botão de Estoque com gatilho para o Popover */}
+              {/* 3. Botão de Estoque - SUA LÓGICA MANTIDA */}
               <div className='container-seta-arrow' onClick={handleOpenEstoque}>
-                <Link to={'/'} style={{ color: 'inherit',textDecoration: 'none' }}>
-                  <p className='caminhos-paginas'>Estoque</p>
-                </Link>
+                <NavLink to={'/'} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {({ isActive }) => (
+                    <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Estoque</p>
+                  )}
+                </NavLink>
+                
                 <img 
                   src={imageArrow}
                   alt='Flecha'
@@ -173,38 +176,6 @@ function handleBusca(event) {
                 />
               </div>
             </div>
-
-            {/* Espaçamento */}
-            {/* <Box sx={{ flexGrow: 1 }} /> */}
-            {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-
-            </Box> */}
-            {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box> */}
-
-              {/* Ícone de adicionar coisas ao estoque */}
-              {/* <Box sx={{ '& > :not(style)' : { m: 0.5 }  }}>
-                <Fab 
-                  color="error" 
-                  aria-label="add" 
-                  onClick={handleOpenOptions}
-                  sx={{
-                    '@media (max-width: 800px)':{
-                      width: 36,
-                      height: 36,
-                    }
-                  }}
-                >
-                    <AddIcon />
-                </Fab>
-              </Box> */}
 
               <img className='user'
                 src={

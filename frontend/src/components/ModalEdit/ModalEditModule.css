@@ -74,9 +74,18 @@
 
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 
     .container-modal{
         overflow-y: auto;
+    }
+    
+    .container-info-product{
+        display: flex;
+        text-align: center;
+    }
+
+    .alterar-image-product{
+        padding-bottom: 15px;
     }
 }

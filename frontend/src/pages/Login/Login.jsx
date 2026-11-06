@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { realizarLogin } from "../../services/api";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-
+import { loginComGoogle } from "../../services/api";
 
 const styleFormLogin = {
                 '& label':{
@@ -105,24 +105,36 @@ export default function Login() {
                         Login
                       </Button>
 
-                      <GoogleOAuthProvider clientId="SEU_CLIENT_ID_DO_GOOGLE">
-                          <GoogleLogin
-                            onSuccess={credentialResponse => {
-                              console.log("Token de login bem-sucedido:", credentialResponse);
+                    <GoogleOAuthProvider clientId="763202616838-gku3ugjukbopf0lb2j2c94r3pdm957t6.apps.googleusercontent.com">
+                        <GoogleLogin
+                            onSuccess={async credentialResponse => {
+                                try {
+                                    setErro("");
+                                    // Envia o token para o Django validar e logar o utilizador
+                                    const resposta = await loginComGoogle(credentialResponse.credential);
+
+                                    console.log("Login com Google bem-sucedido:", resposta);
+
+                                    // Salva o token de acesso (se aplicável ao seu projeto) e redireciona
+                                    localStorage.setItem('access_token', resposta.access);
+                                    navigate("/");
+                                } catch (error) {
+                                    console.error(error);
+                                    setErro("Falha ao autenticar com o Google no servidor.");
+                                }
                             }}
                             onError={() => {
-                              console.log('Falha no Login');
+                                setErro('Falha na comunicação com o Google.');
                             }}
-                            // Você pode customizar o tema e o formato nativamente através de propriedades
-                            theme="outline" // Opções: outline, filled_blue, filled_black
-                            shape="pill" // Opções: rectangular, pill, circle, square
-                            size="large"        // Opções: small, medium, large
-                          />
-                        </GoogleOAuthProvider>
+                            theme="outline" 
+                            shape="pill" 
+                            size="large"
+                        />
+                    </GoogleOAuthProvider>
                   </div>
 
                     <div className="conatiner-esqueci-senha">
-                        <Link to="/cadastro" style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link to="/recuperarsenha" style={{ color: 'inherit', textDecoration: 'none' }}>
                             <p>Não lembra a <u>senha?</u></p>
                         </Link>
                     

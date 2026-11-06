@@ -4,6 +4,8 @@ import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro'
 import NavBar from './components/NavBar/NavBar';
 import Dashboard from './pages/Home/Dashboard';
+import Produtos from './pages/Home/Produtos';
+import RecuperarSenha from './pages/Cadastro/RecuperarSenha';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import { ViewModeProvider } from './contexts/ViewModeContext'; 
@@ -13,7 +15,8 @@ function App() {
   const location = useLocation();
   const mostrarNavBar = 
     location.pathname !== "/login" &&
-    location.pathname !== "/cadastro" ;
+    location.pathname !== "/cadastro" &&
+    location.pathname !== "/recuperarsenha" ;
 
   return(
     <>
@@ -32,6 +35,12 @@ function App() {
               // </PrivateRoute>
             }/>
 
+            <Route path="/recuperarsenha" element={
+              // <PrivateRoute>
+              <RecuperarSenha />
+              // </PrivateRoute>
+            }/>
+
             <Route path="/" element={
               <PrivateRoute>
                 <Home />
@@ -41,6 +50,12 @@ function App() {
             <Route path="/dashboard" element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            }/>
+
+            <Route path="/produtos" element={
+              <PrivateRoute>
+                <Produtos />
               </PrivateRoute>
             }/>
           </Routes>

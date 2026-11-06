@@ -77,3 +77,11 @@
   outline: 2px solid white;
   outline-offset: -1px;
 }
+
+@media (max-width: 900px) {
+    .estoque-menu-container{
+        display: grid;
+        grid-template-columns: 1fr;
+        height: 250px;
+    }
+}

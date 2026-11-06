@@ -399,3 +399,36 @@ export async function realizarLogout() {
     csrfToken = null;
     return dados;
 }
+
+export async function solicitarCodigoRecuperacao(email) {
+    const response = await fetch('http://localhost:8000/api/auth/solicitar-codigo/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    });
+    if (!response.ok) throw new Error('Falha ao solicitar código.');
+    return response.json();
+}
+
+export async function redefinirNovaSenha(email, codigo, nova_senha) {
+    const response = await fetch('http://localhost:8000/api/auth/redefinir-senha/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, codigo, nova_senha })
+    });
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Erro ao redefinir a senha.');
+    }
+    return response.json();
+}
+
+export async function loginComGoogle(credential) {
+    const response = await fetch('http://localhost:8000/api/auth/google/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential })
+    });
+    if (!response.ok) throw new Error('Erro ao autenticar com o Google.');
+    return response.json();
+}

@@ -1,0 +1,46 @@
+/* ProdutosModule.css */
+.produtos-layout {
+    display: grid;
+    grid-template-columns: 450px 1fr; /* Coluna esquerda com 320px, direita ocupa o resto */
+    gap: 15px;
+    padding: 10px;
+    height: 100vh;
+    background-color: #0f172a; /* Fundo escuro padrão do sistema */
+    box-sizing: border-box;
+}
+
+.produtos-col-esquerda {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.produtos-valuestock-wrapper {
+    flex-shrink: 0; /* Impede que os cards de valor encolham */
+}
+
+.produtos-lowitens-wrapper {
+    flex: 1; /* Faz a lista de itens crescer para preencher o resto da altura da coluna */
+    min-height: 0; /* Necessário para a rolagem interna (scroll) funcionar sem quebrar o grid */
+}
+
+.produtos-col-direita {
+    height: 100%;
+}
+
+/* Responsividade para telas menores (Tablets e Celulares) */
+@media (max-width: 1024px) {
+    .produtos-layout {
+        grid-template-columns: 1fr; /* Empilha tudo em uma única coluna */
+        height: auto;
+    }
+    
+    .produtos-lowitens-wrapper {
+        min-height: 350px; /* Garante um tamanho mínimo para a lista no celular */
+    }
+    
+    .produtos-col-direita {
+        min-height: 400px;
+    }
+}

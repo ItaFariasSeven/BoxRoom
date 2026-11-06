@@ -92,3 +92,9 @@
 .conatiner-com-cadastro p{
     color: #fff;
 }
+
+@media (max-width: 900px) {
+    .input-form-cadastro{
+        background-color: #0000809c
+    }
+}

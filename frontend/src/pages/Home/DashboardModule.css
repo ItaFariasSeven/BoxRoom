@@ -4,9 +4,9 @@
     grid-template-columns: 1fr 1fr 0.8fr; 
     /* Linha de cima tem tamanho fixo, linha de baixo preenche o restante */
     grid-template-rows: 180px 1fr; 
-    gap: 20px;
-    padding: 20px;
-    height: calc(100vh - 80px); /* Desconta o tamanho aproximado da NavBar */
+    gap: 15px;
+    padding: 10px;
+    height: 100vh; /* Desconta o tamanho aproximado da NavBar */
     background-color: #0f172a; /* Fundo principal escuro (slate-900) */
     box-sizing: border-box;
 }

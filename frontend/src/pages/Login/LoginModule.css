@@ -115,10 +115,28 @@
     color: #fff;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
     .container-login{
         display: flex;
         display: flex;
         justify-content: center;
+    }
+
+    .input-form-login{
+        background-color: #0000809c ;
+    }
+
+    .conatiner-esqueci-senha{
+        background-color: #0000802f;
+        padding: 0 10px;
+        font-weight: bold;
+        border-radius: 100px;
+    }
+    
+    .conatiner-sem-cadastro{
+        /* background-color: #00008050; */
+        /* padding: 0 10px; */
+        font-weight: bold;
+        border-radius: 100px;
     }
 }

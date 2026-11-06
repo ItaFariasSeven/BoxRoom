@@ -1,0 +1,118 @@
+/* RecuperarSenhaModule.css */
+.container-recuperar {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    min-height: 100vh;
+    background-color: #000080;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.container-title-boxroom {
+    display: flex;
+    justify-content: start;
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.title-boxroom {
+    font-family: "Irish Grover", system-ui;
+    font-weight: bold;
+    font-size: 80px;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    letter-spacing: 7.5px;
+}
+
+.container-lateral-recuperar {
+    display: grid;
+    grid-template-rows: 1fr 4fr 1fr;
+    padding: 0 20px;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+.form-recuperar {
+    display: flex;
+    gap: 25px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.input-form-recuperar {
+    width: min(400px, 85vw);
+}
+
+.button-recuperar {
+    width: min(250px, 70vw);
+    border-radius: 15px !important;
+    color: #000080 !important;
+    background-color: #fff !important;
+    margin-top: 10px !important;
+}
+
+.button-recuperar:hover {
+    transition: all ease 1s;
+    transform: scale(1.05);
+    border-radius: 40px !important;
+}
+
+.instrucao-texto {
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    text-align: left;
+    width: min(400px, 85vw);
+    margin-bottom: 10px !important;
+    line-height: 1.5;
+}
+
+.container-voltar-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container-voltar-login p {
+    color: #fff;
+    transition: opacity 0.3s;
+}
+
+.container-voltar-login p:hover {
+    opacity: 0.8;
+}
+
+/* Responsividade (caso seja acessado no celular) */
+@media (max-width: 900px) {
+    .container-recuperar {
+        grid-template-columns: 1fr; /* Esconde a imagem e deixa só o form */
+    }
+    
+    .title-boxroom {
+        font-size: 60px;
+        text-align: center;
+    }
+    
+    .container-title-boxroom {
+        justify-content: center;
+    }
+
+    .input-form-recuperar{
+        background-color: #0000809c;
+    }
+    
+    .instrucao-texto{
+        background-color: #0000809c;
+    }
+}

@@ -5,7 +5,7 @@
     justify-content: space-between;
     background-color: #1e40af;
     border-radius: 10px;
-    padding: 16px 24px;
+    padding: 12px 25px;
     height: 100%;
     color: #ffffff;
     box-sizing: border-box;
@@ -31,7 +31,14 @@
 }
 
 .grafic-category {
-    width: 160px;
-    height: 140px;
+    width: 220px;
+    height: 220px;
     position: relative;
+    right: 50px;
+}
+
+@media (max-width: 900px) {
+    .grafic-category{
+        left: 15px;
+    }
 }
