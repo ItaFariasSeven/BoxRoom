@@ -4,6 +4,9 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth.models import User
+from django.utils import timezone
+import datetime
 import math
 
 # Create your models here.
@@ -75,4 +78,14 @@ class Perfil(models.Model):
 
     def __str__(self):
         return f"Perfil de {self.usuario}"
-    
+
+class TokenRecuperacao(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    codigo = models.CharField(max_length=6)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    usado = models.BooleanField(default=False)
+
+    def esta_valido(self):
+        # Validade de 15 minutos
+        expiracao = self.criado_em + datetime.timedelta(minutes=15)
+        return not self.usado and timezone.now() < expiracao

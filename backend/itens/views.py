@@ -24,6 +24,19 @@ from django.utils import timezone
 from datetime import timedelta
 from django.middleware.csrf import get_token
 
+
+import random
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+# Dica de Sênior: Na vida real, crie um model "CodigoRecuperacao" no banco para salvar 
+# o código associado ao usuário com validade de 15 minutos. 
+# Para este exemplo, usaremos o cache do Django para simplificar.
+from django.core.cache import cache
+from rest_framework_simplejwt.tokens import RefreshToken
+
 # Create your views here.
 # Endpoint que gera e retorna o token CSRF para o frontend usar em requisições POST
 @ensure_csrf_cookie
@@ -661,3 +674,69 @@ def recalcular_duracao(item):
             +
             timedelta(days=dias)
         )
+
+@api_view(['POST'])
+def solicitar_codigo(request):
+    email = request.data.get('email')
+    try:
+        user = User.objects.get(email=email)
+        # Gera um código de 6 dígitos
+        codigo = str(random.randint(100000, 999999))
+        
+        # Salva no cache por 15 minutos (900 segundos)
+        cache.set(f'recuperacao_{email}', codigo, 900)
+        
+        # Dispara o e-mail
+        send_mail(
+            'Código de Recuperação - BoxRoom',
+            f'Olá {user.first_name}, seu código de recuperação é: {codigo}',
+            'seu-email-do-projeto@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+        return Response({'message': 'Código enviado com sucesso!'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        # Retornamos sucesso mesmo se não existir para não vazar quais e-mails estão no BD (Segurança)
+        return Response({'message': 'Se o e-mail existir, o código foi enviado.'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def redefinir_senha(request):
+    email = request.data.get('email')
+    codigo_digitado = request.data.get('codigo')
+    nova_senha = request.data.get('nova_senha')
+
+    codigo_salvo = cache.get(f'recuperacao_{email}')
+
+    if codigo_salvo and codigo_salvo == codigo_digitado:
+        user = User.objects.get(email=email)
+        user.set_password(nova_senha) # Criptografa e salva a nova senha no BD
+        user.save()
+        cache.delete(f'recuperacao_{email}') # Invalida o código após o uso
+        return Response({'message': 'Senha alterada com sucesso!'}, status=status.HTTP_200_OK)
+    
+    return Response({'error': 'Código inválido ou expirado.'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def google_login_view(request):
+    token = request.data.get('credential')
+    try:
+        # Valida o token usando o Client ID do Google
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), "COLOQUE_SEU_CLIENT_ID_AQUI.apps.googleusercontent.com")
+
+        email = idinfo['email']
+        nome = idinfo.get('name', 'Usuário Google')
+
+        # Verifica se o utilizador já existe no banco, senão cria um novo
+        user, created = User.objects.get_or_create(email=email, defaults={'username': email, 'first_name': nome})
+
+        # Gera o token de acesso da sua aplicação (exemplo com SimpleJWT)
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'message': 'Login com Google realizado com sucesso!'
+        }, status=status.HTTP_200_OK)
+
+    except ValueError:
+        return Response({'error': 'Token do Google inválido.'}, status=status.HTTP_400_BAD_REQUEST)
