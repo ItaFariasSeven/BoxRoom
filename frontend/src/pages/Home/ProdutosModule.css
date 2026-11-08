@@ -2,10 +2,10 @@
 .produtos-layout {
     display: grid;
     grid-template-columns: 450px 1fr; /* Coluna esquerda com 320px, direita ocupa o resto */
-    gap: 15px;
+    gap: 10px;
     padding: 10px;
     height: 100vh;
-    background-color: #0f172a; /* Fundo escuro padrão do sistema */
+    background-color: var(--backgroundNavBar); /* Fundo escuro padrão do sistema */
     box-sizing: border-box;
 }
 

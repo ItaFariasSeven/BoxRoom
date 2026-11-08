@@ -6,7 +6,8 @@ import Modal from '@mui/material/Modal';
 
 import './ModalInfoUsuarioModule.css';
 import ImagemProduct from '../../assets/Nav/user.png'
-import { InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
+import { InputLabel, MenuItem, Select, TextField, FormControl, Switch, FormControlLabel } from '@mui/material';
+import { useThemeMode } from '../../contexts/ThemeModeContext';
 import { useState, useEffect } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -29,6 +30,8 @@ export default function ModalInfoUsuario({ open, handleClose }) {
 
   const [fotoSelecionada, setFotoSelecionada] = useState(null); // arquivo escolhido para upload
   const [previewFoto, setPreviewFoto] = useState(null); // URL local para pré-visualização
+
+  const { mode, toggleColorMode } = useThemeMode();
 
   // Busca os dados do perfil do usuário (nome, email, foto)
   const {
@@ -222,21 +225,28 @@ const logoutMutation =
       open={open} 
       onClose={handleClose} 
     >
-        <Box className='container-modal-info-usuario'>
+
+        <Box 
+            className='container-modal-info-usuario' 
+            sx={{
+                backgroundColor: 'var(--backgroundModal)', 
+                color: 'var(--textModal)'
+            }}
+        >
            <div className='container-title'>
              <h1 className='title-modal'>Informações do Usuário</h1>
            </div>
 
-            {/* Exibe mensagem de erro, se houver */}
-           {erro && (
+        {/* Exibe mensagem de erro, se houver */}
+        {erro && (
+           <Alert
+               severity="error"
+               icon={false}
+           >
+               {erro}
+           </Alert>
+         )}
 
-              <Alert
-                  severity="error"
-                  icon={false}
-              >
-                  {erro}
-              </Alert>
-            )}
 
             {/* Enquanto os dados do perfil estão carregando, mostra um texto simples */}
             {isLoading ?(
@@ -303,6 +313,19 @@ const logoutMutation =
                           label='Nome'
                           value={nome}
                           onChange={(event) => setNome(event.target.value)}
+                          sx={{
+                              '& .MuiInputBase-input': {
+                                  color: 'var(--textModal)',
+                              },
+                          
+                              '& .MuiInputLabel-root': {
+                                  color: 'var(--textModal)',
+                              },
+                          
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'var(--textModal)',
+                              },
+                          }}
                           />
     
                         <TextField
@@ -310,6 +333,19 @@ const logoutMutation =
                           type="password"
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
+                          sx={{
+                              '& .MuiInputBase-input': {
+                                  color: 'var(--textModal)',
+                              },
+                          
+                              '& .MuiInputLabel-root': {
+                                  color: 'var(--textModal)',
+                              },
+                          
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'var(--textModal)',
+                              },
+                          }}
                         />
     
                         {/* E-mail é somente leitura, pois não pode ser alterado pelo usuário */}
@@ -318,16 +354,31 @@ const logoutMutation =
                           label='E-mail'
                           value={usuario?.email ?? ""}
                           InputProps={{readOnly: true}}
+                          sx={{
+                              '& .MuiInputBase-input': {
+                                  color: 'var(--textModal)',
+                              },
+                          
+                              '& .MuiInputLabel-root': {
+                                  color: 'var(--textModal)',
+                              },
+                          
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'var(--textModal)',
+                              },
+                          }}
                           />
     
                         <div className='conatiner-button-user'>
                             <Button
-                            type='button'
-                            variant='contained'
-                            color='error'
-                            disabled={logoutMutation.isPending}
-                            onClick={() => logoutMutation.mutate()}
-                          >
+                              type='button'
+                              variant='contained'
+                              disabled={logoutMutation.isPending}
+                              onClick={() => logoutMutation.mutate()}
+                              sx={{
+                                backgroundColor: 'var(--buttonDeletCount)'
+                              }}
+                            >
                             {
                               logoutMutation.isPending
                               ? "Saindo"
@@ -340,6 +391,9 @@ const logoutMutation =
                             type='submit'
                             variant='contained'
                             disabled={atualizarMutation.isPending}
+                            sx={{
+                              backgroundColor: 'var(--buttonSave)'
+                            }}
                           >
                             {
                                 atualizarMutation.isPending 

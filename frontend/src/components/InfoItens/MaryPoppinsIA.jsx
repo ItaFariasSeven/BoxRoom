@@ -10,7 +10,7 @@ export default function MaryPoppinsIA() {
             <div className="mary-poppins-body">
                 {/* O conteúdo futuro da inteligência artificial virá aqui */}
                 <p style={{ color: '#94a3b8', textAlign: 'center', marginTop: '20px' }}>
-                    Área reservada para a IA...
+                    Área reservada para a IA Chamada Marry Poppins. Ainda em desenvolvimento...
                 </p>
             </div>
         </div>

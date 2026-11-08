@@ -6,38 +6,52 @@ import './BarChartCategoryModule.css';
 export default function BarChartCategory({ dashboard }) {
     const chartRef = useRef(null);
 
-    useEffect(() => {
-        if (!chartRef.current) return;
+    
+useEffect(() => {
+    if (!chartRef.current) return;
 
-        const categorias = dashboard?.categorias || [];
-        const labels = categorias.map(c => c.categoria__nome || 'Categoria');
-        const valores = categorias.map(c => c.quantidade || 0);
+    const container = chartRef.current.closest('.barchart-container');
+    const canvas = chartRef.current;
 
-        // Paleta de cores fiável ao Figma
-        const cores = [
-            '#a855f7', // 1. Roxo (Original)
-            '#c084fc', // 2. Roxo Claro (Original)
-            '#22d3ee', // 3. Ciano (Original)
-            '#38bdf8', // 4. Azul Celeste (Original)
-            '#818cf8', // 5. Índigo (Original)
-            '#34d399', // 6. Esmeralda 400
-            '#4ade80', // 7. Verde 400
-            '#a3e635', // 8. Lima 400
-            '#facc15', // 9. Amarelo 400
-            '#fbbf24', // 10. Âmbar 400
-            '#fb923c', // 11. Laranja 400
-            '#f87171', // 12. Vermelho Suave 400
-            '#fb7185', // 13. Rose 400
-            '#f472b6', // 14. Pink 400
-            '#e879f9', // 15. Fúcsia Claro 400
-            '#d946ef', // 16. Fúcsia 500
-            '#8b5cf6', // 17. Violeta 500
-            '#60a5fa', // 18. Azul Clássico 400
-            '#0ea5e9', // 19. Azul Céu Escuro 500
-            '#2dd4bf'  // 20. Teal / Verde Água 400
-        ];
+    const categorias = dashboard?.categorias || [];
+    const labels = categorias.map(c => c.categoria__nome || 'Categoria');
+    const valores = categorias.map(c => c.quantidade || 0);
 
-        const chart = new Chart(chartRef.current, {
+    const cores = [
+        '#a855f7', '#c084fc', '#22d3ee', '#38bdf8',
+        '#818cf8', '#34d399', '#4ade80', '#a3e635',
+        '#facc15', '#fbbf24', '#fb923c', '#f87171',
+        '#fb7185', '#f472b6', '#e879f9', '#d946ef',
+        '#8b5cf6', '#60a5fa', '#0ea5e9', '#2dd4bf'
+    ];
+
+    let chart = null;
+    let ultimaCorTexto = null;
+
+    const desenharGrafico = () => {
+
+        // Recupera a variável CSS do tema atual
+        const estilos = getComputedStyle(container);
+
+        const corTexto =
+            estilos.getPropertyValue('--textGlobal').trim()
+            || estilos.color
+            || '#000000';
+
+        console.log('Cor da variável --textGlobal:', corTexto);
+
+        // Só recria o gráfico quando a cor realmente mudar
+        if (chart && corTexto === ultimaCorTexto) return;
+
+        ultimaCorTexto = corTexto;
+
+        // Destrói a instância anterior
+        if (chart) {
+            chart.destroy();
+        }
+
+        // Cria o gráfico com a cor atual
+        chart = new Chart(canvas, {
             type: 'bar',
             data: {
                 labels,
@@ -53,35 +67,76 @@ export default function BarChartCategory({ dashboard }) {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false }
+                    legend: {
+                        display: false
+                    }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
-                        ticks: { color: '#ffffff' },
-                        title: { display: true, text: 'Quantidade', color: '#ffffff' }
+                        grid: {
+                            color: 'rgba(128, 128, 128, 0.15)'
+                        },
+                        ticks: {
+                            color: corTexto
+                        },
+                        title: {
+                            display: true,
+                            text: 'Quantidade',
+                            color: corTexto
+                        }
                     },
                     x: {
-                        grid: { display: false },
-                        ticks: { color: '#ffffff' },
-                        title: { display: true, text: 'Categoria', color: '#ffffff' }
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: corTexto
+                        },
+                        title: {
+                            display: true,
+                            text: 'Categoria',
+                            color: corTexto
+                        }
                     }
                 }
             }
         });
+    };
 
-        return () => chart.destroy();
-    }, [dashboard]);
+    // Desenha inicialmente
+    desenharGrafico();
+
+    // Observa alterações nas classes e estilos do documento
+    const observador = new MutationObserver(() => {
+        desenharGrafico();
+    });
+
+    observador.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme'],
+        subtree: true
+    });
+
+    return () => {
+        observador.disconnect();
+
+        if (chart) {
+            chart.destroy();
+        }
+    };
+
+}, [dashboard]);
+
 
     return (
         <div className="barchart-container">
             <div className="barchart-header">
                 <span className="barchart-title">Ítens por categoria</span>
-                <div className="barchart-dropdown">
+                {/* <div className="barchart-dropdown">
                     <span>Estoque</span>
                     <span className="arrow-down">▼</span>
-                </div>
+                </div> */}
             </div>
             
             <div className="canvas-wrapper">

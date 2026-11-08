@@ -1,12 +1,12 @@
 /* LowItensModule.css */
 .lowitens-container {
-    background-color: #1e40af;
+    background-color: var(--backgroundInfoItens);
     border-radius: 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    color: #ffffff;
+    color: var(--textGlobal);
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
@@ -14,7 +14,7 @@
 .lowitens-header {
     display: flex;
     align-items: center;
-    background-color: #dc2626;
+    background-color: var(--headerRed);
     padding: 10px 16px;
     gap: 16px;
 }
@@ -48,15 +48,15 @@
 }
 
 .item-name {
-    color: #ffffff;
+    color: var(--textGlobal);
 }
 
 .item-duration {
-    color: #e2e8f0;
+    color: var(--textDuracaoDias);
 }
 
 .lowitens-empty {
     text-align: center;
-    color: #94a3b8;
+    color: var(--textNenhumItemEncontrado);
     margin-top: 20px;
 }

@@ -1,17 +1,11 @@
-:root {
-    --card-bg: #1e40af; 
-    --text-color: #ffffff;
-    --border-radius: 10px;
-}
-
 .card-container-grid {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius);
+    background-color: var(--backgroundCardItem);
+    border-radius: 10px;
     padding: 16px;
     display: flex;
     align-items: center;
     gap: 20px;
-    color: var(--text-color);
+    color: var(--textGlobal);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 }
@@ -49,7 +43,7 @@
 }
 
 .card-link {
-    color: #93c5fd; /* Azul claro para contraste */
+    color: var(--linkCardItem); /* Azul claro para contraste */
     text-decoration: none;
     font-size: 0.9rem;
 }
@@ -62,14 +56,14 @@
    ESTILO VISÃO LISTA
 ========================================= */
 .card-container-list {
-    background-color: var(--card-bg);
+    background-color: var(--backgroundCardItem);
     border-radius: 8px;
     padding: 12px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    color: var(--text-color);
+    color: var(--textGlobal);
     font-family: 'Inter', sans-serif;
 }
 
@@ -104,7 +98,7 @@
 
 /* Customizando os icon buttons do MUI para ficarem brancos com borda */
 .action-buttons .MuiIconButton-root {
-    color: white !important;
+    color: var(--textGlobal) !important;
     border: 1px solid rgba(255, 255, 255, 0.5) !important;
     background-color: rgba(0, 0, 0, 0.1) !important;
 }

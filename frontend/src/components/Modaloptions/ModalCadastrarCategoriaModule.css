@@ -5,10 +5,10 @@
     height: 80%;
     transform: translate(-50%, -50%);
     position: absolute;
-    background-color: #fff;
-    border: 2px solid #000;
+    background-color: var(--backgroundModal);
+    border: 2px solid var(--borderModal);
     border-radius: 5px;;
-    box-shadow: 2px 5px 5px black;
+    box-shadow: 2px 5px 5px var(--borderModal);
     padding: 2px;
     top: 50%;
     left: 50%;
@@ -22,6 +22,7 @@
 .title-modal{
     font-size: 35px;
     text-align: center;
+    color: var(--textModal);
 }
 
 .form-add{

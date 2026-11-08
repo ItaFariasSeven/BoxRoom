@@ -9,6 +9,8 @@ import RecuperarSenha from './pages/Cadastro/RecuperarSenha';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import { ViewModeProvider } from './contexts/ViewModeContext'; 
+import { ThemeModeProvider } from './contexts/ThemeModeContext';
+import './index.css';
 
 function App() {
 
@@ -20,46 +22,48 @@ function App() {
 
   return(
     <>
-      <ViewModeProvider>
-        {mostrarNavBar && <NavBar />}
-          <Routes>
-            <Route path="/login" element={
-              // <PrivateRoute>
-              <Login />
-              // {/* </PrivateRoute> */}
-            }/>
+      <ThemeModeProvider>
+        <ViewModeProvider>
+          {mostrarNavBar && <NavBar />}
+            <Routes>
+              <Route path="/login" element={
+                // <PrivateRoute>
+                <Login />
+                // {/* </PrivateRoute> */}
+              }/>
 
-            <Route path="/cadastro" element={
-              // <PrivateRoute>
-              <Cadastro />
-              // </PrivateRoute>
-            }/>
+              <Route path="/cadastro" element={
+                // <PrivateRoute>
+                <Cadastro />
+                // </PrivateRoute>
+              }/>
 
-            <Route path="/recuperarsenha" element={
-              // <PrivateRoute>
-              <RecuperarSenha />
-              // </PrivateRoute>
-            }/>
+              <Route path="/recuperarsenha" element={
+                // <PrivateRoute>
+                <RecuperarSenha />
+                // </PrivateRoute>
+              }/>
 
-            <Route path="/" element={
-              <PrivateRoute>
-                <Home />
-              </PrivateRoute>
-            }/>
+              <Route path="/" element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }/>
 
-            <Route path="/dashboard" element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }/>
+              <Route path="/dashboard" element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }/>
 
-            <Route path="/produtos" element={
-              <PrivateRoute>
-                <Produtos />
-              </PrivateRoute>
-            }/>
-          </Routes>
-      </ViewModeProvider>
+              <Route path="/produtos" element={
+                <PrivateRoute>
+                  <Produtos />
+                </PrivateRoute>
+              }/>
+            </Routes>
+        </ViewModeProvider>
+      </ThemeModeProvider>
     </>
   )
 }

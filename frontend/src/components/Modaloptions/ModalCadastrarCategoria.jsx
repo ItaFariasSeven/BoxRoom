@@ -71,6 +71,19 @@ export default function ModalCadastrarCategoria({ open, handleClose }) {
                   label='Nome da Categoria'
                   value={nome}
                   onChange={(event) => setNome(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                   />
 
                 <TextField
@@ -79,11 +92,27 @@ export default function ModalCadastrarCategoria({ open, handleClose }) {
                   label='Descrição'
                   value={descricao}
                   onChange={(event) => setDescricao(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                 />
 
               <Button
                 type='submit'
                 variant='contained'
+                sx={{
+                  backgroundColor: 'var(--buttonSave)'
+                }}
               >
                 Salvar
               </Button>

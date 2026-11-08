@@ -4,7 +4,7 @@
     gap: 16px;
     padding: 16px;
     min-height: 100vh;
-    background-color: #0A2753;
+    background-color: var(--backgroundNavBar);
 }
 
 .detail-itens {

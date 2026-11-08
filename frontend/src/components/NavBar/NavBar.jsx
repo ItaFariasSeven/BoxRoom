@@ -28,6 +28,8 @@ import imageBell from '../../assets/infoBar/bell.png';
 import imageArrow from '../../assets/infoBar/arrow-down.png';
 import MenuEstoque from '../Modaloptions/MenuEstoque';
 
+import ThemeToggleButton from '../Button/ThemeToggleButton';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -128,24 +130,26 @@ function handleBusca(event) {
   return (
     <>
       <Box sx={{ flexGrow: 1 }} >
-        <AppBar position="static" sx={{ backgroundColor: '#112C5A' }} >
+        <AppBar position="static" sx={{ backgroundColor: 'var(--backgroundModalGeneral)' }} >
           <Toolbar sx={{ 
             display: 'grid', 
-            gridTemplateColumns: '1fr 5fr 0.2fr',
+            gridTemplateColumns: '1fr 0.1fr 5fr 0.2fr',
             }}>
 
             <div className="container-title-boxroom-nav">
                 <h1 className="title-boxroom-nav">BoxRoom</h1>
             </div>
 
+            <ThemeToggleButton/>
+
             {/* paravras de pesquisa: produtos, dashboard, estoque */}
             <div className='barra-pesquisa'>
               <div className='container-notificacoes-bell'>
-                <img 
+                {/* <img 
                   src={imageBell}
                   alt='Notificações'
                   className='notificacoes-bell'
-                />
+                /> */}
                 {/* 1. Link Produtos */}
                 <NavLink to={'/produtos'} style={{ color: 'inherit', textDecoration: 'none' }}>
                   {({ isActive }) => (
@@ -165,15 +169,15 @@ function handleBusca(event) {
               <div className='container-seta-arrow' onClick={handleOpenEstoque}>
                 <NavLink to={'/'} style={{ color: 'inherit', textDecoration: 'none' }}>
                   {({ isActive }) => (
-                    <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Estoque</p>
+                    <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Estoque v</p>
                   )}
                 </NavLink>
                 
-                <img 
+                {/* <img 
                   src={imageArrow}
                   alt='Flecha'
                   className='seta-arrow'
-                />
+                /> */}
               </div>
             </div>
 

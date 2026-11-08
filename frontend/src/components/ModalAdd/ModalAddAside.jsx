@@ -223,11 +223,29 @@ const criarMutation =
                   label='Nome do Produto'
                   value={nome}
                   onChange={(event) => setNome(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                   />
 
                 {/* Select de categoria, populado com os dados vindos da API */}
                 <FormControl required fullWidth>
-                    <InputLabel id='categoria-label'>
+                    <InputLabel 
+                      id='categoria-label'
+                      sx={{
+                        color: 'var(--textModal)'
+                      }}
+                    >
                         Categoria
                     </InputLabel>
                     <Select
@@ -235,11 +253,39 @@ const criarMutation =
                       label='Categoria'
                       value={categoria}
                       onChange={(event) => setCategoria(event.target.value)}
+                      sx={{
+                          '& .MuiInputBase-input': {
+                              color: 'var(--textModal)',
+                          },
+                        
+                          '& .MuiInputLabel-root': {
+                              color: 'var(--textModal)',
+                          },
+                        
+                          '& .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'var(--textModal)',
+                          },
+                      }}
                     >
                       {categorias.map((categoria) =>(
                       <MenuItem
                         key={categoria.id}
                         value={categoria.id}
+                        sx={{
+                          color: 'var(--textModal)',
+
+                            '&.Mui-selected': {
+                              color: 'var(--backgroundModal)',
+                            },
+                          
+                            '&.Mui-selected:hover': {
+                              color: 'var(--textModal)',
+                            },
+                            
+                            '&.:hover':{
+                              color: 'var(--textModal)',
+                            },
+                        }}
                       >
                         {categoria.nome}
                       </MenuItem>
@@ -253,11 +299,37 @@ const criarMutation =
                   type='number'
                   value={valorUnitario}
                   onChange={(event) => setValorUnitario(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                 />
                 <TextField
                   label='Link de Compra'
                   value={linkCompra}
                   onChange={(event) => setLinkCompra(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                   />
                 <TextField
                   required
@@ -269,23 +341,65 @@ const criarMutation =
                   }}
                   value={quantidadeTotal}
                   onChange={(event) => setQuantidadeTotal(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                   />
                 <TextField
                   label='Quantidade Mínima'
                   type='number'
                   value={quantidadeMinima}
                   onChange={(event) => setQuantidadeMinima(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                   />
                 <TextField
                   label='Tempo de Duração em Dias'
                   type='number'
                   value={tempoDuracaoEmDias}
                   onChange={(event) => setTempoDuracaoEmDias(event.target.value)}
+                  sx={{
+                      '& .MuiInputBase-input': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiInputLabel-root': {
+                          color: 'var(--textModal)',
+                      },
+                    
+                      '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'var(--textModal)',
+                      },
+                  }}
                 />
 
               <Button
                 type='submit'
                 variant='contained'
+                sx={{
+                  backgroundColor: 'var(--buttonSave)'
+                }}
               >
                 Salvar
               </Button>

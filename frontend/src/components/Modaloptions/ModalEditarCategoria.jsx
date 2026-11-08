@@ -123,7 +123,11 @@ function handleSelecionarCategoria(event) {
 
                 {/* Select para escolher qual categoria será editada/excluída */}
                 <FormControl fullWidth>
-                    <InputLabel id='categoria-label'>
+                    <InputLabel id='categoria-label'
+                        sx={{
+                            color: 'var(--textModal)',
+                        }}    
+                    >
                         Categoria
                     </InputLabel>
                     <Select
@@ -131,6 +135,19 @@ function handleSelecionarCategoria(event) {
                       label='Categoria'
                       value={categoria}
                       onChange={handleSelecionarCategoria}
+                      sx={{
+                            '& .MuiInputBase-input': {
+                                color: 'var(--textModal)',
+                            },
+                        
+                            '& .MuiInputLabel-root': {
+                                color: 'var(--textModal)',
+                            },
+                        
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'var(--textModal)',
+                            },
+                        }}
                     >
                         {categorias.map((item) =>(
                             <MenuItem 
@@ -150,6 +167,19 @@ function handleSelecionarCategoria(event) {
                         label='Nome da Categoria'
                         value={nome}
                         onChange={(event) => setNome(event.target.value)}
+                        sx={{
+                            '& .MuiInputBase-input': {
+                                color: 'var(--textModal)',
+                            },
+                        
+                            '& .MuiInputLabel-root': {
+                                color: 'var(--textModal)',
+                            },
+                        
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'var(--textModal)',
+                            },
+                        }}
                       />
     
                       <TextField
@@ -158,6 +188,19 @@ function handleSelecionarCategoria(event) {
                         label='Descrição'
                         value={descricao}
                         onChange={(event) => setDescricao(event.target.value)}
+                        sx={{
+                            '& .MuiInputBase-input': {
+                                color: 'var(--textModal)',
+                            },
+                        
+                            '& .MuiInputLabel-root': {
+                                color: 'var(--textModal)',
+                            },
+                        
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'var(--textModal)',
+                            },
+                        }}
                       />
 
                         <>
@@ -166,7 +209,9 @@ function handleSelecionarCategoria(event) {
                                 className='button-delete-edit-categoria'
                                 type='button' // evita disparar o submit do form
                                 variant='contained'
-                                color='error'
+                                sx={{
+                                    backgroundColor: 'var(--buttonDeletCount)'
+                                }}
                                 disabled={excluirMutation.isPending}
                                 onClick={() => {
                                     const confirmar = window.confirm(
@@ -183,6 +228,9 @@ function handleSelecionarCategoria(event) {
                                 className='button-salve-edit-categoria'
                                 type='submit'
                                 variant='contained'
+                                sx={{
+                                  backgroundColor: 'var(--buttonSave)'
+                                }}
                             >
                               Salvar
                             </Button>

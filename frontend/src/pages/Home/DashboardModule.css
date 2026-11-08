@@ -7,7 +7,7 @@
     gap: 15px;
     padding: 10px;
     height: 100vh; /* Desconta o tamanho aproximado da NavBar */
-    background-color: #0f172a; /* Fundo principal escuro (slate-900) */
+    background-color: var(--backgroundNavBar); /* Fundo principal escuro (slate-900) */
     box-sizing: border-box;
 }
 

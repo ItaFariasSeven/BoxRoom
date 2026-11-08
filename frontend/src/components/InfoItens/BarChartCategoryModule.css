@@ -1,6 +1,6 @@
 /* BarChartCategoryModule.css */
 .barchart-container {
-    background-color: #1e40af;
+    background-color: var(--backgroundInfoItens);
     border-radius: 10px;
     padding: 20px;
     width: 100%;
@@ -15,7 +15,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    color: #ffffff;
+    color: var(--textGlobal);
     font-family: 'Inter', sans-serif;
 }
 
@@ -23,17 +23,17 @@
     font-size: 0.9rem;
 }
 
-.barchart-dropdown {
+/* .barchart-dropdown {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 1.4rem;
     cursor: pointer;
-}
+} */
 
-.arrow-down {
+/* .arrow-down {
     font-size: 0.8rem;
-}
+} */
 
 .canvas-wrapper {
     flex: 1;

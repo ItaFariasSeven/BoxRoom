@@ -1,17 +1,68 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* NavBar e geral */
+  --backgroundNavBar: #A9C3EF;
+  --textGlobal: #000;
+  --caminhoParaPaginas: #60a5fa;
+  --backgroundCardItem: #B0D2FD;
+  --linkCardItem: #2481F9;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  /* Modais */
+  --backgroundModal: #fffff1;
+  --borderModal: #000;
+  --buttonDeletCount: #FF2C2C;
+  --buttonSave: #1976d2;
+  --textModal: #000;
+  --backgroundModalGeneral: #2764CE;
+  --borderModalGeneral: #1e3a8a;
+  --iconModalGeneral: #fff;
+
+  /* InfoItens */
+  --backgroundInfoItens: #B0D2FD;
+  --headerBlue: #60a5fa;
+  --borderInfoItens: #3b82f6;
+  --headerRed: #dc2626;
+  --textValueEmStock: #000;
+  --textDuracaoDias: #000072;
+  --textNenhumItemEncontrado: #94a3b8;
+}
+
+
+
+:root[data-theme="dark"] {
+  /* NavBar e geral */
+  --backgroundNavBar: #0f172a;
+  --textGlobal: #fff;
+  --caminhoParaPaginas: #60a5fa;
+  --backgroundCardItem: #1e40af;
+  --linkCardItem: #93c5fd;
+
+  /* Modais */
+  --backgroundModal: #fffff1;
+  --borderModal: #000;
+  --buttonDeletCount: #FF2C2C;
+  --buttonSave: #1976d2;
+  --textModal: #000;
+  --backgroundModalGeneral: #112c5a;
+  --borderModalGeneral: #1e3a8a;
+  --iconModalGeneral: #fff;
+
+  /* InfoItens */
+  --backgroundInfoItens: #1e40af;
+  --headerBlue: #60a5fa;
+  --borderInfoItens: #3b82f6;
+  --headerRed: #dc2626;
+  --textValueEmStock: #000;
+  --textDuracaoDias: #e2e8f0;
+  --textNenhumItemEncontrado: #94a3b8;
+}
+
+
+
+
+
+
+
+  /* --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
@@ -32,17 +83,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    
   }
 
   #social .button-icon {
@@ -76,7 +117,7 @@ h2 {
 h1 {
   font-size: 56px;
   /* letter-spacing: -1.68px; */
-  margin: 0px 0;
+  /* margin: 0px 0;
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 0;
@@ -84,9 +125,9 @@ h1 {
 }
 h2 {
   font-size: 24px;
-  line-height: 118%;
+  line-height: 118%; */
   /* letter-spacing: -0.24px; */
-  margin: 0 0;
+  /* margin: 0 0;
   @media (max-width: 1024px) {
     font-size: 20px;
   }
@@ -100,12 +141,12 @@ code,
   font-family: var(--mono);
   display: inline-flex;
   border-radius: 4px;
-  color: var(--text-h);
-}
+  color: var(--text-h); */
+/* } */
 
-code {
+/* code {
   font-size: 15px;
   line-height: 135%;
   /* padding: 4px 8px; */
-  background: var(--code-bg);
-}
+  /* background: var(--code-bg);
+}  */
