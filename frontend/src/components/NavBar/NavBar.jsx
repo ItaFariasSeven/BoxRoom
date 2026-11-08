@@ -153,7 +153,7 @@ function handleBusca(event) {
                 {/* 1. Link Produtos */}
                 <NavLink to={'/produtos'} style={{ color: 'inherit', textDecoration: 'none' }}>
                   {({ isActive }) => (
-                    <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Produtos</p>
+                    <p className={isActive ? 'caminhos-paginas ativo' : 'caminhos-paginas'}>Mary IA</p>
                   )}
                 </NavLink>
               </div>
