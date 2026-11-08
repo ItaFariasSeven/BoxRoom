@@ -24,8 +24,8 @@ import { buscarPerfil } from "../../services/api";
 
 import { NavLink, useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import imageBell from '../../assets/infoBar/bell.png';
-import imageArrow from '../../assets/infoBar/arrow-down.png';
+import imageBell from '../../assets/InfoBar/bell.png';
+import imageArrow from '../../assets/InfoBar/arrow-down.png';
 import MenuEstoque from '../Modaloptions/MenuEstoque';
 
 import ThemeToggleButton from '../Button/ThemeToggleButton';
