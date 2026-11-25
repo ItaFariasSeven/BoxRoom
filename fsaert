@@ -1,0 +1,41 @@
+[33mcommit aa8d6ac508bc6b86695894e32d2582ce7c4fe2f4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: ItaFariasSeven <mateusfarias134@gmail.com>
+Date:   Sun Nov 8 03:03:46 2026 -0300
+
+    Criei o modo noturno
+
+ backend/backend/urls.py                            |   1 [32m+[m
+ backend/itens/urls.py                              |   4 [32m+[m
+ frontend/src/App.jsx                               |  74 [32m++++++[m[31m-----[m
+ .../src/components/Button/ThemeToggleButton.jsx    |  34 [32m+++++[m
+ .../src/components/CardItem/CardItemModule.css     |  20 [32m+[m[31m--[m
+ .../src/components/InfoBar/DashBoardBarModule.css  |   4 [32m+[m[31m-[m
+ .../src/components/InfoBar/ItensListModule.css     |   4 [32m+[m[31m-[m
+ .../src/components/InfoItens/BarChartCategory.jsx  | 141 [32m++++++++++++++[m[31m-------[m
+ .../InfoItens/BarChartCategoryModule.css           |  12 [32m+[m[31m-[m
+ .../src/components/InfoItens/LowItensModule.css    |  12 [32m+[m[31m-[m
+ .../src/components/InfoItens/MaryPoppinsIA.jsx     |   2 [32m+[m[31m-[m
+ .../components/InfoItens/MaryPoppinsIAModule.css   |  11 [32m+[m[31m-[m
+ .../src/components/InfoItens/TotalItensModule.css  |   6 [32m+[m[31m-[m
+ .../src/components/InfoItens/ValueStockModule.css  |  12 [32m+[m[31m-[m
+ frontend/src/components/ModalAdd/ModalAddAside.jsx | 116 [32m++++++++++++++++[m[31m-[m
+ .../components/ModalAdd/ModalAddAsideModule.css    |   6 [32m+[m[31m-[m
+ .../src/components/ModalEdit/ModalEditModule.css   |   6 [32m+[m[31m-[m
+ .../components/Modaloptions/MenuEstoqueModule.css  |  12 [32m+[m[31m-[m
+ .../Modaloptions/ModalCadastrarCategoria.jsx       |  29 [32m+++++[m
+ .../Modaloptions/ModalCadastrarCategoriaModule.css |   7 [32m+[m[31m-[m
+ .../Modaloptions/ModalEditarCategoria.jsx          |  52 [32m+++++++[m[31m-[m
+ .../Modaloptions/ModalEditarCategoriaModule.css    |   6 [32m+[m[31m-[m
+ .../components/Modaloptions/ModalInfoUsuario.jsx   |  88 [32m++++++++++[m[31m---[m
+ .../Modaloptions/ModalInfoUsuarioModule.css        |   9 [32m+[m[31m-[m
+ .../components/Modaloptions/ModalOptionsModule.css |   4 [32m+[m[31m-[m
+ frontend/src/components/NavBar/NavBar.jsx          |  18 [32m++[m[31m-[m
+ frontend/src/components/NavBar/NavBarModule.css    |   7 [32m+[m[31m-[m
+ frontend/src/contexts/ThemeModeContext.jsx         |  53 [32m++++++++[m
+ frontend/src/index.css                             | 105 [32m++++++++++[m[31m-----[m
+ frontend/src/main.jsx                              |   1 [32m+[m
+ frontend/src/pages/Home/DashboardModule.css        |   2 [32m+[m[31m-[m
+ frontend/src/pages/Home/Home.jsx                   |   6 [32m+[m[31m-[m
+ frontend/src/pages/Home/HomeModule.css             |   2 [32m+[m[31m-[m
+ frontend/src/pages/Home/ProdutosModule.css         |   4 [32m+[m[31m-[m
+ 34 files changed, 656 insertions(+), 214 deletions(-)
